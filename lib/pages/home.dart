@@ -261,7 +261,7 @@ class HomePage extends StatelessWidget {
   ];
   Widget _buildAdvPic() {
     return ListView.builder(
-      //sherif
+      
       scrollDirection: Axis.horizontal,
       itemCount: _advList.length,
       // reverse: true,
