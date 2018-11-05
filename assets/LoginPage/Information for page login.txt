@@ -1,0 +1,17 @@
+User Name & Password Text
+	font-family: Lato Regular;
+	font-size: 45pt;
+	color: rgba(255, 255, 255, 0.3);
+
+input Line
+	width: 952px;
+	height: 2px;
+	color: #EBA310;
+
+button Log In
+	width: 415px;
+	height: 100px; 
+	background-color: #AD045D;
+	font-family: lato bold;
+	font-size: 45pt;
+	border-radius: 75px;

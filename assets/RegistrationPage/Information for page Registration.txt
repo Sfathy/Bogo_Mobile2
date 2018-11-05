@@ -1,0 +1,16 @@
+Main Title (Regstration)
+	font-family: Lato bold;
+	font-size: 60pt;
+
+inputs Line
+	width: 1105px;
+	height: 2px;
+	color: #EBA310;
+
+button Sign Up
+	width: 1270px;
+	height: 100px; 
+	background-color: #AD045D;
+	font-family: lato regular;
+	font-size: 45pt;
+	border-radius: 75px;

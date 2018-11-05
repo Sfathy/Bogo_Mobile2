@@ -1,0 +1,57 @@
+logo Bogo
+	width: 153px;
+	height: 153px;
+
+background for logo
+	width: 1440px;
+	height: 200px;
+	background-color: rgba(255, 255, 255, 0.5);
+
+User Name & All Districts
+	font-family: Lato Regular;
+	font-size: 48pt;
+	background-color: rgba(255, 255, 255, 0.3);
+
+background for small images
+	border-radius: 14px;
+	bakground-color: #9DA2A6;
+	width: 620px;
+	height: 382px;
+
+background for big images
+	border-radius: 14px;
+	bakground-color: #9DA2A6;
+	width: 772px;
+	height: 464px;
+
+buttons 
+	background-color: #ac045d;
+	border-radius: 75px;
+	font-family: lato bold;
+	font-size: 30pt;
+
+Background Resturanrts & Cafes & Specilas
+	background-color: rgba(255, 255, 255, 0.3);
+
+title Resturanrts & Cafes & Specilas
+	font-family: lato bold;
+	font-size: 48;
+	color: #FFF;
+
+text inner Resturanrts & Cafes & Specilas
+	font-family: lato Regular;
+	font-size: 30pt;
+	color: #FFF;
+
+box logos
+	background-color: #FFF;
+	border: 5px solid #ac045d;
+	border-radius: 10px;
+
+button Menu bottom
+	color: #FFF;
+	font-family: lato bold;
+	font-size: 30pt;
+	background-color: #ac045d;
+	border-radius: 10px;
+	

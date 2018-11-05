@@ -1,0 +1,20 @@
+background for Platinum Ticket
+	width: 675px;
+	height: 290px;
+	background-color: linear-gradient(#6D6E71, #A7A9AC, #6D6E71);
+	border-raduis: 14px;
+
+Platinum Ticket
+	font-family: Lato bold Italic;
+	font-size: 48pt;
+	color: #FFF;
+
+text arabic
+	font-family: Tajawal Medium;
+	font-size: 30px;
+	color: #FFF;
+
+text for facebook & whatsapp
+	font-family: Lato Regular;
+	font-size: 18px;
+	color: #FFF;	

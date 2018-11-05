@@ -1,0 +1,61 @@
+background for logo
+	width: 1440px;
+	height: 572px;
+	background-color: rgba(255, 255, 255, 0.5);
+
+Main Name (Fashion)
+	font-size: 60pt;
+	font-family: lato bold;
+
+All Districts
+	width: 1017;
+	height: 79px;
+	font-family: Lato regular;
+	font-size: 36pt;
+	background-color: #FFF;
+	border: solid 3pt #AD045D;
+	border-radius: 75px;
+
+button Features
+	width: 234px;
+	height: 79px;
+	font-family: lato bold;
+	font-size: 36pt;
+
+4 buttons
+	width: 322px;
+	height: 76px;
+	border-radius: 14px;
+	font-family: lato bold;
+	font-size: 36pt;
+
+line after 4 buttons
+	width: 1440px;
+	height: 5px;
+	color: #FDB813
+
+3 buttons
+	width: 307px;
+	height: 79px;
+	border: solid 3pt #AD045D;
+	font-family: lato bold;
+	font-size: 36pt;
+	color: #AD045D;
+
+background for logos
+	border-radius: 14px;
+	bakground-color: #FFF;
+	border: solid 5pt #AD045D;
+	width: 310px;
+	height: 188px;
+
+title brands
+	font-family: lato Regular;
+	font-size: 30pt;
+	color: #FFF;
+
+text offers
+	font-family: lato Regular;
+	font-size: 36pt;
+	color: #FDB813;
+	

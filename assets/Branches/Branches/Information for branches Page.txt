@@ -1,0 +1,47 @@
+big image
+	width: 1440px;
+	height: 748px;
+
+background for logo cook door
+	width: 279px;
+	height: 246px;
+	background-color: #FFF;
+	border: 5px solid #9DA2A6;
+
+title for cook door
+	font-family: lato bold;
+	font-size: 48pt;
+	color: #FFF;
+
+text under cook door
+	font-family: Lato bold;
+	font-size: 30pt;
+	color: #FFF;
+
+text 3 tabs
+	font-family: lato bold;
+	font-size: 30pt;
+	color: #333333;
+	color-active: #AD045D;
+
+button A-Z
+	font-family: lato bold;
+	font-size: 30pt;
+	background-color: #AD045D;
+	border-raduis: 75px;
+
+line yellow
+	width: 1277px;
+	height: 5px;
+	color: #FDB813;
+
+background branchs
+	widht: 1277px;
+	height: 287px;
+	background-color: rgba(255, 255, 255, 0.5);
+
+text branchs
+	font-famliy: lato bold;
+	font-size: 30pt;
+	color: #AD045D;
+	

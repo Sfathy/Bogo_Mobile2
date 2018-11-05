@@ -1,0 +1,33 @@
+﻿big coupons
+	width: 1228px;
+	height: 1094px;
+	background-color: #2E3192;
+
+background coupon white
+	width: 293px;
+	height: 535px;
+	border-raduis: 14px;
+
+text ساري حتى 31 ديسمبر 2018
+	font-family: Tajawal Medium Regular;
+	font-size: 20pt;
+	color: #AD045D;
+
+text VALID TILL 31 DECEMBER 2018
+	font-family: lato regular;
+	font-size: 17pt;
+	color: #AD045D;
+
+logo cook door in coupon
+	width: 160px;
+	height: 141px;
+
+text arabic under logo cook door
+	font-family: Tajawal Medium Regular;
+	font-size: 19pt;
+	color: #333333;
+
+text English under logo cook door
+	font-family: lato regular;
+	font-size: 17pt;
+	color: #333333;

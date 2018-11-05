@@ -1,0 +1,20 @@
+﻿coupons silver
+	width: 617px;
+	height: 265px;
+	border-raduis: 14px;
+
+text paltinum ticket
+	font-family: lato bold italic;
+	font-size: 44pt;
+
+text arabic
+	font-family: Tajawal Medium Regular;
+	font-size: 28pt;
+
+text facebook & mobile
+	font-family: lato regular;
+	font-size: 17pt;
+
+logo bogo
+	width: 74px;
+	height: 74px;
