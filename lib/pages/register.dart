@@ -28,8 +28,8 @@ class RegPageState extends State<RegPage> {
       'assets/RegistrationPage/main-img.jpg',
       alignment: Alignment.topCenter,
       fit: BoxFit.fill,
-      height: 100.0,
-      width: 420.0,
+      height: height/5,
+      width: width,
     );
   }
 
@@ -66,7 +66,8 @@ class RegPageState extends State<RegPage> {
     return Expanded(
       child: Container(
         decoration: new BoxDecoration(
-          color: Colors.grey,
+          color: Color.fromARGB(127, 127, 127, 127),
+          
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(20.0),
         ),
@@ -341,9 +342,14 @@ class RegPageState extends State<RegPage> {
       ],
     );
   }
-
+  double width;
+  double height;
+  double devicePixelRatio;
   @override
   Widget build(BuildContext context) {
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
     // TODO: implement build
     return Scaffold(
       appBar: _buildAppBar(),

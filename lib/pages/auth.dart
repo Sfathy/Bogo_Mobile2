@@ -32,7 +32,7 @@ class _AuthPageState extends State<AuthPage> {
               image: AssetImage('assets/LoginPage/Background.jpg'),
               fit: BoxFit.cover),
         ),
-        padding: EdgeInsets.all(50.0),
+        padding: EdgeInsets.all(height/10),
         child: ListView(
           children: <Widget>[
             Image.asset(
