@@ -69,21 +69,26 @@ class HomePage extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         height: 30.0,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.person),
-              color: Colors.white,
-              iconSize: 20.0,
-              alignment: Alignment.topRight,
-              onPressed: () {},
-            ),
-            Text(
-              'User Name',
-              style: TextStyle(color: Colors.white),
-            ),
-          ],
+        child: new GestureDetector(
+          onTap: (){
+            Navigator.pushNamed(formContext, '/profile');
+          },
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.person),
+                color: Colors.white,
+                iconSize: 20.0,
+                alignment: Alignment.topRight,
+                onPressed: () {},
+              ),
+              Text(
+                'User Name',
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -119,8 +124,8 @@ class HomePage extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.0),
-      ), 
-      height: height/2,
+      ),
+      height: height / 2,
       margin: EdgeInsets.all(10.0),
       child: InkWell(),
     );
@@ -261,13 +266,11 @@ class HomePage extends StatelessWidget {
   ];
   Widget _buildAdvPic() {
     return ListView.builder(
-      
       scrollDirection: Axis.horizontal,
       itemCount: _advList.length,
       // reverse: true,
-      
-      itemBuilder: (BuildContext context, int index) {
 
+      itemBuilder: (BuildContext context, int index) {
         return Card(
           child: Column(
             children: <Widget>[
@@ -276,7 +279,7 @@ class HomePage extends StatelessWidget {
                 fit: BoxFit.contain,
                 alignment: Alignment.center,
                 //height: height/7,
-                width: width/3,
+                width: width / 3,
               ),
             ],
           ),
@@ -347,7 +350,7 @@ class HomePage extends StatelessWidget {
           ),
         ),
         _buildCategotyCard(),
-       // Container(),
+        // Container(),
       ],
     );
   }
