@@ -69,21 +69,26 @@ class HomePage extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         height: 30.0,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.person),
-              color: Colors.white,
-              iconSize: 20.0,
-              alignment: Alignment.topRight,
-              onPressed: () {},
-            ),
-            Text(
-              'User Name',
-              style: TextStyle(color: Colors.white),
-            ),
-          ],
+        child: new GestureDetector(
+          onTap: (){
+            Navigator.pushNamed(formContext, '/profile');
+          },
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.person),
+                color: Colors.white,
+                iconSize: 20.0,
+                alignment: Alignment.topRight,
+                onPressed: () {},
+              ),
+              Text(
+                'User Name',
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
         ),
       ),
     );

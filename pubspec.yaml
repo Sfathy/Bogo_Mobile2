@@ -55,6 +55,8 @@ flutter:
     - assets/HomePage/next-icons-inner.png
     - assets/HomePage/big-image.png
     - assets/HomePage/small-image.png
+    - assets/ProfilePage/background-profile-img.jpg
+    - assets/HomePage/Profile-img.png
     
     
 
