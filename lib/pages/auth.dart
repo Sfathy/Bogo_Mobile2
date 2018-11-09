@@ -119,7 +119,7 @@ class _AuthPageState extends State<AuthPage> {
               title: Text('Accept Terms'),
             ),*/
             SizedBox(
-              height: height/10,
+              height: height/20,
             ),
             ScopedModelDescendant<UsersModel>(builder:
                 (BuildContext context, Widget child, UsersModel model) {
@@ -153,7 +153,7 @@ class _AuthPageState extends State<AuthPage> {
                     }
                     // Navigator.pushReplacementNamed(context, '/home');
                   });
-            }),
+            }) ,
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[

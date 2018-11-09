@@ -32,11 +32,6 @@ class HomePage extends StatelessWidget {
               brandDescription: '15% Refund',
               brandImage: 'assets/HomePage/Starbucks.png'),
         ]),
-    new Category(
-        categoryName: 'Specials',
-        id: 2,
-        icon: 'assets/HomePage/Specilas-Icons.png',
-        brands: []),
   ];
 
   Widget _buildAppBar() {
@@ -70,7 +65,7 @@ class HomePage extends StatelessWidget {
         width: double.infinity,
         height: 30.0,
         child: new GestureDetector(
-          onTap: (){
+          onTap: () {
             Navigator.pushNamed(formContext, '/profile');
           },
           child: Row(
@@ -122,22 +117,22 @@ class HomePage extends StatelessWidget {
 
   Widget _buildBrandCard(BuildContext context, int index) {
     return Container(
-              margin: EdgeInsets.symmetric(horizontal: 2.0),
-              child: Column(
-                children: <Widget>[
-                  Image.asset(_categotyList[0].brands[index].brandImage,
-                      height: height / 7, width: width / 7),
-                  Text(
-                    _categotyList[0].brands[index].brandName,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Text(
-                    _categotyList[0].brands[index].brandDescription,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
-            );
+      margin: EdgeInsets.symmetric(horizontal: 2.0),
+      child: Column(
+        children: <Widget>[
+          Image.asset(_categotyList[0].brands[index].brandImage,
+              height: height / 7, width: width / 7),
+          Text(
+            _categotyList[0].brands[index].brandName,
+            style: TextStyle(color: Colors.white),
+          ),
+          Text(
+            _categotyList[0].brands[index].brandDescription,
+            style: TextStyle(color: Colors.white),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildCategotyCard() {
@@ -153,35 +148,33 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildBrandList(int index) {
-    return Column(
+    return ListView(
+      //mainxAxisAlignment: MainAxisAlignment.center,
+      scrollDirection: Axis.horizontal,
       children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset(
-              'assets/HomePage/previous-icons-inner.png',
-              height: 30.0,
-              width: 30.0,
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 2.0),
-              child: ListView.builder(
-                itemCount: _categotyList[index].brands.length,
-                itemBuilder: _buildBrandCard,
-              ),
-            ),
-             Image.asset(
-              'assets/HomePage/next-icons-inner.png',
-              height: 30.0,
-              width: 30.0,
-            ),
-          ],
+        Image.asset(
+          'assets/HomePage/previous-icons-inner.png',
+          height: 30.0,
+          width: 30.0,
         ),
-         _buildMoreButton(),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 2.0),
+          child: ListView.builder(
+            itemCount: _categotyList[index].brands.length,
+            itemBuilder: _buildBrandCard,
+          ),
+        ),
+        Image.asset(
+          'assets/HomePage/next-icons-inner.png',
+          height: 30.0,
+          width: 30.0,
+        ),
       ],
+
+      //_buildMoreButton(),
     );
 
-   /* Column(
+    /* Column(
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -270,7 +263,7 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildCatItem(BuildContext context, int index) {
-    return ListView(
+    return Column(
       children: <Widget>[
         Row(
           children: <Widget>[
@@ -283,22 +276,40 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
-        _buildBrandList(index),
-        //_buildMoreButton(),
+        ListView.builder(
+          itemCount: _categotyList[0].brands.length,
+          itemBuilder: (BuildContext context, int brandIndex) {},
+        ),
+        //   _buildBrandList(index),
+        _buildMoreButton(),
       ],
     );
+    // _buildBrandList(index),
+    //_buildMoreButton(),
+  }
+
+  Widget _buildCatItem2(BuildContext context, int index) {
+    return ListView.builder(
+        itemCount: _categotyList[0].brands.length,
+        itemBuilder: (BuildContext context, int brandIndex) {
+          return Container();
+        });
   }
 
   Widget _buildCategoryContet() {
-    return Container(
+    return ListView.builder(
+        itemCount: _categotyList.length, itemBuilder: _buildCatItem2);
+
+    /*Container(
       constraints: BoxConstraints(minWidth: width, minHeight: height / 4),
       child: ListView.builder(
         itemCount: _categotyList.length,
-        itemBuilder: _buildCatItem,
+        itemBuilder: Container(),
         //mainAxisAlignment: MainAxisAlignment.start,
         //crossAxisAlignment: CrossAxisAlignment.start,
       ),
-    );
+      Container(),
+    );*/
   }
 
   List<String> _advList = [
@@ -399,6 +410,49 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  Widget _buildCategotyCard2() {
+    return ListView.builder(
+        itemCount: _categotyList.length,
+        itemBuilder: (formContext, index) {
+          return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                color: Color.fromARGB(127, 127, 127, 127),
+              ),
+              height: height / 2.7,
+              margin: EdgeInsets.all(10.0),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      IconButton(
+                        icon: Image.asset(_categotyList[0].icon),
+                      ),
+                      Text(
+                        _categotyList[0].categoryName,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                  ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: <Widget>[
+                      ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: _categotyList[0].brands.length,
+                        shrinkWrap: true,
+                        itemBuilder: (formContext, index) {
+                          return Text(
+                              _categotyList[0].brands[index].brandDescription);
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ));
+        });
+  }
+
   Widget _buildBottomMenu() {
     return BottomNavigationBar(
       currentIndex: 0,
@@ -459,7 +513,7 @@ class HomePage extends StatelessWidget {
                 image: AssetImage('assets/LoginPage/Background.jpg'),
                 fit: BoxFit.fill),
           ),
-          child: _buildBody(),
+          child: _buildCategotyCard2(), //_buildBody(),
           /*ListView(
              children: <Widget>[
                Text('1'),

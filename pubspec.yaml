@@ -9,7 +9,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   scoped_model: ^0.3.0
-  http: ^0.12.0
+  http: ^0.11.3+16
   carousel_slider: ^0.0.7
 
 dev_dependencies:
@@ -56,7 +56,7 @@ flutter:
     - assets/HomePage/big-image.png
     - assets/HomePage/small-image.png
     - assets/ProfilePage/background-profile-img.jpg
-    - assets/HomePage/Profile-img.png
+    - assets/ProfilePage/Profile-img.png
     
     
 
