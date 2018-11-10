@@ -5,15 +5,26 @@ import '../models/categoty.dart';
 
 import '../scoped_models/users.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+    State<StatefulWidget> createState() {
+      // TODO: implement createState
+      return new HomePageState();
+    }
+}
+class HomePageState extends State<HomePage> {
+
+  
+
   BuildContext formContext;
   double width;
   double height;
   double devicePixelRatio;
+  int selectedCat = 0 ;
   final List<Category> _categotyList = [
     new Category(
         categoryName: 'Resturants & Cafes',
-        id: 1,
+        id: 0,
         icon: 'assets/HomePage/Resturants-Icons.png',
         brands: [
           new Brand(
@@ -47,6 +58,21 @@ class HomePage extends StatelessWidget {
               brandDescription: '15% Refund',
               brandImage: 'assets/HomePage/Starbucks.png'),
         ]),
+     new Category(
+        categoryName: 'Fashon',
+        id: 1,
+        icon: 'assets/HomePage/Specilas-Icons.png',
+        brands: [  new Brand(
+              id: 0,
+              brandName: 'Chili\'s',
+              brandDescription: '20% Refund',
+              brandImage: 'assets/HomePage/Chilis.png'),
+          new Brand(
+             id: 1,
+              brandName: 'Pizza Hut',
+              brandDescription: '25% Refund',
+              brandImage: 'assets/HomePage/Pizza-Hut.png'),
+              ])
   ];
 
   Widget _buildAppBar() {
@@ -338,6 +364,7 @@ class HomePage extends StatelessWidget {
   Widget _buildAdvPic() {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
+      
       itemCount: _advList.length,
       // reverse: true,
 
@@ -374,11 +401,17 @@ class HomePage extends StatelessWidget {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         child: Text(
-          _mainCatList[index],
+          _categotyList[index].categoryName,
           style: TextStyle(color: Colors.white),
         ),
         color: Color(0xFFAD045D),
-        onPressed: () {},
+        onPressed: () {
+          setState(() {
+                      selectedCat = index;
+                      print('index:' + index.toString());
+                      print('selected cat:' + selectedCat.toString());
+                    });
+        },
       ),
     );
   }
@@ -392,7 +425,7 @@ class HomePage extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         // itemExtent: 100.0,
         itemBuilder: _buildCatItemList,
-        itemCount: _mainCatList.length,
+        itemCount: _categotyList.length,
       ),
     );
   }
@@ -431,14 +464,14 @@ class HomePage extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 2.0),
       child: Column(
         children: <Widget>[
-          Image.asset(_categotyList[0].brands[index].brandImage,
+          Image.asset(_categotyList[selectedCat].brands[index].brandImage,
               height: height / 6, width: width / 4.1),
           Text(
-            _categotyList[0].brands[index].brandName,
+            _categotyList[selectedCat].brands[index].brandName,
             style: TextStyle(color: Colors.white),
           ),
           Text(
-            _categotyList[0].brands[index].brandDescription,
+            _categotyList[selectedCat].brands[index].brandDescription,
             style: TextStyle(color: Colors.white),
           ),
         ],
@@ -476,10 +509,10 @@ class HomePage extends StatelessWidget {
               Row(
                 children: <Widget>[
                   IconButton(
-                    icon: Image.asset(_categotyList[0].icon),
+                    icon: Image.asset(_categotyList[selectedCat].icon),
                   ),
                   Text(
-                    _categotyList[0].categoryName,
+                    _categotyList[selectedCat].categoryName,
                     style: TextStyle(color: Colors.white),
                   ),
                 ],
@@ -499,7 +532,7 @@ class HomePage extends StatelessWidget {
                       Center(child:Container(
                         width: width/1.3,
                         child: ListView.builder(
-                        itemCount: _categotyList[0].brands.length,
+                        itemCount: _categotyList[selectedCat].brands.length,
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
                         itemBuilder: (BuildContext context, int index) {
