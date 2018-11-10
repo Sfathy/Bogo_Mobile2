@@ -31,6 +31,21 @@ class HomePage extends StatelessWidget {
               brandName: 'Starbucks',
               brandDescription: '15% Refund',
               brandImage: 'assets/HomePage/Starbucks.png'),
+          new Brand(
+              id: 3,
+              brandName: 'Pizza Hut',
+              brandDescription: '25% Refund',
+              brandImage: 'assets/HomePage/Pizza-Hut.png'),
+          new Brand(
+              id: 4,
+              brandName: 'Chili\'s',
+              brandDescription: '20% Refund',
+              brandImage: 'assets/HomePage/Chilis.png'),
+          new Brand(
+              id: 5,
+              brandName: 'Starbucks',
+              brandDescription: '15% Refund',
+              brandImage: 'assets/HomePage/Starbucks.png'),
         ]),
   ];
 
@@ -117,6 +132,7 @@ class HomePage extends StatelessWidget {
 
   Widget _buildBrandCard(BuildContext context, int index) {
     return Container(
+      //width:width/2 ,
       margin: EdgeInsets.symmetric(horizontal: 2.0),
       child: Column(
         children: <Widget>[
@@ -404,17 +420,104 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ),
-        _buildCategotyCard(),
+        _buildCategotyCard2(),
         // Container(),
       ],
     );
   }
 
+  Widget _buildBrandItem(int index) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 2.0),
+      child: Column(
+        children: <Widget>[
+          Image.asset(_categotyList[0].brands[index].brandImage,
+              height: height / 6, width: width / 4.1),
+          Text(
+            _categotyList[0].brands[index].brandName,
+            style: TextStyle(color: Colors.white),
+          ),
+          Text(
+            _categotyList[0].brands[index].brandDescription,
+            style: TextStyle(color: Colors.white),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget _buildLeftArrow(){
+      return  Image.asset(
+              'assets/HomePage/previous-icons-inner.png',
+              height: 30.0,
+              width: 30.0,
+            );
+  }
+
+  Widget _buildRightArrow(){
+    return  Image.asset(
+              'assets/HomePage/next-icons-inner.png',
+              height: 30.0,
+              width: 30.0,
+            );
+  }
+
   Widget _buildCategotyCard2() {
-    return ListView.builder(
-        itemCount: _categotyList.length,
-        itemBuilder: (formContext, index) {
-          return Container(
+    return Column(
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.0),
+            color: Color.fromARGB(127, 127, 127, 127),
+          ),
+          height: height / 2.7,
+          margin: EdgeInsets.all(10.0),
+          child: Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  IconButton(
+                    icon: Image.asset(_categotyList[0].icon),
+                  ),
+                  Text(
+                    _categotyList[0].categoryName,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+              // Row(children: <Widget>[
+              //TextField(),
+              Container(
+                // width: width/2,
+                child: Expanded(
+                  flex: 1,
+                  child: Center(child:ListView(
+                    scrollDirection: Axis.horizontal,
+                    //width: width/1.5,
+                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      _buildLeftArrow(),
+                      Center(child:Container(
+                        width: width/1.3,
+                        child: ListView.builder(
+                        itemCount: _categotyList[0].brands.length,
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, int index) {
+                          return _buildBrandItem(index);
+                        },
+                      ),),),
+                      _buildRightArrow(),
+                    ],
+                  ),),
+                ),
+              ), //],),
+              _buildMoreButton(),
+            ],
+          ),
+        )
+      ],
+    );
+    /*Coainer(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.0),
                 color: Color.fromARGB(127, 127, 127, 127),
@@ -450,7 +553,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ],
               ));
-        });
+        });*/
   }
 
   Widget _buildBottomMenu() {
@@ -505,7 +608,8 @@ class HomePage extends StatelessWidget {
       return Scaffold(
         appBar: _buildAppBar(),
         bottomNavigationBar: _buildBottomMenu(),
-        body: Container(
+        body: //_buildCategotyCard2()
+            Container(
           decoration: BoxDecoration(
             image: DecorationImage(
                 colorFilter: ColorFilter.mode(
@@ -513,17 +617,10 @@ class HomePage extends StatelessWidget {
                 image: AssetImage('assets/LoginPage/Background.jpg'),
                 fit: BoxFit.fill),
           ),
-          child: _buildCategotyCard2(), //_buildBody(),
-          /*ListView(
-             children: <Widget>[
-               Text('1'),
-               Text('2'),
-               Text('3')
-             ],
-           )*/
-          //padding: EdgeInsets.all(10.0),
+          child: _buildBody(), // _buildCategotyCard2(), //_buildBody(),
         ),
       );
     });
+    // });
   }
 }
