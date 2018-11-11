@@ -9,12 +9,15 @@ import './pages/home.dart';
 import './pages/rest_password.dart';
 import './pages/product.dart';
 import './pages/profile.dart';
+import './pages/brand.dart';
 
 import 'package:flutter/rendering.dart';
 
 void main() {
  // debugPaintSizeEnabled = true;
+
   runApp(MyApp(model: UsersModel()));
+  
 }
 
 class MyApp extends StatelessWidget {
@@ -25,7 +28,9 @@ class MyApp extends StatelessWidget {
     // TODO: implement build
     return ScopedModel(
       model: model,
+      
       child: MaterialApp(
+        debugShowCheckedModeBanner:false,
         routes: {
           '/': (BuildContext context) => AuthPage(),
           '/reg':(BuildContext context) => RegPage(),
@@ -34,6 +39,7 @@ class MyApp extends StatelessWidget {
           '/login':(BuildContext context)=> AuthPage(),
           '/product':(BuildContext context)=> ProductPage(),
           '/profile':(BuildContext context)=> ProfilePage(),
+          '/brand':(BuildContext context)=> BrandPage(),
         },
         title: 'BOGO',
 

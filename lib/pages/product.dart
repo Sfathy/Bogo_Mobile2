@@ -9,7 +9,21 @@ class ProductPage extends StatelessWidget {
   double width;
   double height;
   double devicePixelRatio;
+  BuildContext formContext;
 
+  List<Brand> brands = [
+    new Brand(brandImage: 'assets/HomePage/Pizza-Hut.png',brandDescription: '25% Refund',brandName: 'Pizza-Hut'),
+    new Brand(brandImage: 'assets/HomePage/Chilis.png',brandDescription: '25% Refund',brandName: 'Chilis'),
+    new Brand(brandImage: 'assets/HomePage/Starbucks.png',brandDescription: '25% Refund',brandName: 'Starbucks'),
+    new Brand(brandImage: 'assets/HomePage/Pizza-Hut.png',brandDescription: '25% Refund',brandName: 'Pizza-Hut'),
+    new Brand(brandImage: 'assets/HomePage/Chilis.png',brandDescription: '25% Refund',brandName: 'Chilis'),
+    new Brand(brandImage: 'assets/HomePage/Starbucks.png',brandDescription: '25% Refund',brandName: 'Starbucks'),
+    new Brand(brandImage: 'assets/HomePage/Pizza-Hut.png',brandDescription: '25% Refund',brandName: 'Pizza-Hut'),
+    new Brand(brandImage: 'assets/HomePage/Chilis.png',brandDescription: '25% Refund',brandName: 'Chilis'),
+    new Brand(brandImage: 'assets/HomePage/Starbucks.png',brandDescription: '25% Refund',brandName: 'Starbucks'),
+    new Brand(brandImage: 'assets/HomePage/Pizza-Hut.png',brandDescription: '25% Refund',brandName: 'Pizza-Hut'),
+
+  ];
   Widget _buildAppBar() {
     return AppBar(
       backgroundColor: Colors.black12,
@@ -232,83 +246,31 @@ class ProductPage extends StatelessWidget {
     );
   }
 
+  List<Widget> _buildGridItems(){
+    List<Widget> items =  new List<Widget>();
+     Widget item;
+    for (var i = 0; i < brands.length; i++) {
+      item = GestureDetector( 
+        onTap: (){
+            Navigator.pushNamed(formContext, '/brand');
+        },
+        child:Column(
+          children: <Widget>[
+            Image.asset(brands[i].brandImage),
+            Text(brands[i].brandName,style: TextStyle(color: Colors.white),),
+            Text(brands[i].brandDescription,style: TextStyle(color: Colors.white),),
+          ],
+        ),);
+        items.add(item);
+    }
+    return items;
+  }
   Widget _buildBrands(){
     return GridView.count(
       crossAxisCount: 3,
       mainAxisSpacing: 10.0,
       crossAxisSpacing: 10.0,
-      children: <Widget>[
-        Column(
-          children: <Widget>[
-            Image.asset('assets/HomePage/Pizza-Hut.png'),
-            Text('LC Wakiki',style: TextStyle(color: Colors.white),),
-            Text('25% Refund',style: TextStyle(color: Colors.white),),
-          ],
-        ),
-        Column(
-          children: <Widget>[
-            Image.asset('assets/HomePage/Chilis.png'),
-            Text('LC Wakiki',style: TextStyle(color: Colors.white),),
-            Text('25% Refund',style: TextStyle(color: Colors.white),),
-          ],
-        ),
-        Column(
-          children: <Widget>[
-            Image.asset('assets/HomePage/Starbucks.png'),
-            Text('LC Wakiki',style: TextStyle(color: Colors.white),),
-            Text('25% Refund',style: TextStyle(color: Colors.white),),
-          ],
-        ),
-        Column(
-          children: <Widget>[
-            Image.asset('assets/HomePage/Pizza-Hut.png'),
-            Text('LC Wakiki',style: TextStyle(color: Colors.white),),
-            Text('25% Refund',style: TextStyle(color: Colors.white),),
-          ],
-        ),
-        Column(
-          children: <Widget>[
-            Image.asset('assets/HomePage/Chilis.png'),
-            Text('LC Wakiki',style: TextStyle(color: Colors.white),),
-            Text('25% Refund',style: TextStyle(color: Colors.white),),
-          ],
-        ),
-        Column(
-          children: <Widget>[
-            Image.asset('assets/HomePage/Starbucks.png'),
-            Text('LC Wakiki',style: TextStyle(color: Colors.white),),
-            Text('25% Refund',style: TextStyle(color: Colors.white),),
-          ],
-        ),
-        Column(
-          children: <Widget>[
-            Image.asset('assets/HomePage/Pizza-Hut.png'),
-            Text('LC Wakiki',style: TextStyle(color: Colors.white),),
-            Text('25% Refund',style: TextStyle(color: Colors.white),),
-          ],
-        ),
-        Column(
-          children: <Widget>[
-            Image.asset('assets/HomePage/Chilis.png'),
-            Text('LC Wakiki',style: TextStyle(color: Colors.white),),
-            Text('25% Refund',style: TextStyle(color: Colors.white),),
-          ],
-        ),
-        Column(
-          children: <Widget>[
-            Image.asset('assets/HomePage/Starbucks.png'),
-            Text('LC Wakiki',style: TextStyle(color: Colors.white),),
-            Text('25% Refund',style: TextStyle(color: Colors.white),),
-          ],
-        ),
-        Column(
-          children: <Widget>[
-            Image.asset('assets/HomePage/Pizza-Hut.png'),
-            Text('LC Wakiki',style: TextStyle(color: Colors.white),),
-            Text('25% Refund',style: TextStyle(color: Colors.white),),
-          ],
-        ),
-      ],
+      children: _buildGridItems(),
     );
   }
   Widget _buildCategory() {
@@ -350,6 +312,7 @@ class ProductPage extends StatelessWidget {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+    formContext = context;
     // TODO: implement build
     return ScopedModelDescendant<UsersModel>(
       builder: (BuildContext context, Widget child, UsersModel model) {
