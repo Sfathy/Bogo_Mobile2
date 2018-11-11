@@ -22,7 +22,7 @@ class RegPageState extends State<RegPage> {
   DateTime _birthdate;
   String _mac;
   String _location;
-
+  UsersModel user;
   Widget _buildHeaderImage() {
     return Image.asset(
       'assets/RegistrationPage/main-img.jpg',
@@ -294,6 +294,7 @@ class RegPageState extends State<RegPage> {
         textColor: Colors.white,
         child: Text('Sign Up'),
         onPressed: () {
+          user.signUp(new User(id: 0,userName: 'sherif',token: ''));
           Navigator.pushReplacementNamed(context, '/home');
         },
       ),
@@ -350,8 +351,13 @@ class RegPageState extends State<RegPage> {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+    
     // TODO: implement build
-    return Scaffold(
+   return ScopedModelDescendant<UsersModel>(
+        builder: (BuildContext context, Widget child, UsersModel model) {
+      user = model;
+      // model.getValues();
+      return Scaffold(
       appBar: _buildAppBar(),
       body: Container(
         decoration: BoxDecoration(
@@ -365,6 +371,6 @@ class RegPageState extends State<RegPage> {
 
         //padding: EdgeInsets.all(10.0),
       ),
-    );
+    );});
   }
 }

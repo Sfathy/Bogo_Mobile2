@@ -119,7 +119,7 @@ class _AuthPageState extends State<AuthPage> {
               title: Text('Accept Terms'),
             ),*/
             SizedBox(
-              height: height/20,
+              height: height/30,
             ),
             ScopedModelDescendant<UsersModel>(builder:
                 (BuildContext context, Widget child, UsersModel model) {
