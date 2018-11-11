@@ -7,9 +7,15 @@ import 'dart:async';
 class UsersModel extends Model {
   final String baseURL = 'http://192.168.1.121/api/';
   User _authenticatedUser;
+  User get AuthenticatedUser{
+    return _authenticatedUser;
+  }
   void signUp(User user) async {
-    http.Response response = await http.get(baseURL + 'values');
-    print(json.decode(response.body));
+    //http.Response response = await http.get(baseURL + 'values');
+    _authenticatedUser = User(userName:user.userName,token:'token',id: 0  );
+    notifyListeners();
+    print(_authenticatedUser.userName);
+   // print(json.decode(response.body));
     //return true;
   }
   void getValues() async{
