@@ -23,33 +23,15 @@ class BrandPage extends StatelessWidget {
       ],
     );
   }
-
+  TabController _controller;
   Widget _buildBody(BuildContext context) {
-    return Center(
-      child: Column(
-        children: <Widget>[
-          TextField(
-            decoration: InputDecoration(
-              labelText: 'User Name',
-              labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
-              fillColor: Colors.yellowAccent,
-              prefixIcon: const Icon(
-                Icons.lock,
-                color: Colors.pink,
-              ),
-              border: new UnderlineInputBorder(
-                  borderSide: new BorderSide(color: Colors.yellowAccent)),
-            ),
-            obscureText: true,
-            style: new TextStyle(color: Colors.white),
-            onChanged: (String value) {},
-          ),
-          SizedBox(
-            height: 10.0,
-          ),
-         // _buildSignUpButton(context),
-        ],
-      ),
+    return  TabBar(
+            controller: _controller,
+            tabs:<Widget>[
+              Icon(Icons.directions_car),
+              Icon(Icons.directions_transit),
+              Icon(Icons.directions_bike),
+            ],
     );
   }
 
