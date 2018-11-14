@@ -57,6 +57,18 @@ flutter:
     - assets/HomePage/small-image.png
     - assets/ProfilePage/background-profile-img.jpg
     - assets/ProfilePage/Profile-img.png
+    - assets/Branches/img-product.jpg
+    - assets/Branches/air.png
+    - assets/Branches/erea.png
+    - assets/Branches/face-icon-for-branches.png
+    - assets/Branches/parking.png
+    - assets/Branches/phone.png
+    - assets/Branches/smoking.png
+    - assets/Branches/telegram-icon-for-branches.png
+    - assets/Branches/twttier-icon-for-branches.png
+    - assets/Branches/background-3-tabs.png
+
+
     
     
 
