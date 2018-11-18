@@ -22,13 +22,16 @@ class RegPageState extends State<RegPage> {
   DateTime _birthdate;
   String _mac;
   String _location;
+  String _address;
+  String _country;
+  String _city;
   UsersModel user;
   Widget _buildHeaderImage() {
     return Image.asset(
       'assets/RegistrationPage/main-img.jpg',
       alignment: Alignment.topCenter,
       fit: BoxFit.fill,
-      height: height/5,
+      height: height / 5,
       width: width,
     );
   }
@@ -67,7 +70,6 @@ class RegPageState extends State<RegPage> {
       child: Container(
         decoration: new BoxDecoration(
           color: Color.fromARGB(127, 127, 127, 127),
-          
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(20.0),
         ),
@@ -96,15 +98,15 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'First Name',
-        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
+        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
       ),
-      style: new TextStyle(color: Colors.white, height: 0.1, fontSize: 0.1),
+      style: new TextStyle(color: Colors.white),// height: 0.1, fontSize: 0.1),
       onChanged: (String value) {
         setState(() {
-//                  _passwordValue = value;
+          _password = value;
         });
       },
     );
@@ -114,16 +116,16 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'Last Name',
-        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
+        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
       ),
-      obscureText: true,
-      style: new TextStyle(color: Colors.white, height: 0.1),
+      //obscureText: true,
+      style: new TextStyle(color: Colors.white),// height: 0.1),
       onChanged: (String value) {
         setState(() {
-//                  _passwordValue = value;
+          _lastName = value;
         });
       },
     );
@@ -133,16 +135,16 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'Mobile',
-        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
+        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
       ),
-      obscureText: true,
-      style: new TextStyle(color: Colors.white, height: 0.1),
+      //obscureText: true,
+      style: new TextStyle(color: Colors.white),// height: 0.1),
       onChanged: (String value) {
         setState(() {
-//                  _passwordValue = value;
+          _mobile = value;
         });
       },
     );
@@ -152,16 +154,17 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'Email',
-        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
+        
+        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
       ),
-      obscureText: true,
-      style: new TextStyle(color: Colors.white, height: 0.1),
+      //obscureText: true,
+      style: new TextStyle(color: Colors.white),// height: 0.1),
       onChanged: (String value) {
         setState(() {
-//                  _passwordValue = value;
+          _emailValue = value;
         });
       },
     );
@@ -171,16 +174,16 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'Password',
-        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
+        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
       ),
-      obscureText: true,
-      style: new TextStyle(color: Colors.white, height: 0.1),
+      //obscureText: true,
+      style: new TextStyle(color: Colors.white),// height: 0.1),
       onChanged: (String value) {
         setState(() {
-//                  _passwordValue = value;
+          _password = value;
         });
       },
     );
@@ -190,18 +193,14 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'Confirm Password',
-        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
+        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
       ),
-      obscureText: true,
-      style: new TextStyle(color: Colors.white, height: 0.1),
-      onChanged: (String value) {
-        setState(() {
-//                  _passwordValue = value;
-        });
-      },
+      
+      //obscureText: true,
+      style: new TextStyle(color: Colors.white),// height: 0.1),
     );
   }
 
@@ -214,11 +213,11 @@ class RegPageState extends State<RegPage> {
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
       ),
-      obscureText: true,
-      style: new TextStyle(color: Colors.white, height: 0.1),
+      //obscureText: true,
+      style: new TextStyle(color: Colors.white),// height: 0.1),
       onChanged: (String value) {
         setState(() {
-//                  _passwordValue = value;
+          _birthdate = DateTime.tryParse(value);
         });
       },
     );
@@ -228,19 +227,19 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'Address',
-        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
+        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
       ),
-      obscureText: true,
+      // obscureText: true,
       style: new TextStyle(
         color: Colors.white,
-        height: 0.1,
+        //height: 0.1,
       ),
       onChanged: (String value) {
         setState(() {
-//                  _passwordValue = value;
+          _address = value;
         });
       },
     );
@@ -250,16 +249,16 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'Country',
-        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
+        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
       ),
-      obscureText: true,
-      style: new TextStyle(color: Colors.white, height: 0.1),
+      //obscureText: true,
+      style: new TextStyle(color: Colors.white),// height: 0.1),
       onChanged: (String value) {
         setState(() {
-//                  _passwordValue = value;
+          _country = value;
         });
       },
     );
@@ -269,16 +268,16 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'City',
-        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
+        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
       ),
-      obscureText: true,
-      style: new TextStyle(color: Colors.white, height: 0.1),
+     // obscureText: true,
+      style: new TextStyle(color: Colors.white),// height: 0.1),
       onChanged: (String value) {
         setState(() {
-//                  _passwordValue = value;
+          _city = value;
         });
       },
     );
@@ -294,7 +293,15 @@ class RegPageState extends State<RegPage> {
         textColor: Colors.white,
         child: Text('Sign Up'),
         onPressed: () {
-          user.signUp(new User(id: 0,userName: 'sherif',token: ''));
+          user.signUp(new User(
+              id: 0,
+              userName: _emailValue,
+              token: '',
+              mobileNumber: _mobile,
+              email: _emailValue,
+              password: _password,
+              address: _address,
+              birthDate: _birthdate));
           Navigator.pushReplacementNamed(context, '/home');
         },
       ),
@@ -343,6 +350,7 @@ class RegPageState extends State<RegPage> {
       ],
     );
   }
+
   double width;
   double height;
   double devicePixelRatio;
@@ -351,26 +359,27 @@ class RegPageState extends State<RegPage> {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-    
+
     // TODO: implement build
-   return ScopedModelDescendant<UsersModel>(
+    return ScopedModelDescendant<UsersModel>(
         builder: (BuildContext context, Widget child, UsersModel model) {
       user = model;
       // model.getValues();
       return Scaffold(
-      appBar: _buildAppBar(),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.9), BlendMode.dstATop),
-              image: AssetImage('assets/LoginPage/Background.jpg'),
-              fit: BoxFit.fill),
-        ),
-        child: _buildBody(),
+        appBar: _buildAppBar(),
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.9), BlendMode.dstATop),
+                image: AssetImage('assets/LoginPage/Background.jpg'),
+                fit: BoxFit.fill),
+          ),
+          child: _buildBody(),
 
-        //padding: EdgeInsets.all(10.0),
-      ),
-    );});
+          //padding: EdgeInsets.all(10.0),
+        ),
+      );
+    });
   }
 }

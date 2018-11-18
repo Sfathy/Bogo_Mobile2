@@ -29,23 +29,25 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context) {
-    return Center(
-      child: Column(
-        children: <Widget>[
-          _buildBackGroundImage(),
-          _buildUserImage(),
-          SizedBox(height: height/50,),
-          _buildUserCard(),
-          SizedBox(height: height/50,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              _buildUpadate(),
-              _buildChangePassword(),
-            ],
-          ),
-        ],
-      ),
+    return Stack(
+      children: <Widget>[
+        _buildBackGroundImage(),
+        _buildUserImage(),
+        SizedBox(
+          height: height / 50,
+        ),
+        _buildUserCard(),
+        SizedBox(
+          height: height / 50,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            _buildUpadate(),
+            _buildChangePassword(),
+          ],
+        ),
+      ],
     );
   }
 
@@ -83,15 +85,17 @@ class ProfilePage extends StatelessWidget {
             image: AssetImage('assets/ProfilePage/background-profile-img.jpg'),
             fit: BoxFit.fill),
       ),
-      child: IconButton(
-        iconSize: 200.0,
-        icon: Image.asset('assets/ProfilePage/Profile-img.png'),
-      ),
+      child: Container(),
     );
   }
 
   Widget _buildUserImage() {
-    return Container();
+    return Positioned(
+        bottom: 300.0,
+        left: 20.0,
+        child: IconButton(
+            iconSize: 200.0,
+            icon: Image.asset('assets/ProfilePage/Profile-img.png')));
   }
 
   Widget _buildUserName() {
@@ -252,7 +256,7 @@ class ProfilePage extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
         color: Color.fromARGB(127, 127, 127, 127),
       ),
-      height: height / 2.0,
+      height: height / 2.5,
       //margin: EdgeInsets.all(10.0),
       padding: EdgeInsets.all(10.0),
 
@@ -290,18 +294,35 @@ class ProfilePage extends StatelessWidget {
       // model.getValues();
       return Scaffold(
         appBar: _buildAppBar(),
-        body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.9), BlendMode.dstATop),
-                image: AssetImage('assets/LoginPage/Background.jpg'),
-                fit: BoxFit.fill),
-          ),
-          child: _buildBody(context),
+        body: _buildBody(context) 
+        /*Stack(
+          children: <Widget>[
+            Positioned(
+              top: 150.0, // (background container size) - (circle height / 2)
+              left: 30.0,
+              child: Container(
+                height: 100.0,
+                width: 100.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.green
+                ),
+              ),
+            )*/
+           /* Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.9), BlendMode.dstATop),
+                    image: AssetImage('assets/LoginPage/Background.jpg'),
+                    fit: BoxFit.fill),
+              ),
+              child: _buildBody(context),
 
-          //padding: EdgeInsets.all(10.0),
-        ),
+              //padding: EdgeInsets.all(10.0),
+            ),*/
+         // ],
+      //  ),
       );
     });
   }

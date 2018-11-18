@@ -39,10 +39,11 @@ class Coupon {
   final String validTillEN;
   final String validTillAR;
   final String image;
+  final String icon;
   final String descriptionEN;
   final String descriptionAR;
   Coupon({@required this.id,@required this.validTillEN,@required this.validTillAR, 
-  @required this.image,@required this.descriptionEN,@required this.descriptionAR});
+  @required this.image,@required this.descriptionEN,@required this.descriptionAR,@required this.icon});
 
 
 }

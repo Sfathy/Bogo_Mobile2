@@ -70,7 +70,158 @@ class BrandPageState extends State<BrandPage> {
               'assets/Branches/smoking.png',
             ]),
       ],
-      coupons: []);
+      coupons: [
+        new Coupon(
+            id: 1,
+            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
+            image: 'assets/Branches/img-product.jpg',
+            validTillAR: 'سارى حتى 31 ديسمبر 2018',
+            validTillEN: 'valid till 31 decemper 2018',
+            descriptionAR:
+                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
+            descriptionEN:
+                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
+        new Coupon(
+            id: 1,
+            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
+            image: 'assets/Branches/img-product.jpg',
+            validTillAR: 'سارى حتى 31 ديسمبر 2018',
+            validTillEN: 'valid till 31 decemper 2018',
+            descriptionAR:
+                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
+            descriptionEN:
+                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
+        new Coupon(
+            id: 1,
+            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
+            image: 'assets/Branches/img-product.jpg',
+            validTillAR: 'سارى حتى 31 ديسمبر 2018',
+            validTillEN: 'valid till 31 decemper 2018',
+            descriptionAR:
+                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
+            descriptionEN:
+                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
+        new Coupon(
+            id: 1,
+            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
+            image: 'assets/Branches/img-product.jpg',
+            validTillAR: 'سارى حتى 31 ديسمبر 2018',
+            validTillEN: 'valid till 31 decemper 2018',
+            descriptionAR:
+                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
+            descriptionEN:
+                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
+        new Coupon(
+            id: 1,
+            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
+            image: 'assets/Branches/img-product.jpg',
+            validTillAR: 'سارى حتى 31 ديسمبر 2018',
+            validTillEN: 'valid till 31 decemper 2018',
+            descriptionAR:
+                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
+            descriptionEN:
+                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
+        new Coupon(
+            id: 1,
+            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
+            image: 'assets/Branches/img-product.jpg',
+            validTillAR: 'سارى حتى 31 ديسمبر 2018',
+            validTillEN: 'valid till 31 decemper 2018',
+            descriptionAR:
+                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
+            descriptionEN:
+                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
+        new Coupon(
+            id: 1,
+            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
+            image: 'assets/Branches/img-product.jpg',
+            validTillAR: 'سارى حتى 31 ديسمبر 2018',
+            validTillEN: 'valid till 31 decemper 2018',
+            descriptionAR:
+                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
+            descriptionEN:
+                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
+        new Coupon(
+            id: 1,
+            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
+            image: 'assets/Branches/img-product.jpg',
+            validTillAR: 'سارى حتى 31 ديسمبر 2018',
+            validTillEN: 'valid till 31 decemper 2018',
+            descriptionAR:
+                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
+            descriptionEN:
+                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
+        new Coupon(
+            id: 1,
+            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
+            image: 'assets/Branches/img-product.jpg',
+            validTillAR: 'سارى حتى 31 ديسمبر 2018',
+            validTillEN: 'valid till 31 decemper 2018',
+            descriptionAR:
+                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
+            descriptionEN:
+                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
+        new Coupon(
+            id: 1,
+            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
+            image: 'assets/Branches/img-product.jpg',
+            validTillAR: 'سارى حتى 31 ديسمبر 2018',
+            validTillEN: 'valid till 31 decemper 2018',
+            descriptionAR:
+                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
+            descriptionEN:
+                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
+        new Coupon(
+            id: 1,
+            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
+            image: 'assets/Branches/img-product.jpg',
+            validTillAR: 'سارى حتى 31 ديسمبر 2018',
+            validTillEN: 'valid till 31 decemper 2018',
+            descriptionAR:
+                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
+            descriptionEN:
+                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
+        new Coupon(
+            id: 1,
+            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
+            image: 'assets/Branches/img-product.jpg',
+            validTillAR: 'سارى حتى 31 ديسمبر 2018',
+            validTillEN: 'valid till 31 decemper 2018',
+            descriptionAR:
+                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
+            descriptionEN:
+                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
+        new Coupon(
+            id: 1,
+            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
+            image: 'assets/Branches/img-product.jpg',
+            validTillAR: 'سارى حتى 31 ديسمبر 2018',
+            validTillEN: 'valid till 31 decemper 2018',
+            descriptionAR:
+                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
+            descriptionEN:
+                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
+        new Coupon(
+            id: 1,
+            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
+            image: 'assets/Branches/img-product.jpg',
+            validTillAR: 'سارى حتى 31 ديسمبر 2018',
+            validTillEN: 'valid till 31 decemper 2018',
+            descriptionAR:
+                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
+            descriptionEN:
+                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
+        new Coupon(
+            id: 1,
+            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
+            image: 'assets/Branches/img-product.jpg',
+            validTillAR: 'سارى حتى 31 ديسمبر 2018',
+            validTillEN: 'valid till 31 decemper 2018',
+            descriptionAR:
+                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
+            descriptionEN:
+                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
+      ]);
 
   Widget _buildAppBar() {
     return AppBar(
@@ -175,63 +326,162 @@ class BrandPageState extends State<BrandPage> {
       alignment: Alignment.topLeft,
     );
   }
-  Widget _buildSortButton(){
+
+  Widget _buildSortButton() {
     return Container(
-          alignment: Alignment.centerRight,
-          margin: EdgeInsets.only(right: 20.0),
-         // width: 150.0,
-          child: RaisedButton(
-            color: Color(0xFFAD045D),
-            textColor: Colors.white,
-            
-            shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(75.0)),
-                  
-            child: Text('A-Z'),
-            onPressed: (){},
-          ),
-        ); 
-  }
-  Widget _buildBranchCard(BuildContext build,int index){
-    return Container(
-       decoration: BoxDecoration(
-        //borderRadius: BorderRadius.circular(20.0),
-        color: Colors.white54,
-        /*image: DecorationImage(
-            colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.9), BlendMode.dstATop),
-            image: AssetImage('assets/Branches/background-3-tabs.png'),
-            
-            fit: BoxFit.fill),*/
+      alignment: Alignment.centerRight,
+      margin: EdgeInsets.only(right: 20.0),
+      // width: 150.0,
+      child: RaisedButton(
+        color: Color(0xFFAD045D),
+        textColor: Colors.white,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(75.0)),
+        child: Text('A-Z'),
+        onPressed: () {},
       ),
-      width: width,
-      height: height/8,
-      margin: EdgeInsets.symmetric(vertical: 5.0),
-      child:Row(children: <Widget>[
-        Column(
-          //mainAxisAlignment: MainAxisAlignment.start,
-          //shrinkWrap: true,
-          children: <Widget>[
-          Text(brand.branches[index].branchName,style: TextStyle(color: Color(0xFFAD045D),fontSize: 10.0),),
-          Text(brand.branches[index].branchAddress,style: TextStyle(color: Color(0xFFAD045D),fontSize: 10.0),),
-          Row(children: <Widget>[
-            Image.asset(brand.branches[index].availableFeatures[0],width: 30.0,height: 30.0,),
-          ],)
-        ],)
-      ],),
     );
   }
-  Widget _buildBraches() {
 
-    return Column(
+  Widget _buildBranchCard(BuildContext build, int index) {
+    return Container(
+      decoration: BoxDecoration(
+        border: new Border(
+            top: BorderSide(width: 2.0, color: Color(0xFFFDB813)),
+            bottom: BorderSide(width: 2.0, color: Color(0xFFFDB813))),
+        //borderRadius: BorderRadius.circular(20.0),
+        color: Colors.white54,
+      ),
+      width: width,
+      height: height / 7,
+      margin: EdgeInsets.symmetric(vertical: 5.0),
+      padding: EdgeInsets.all(10.0),
+      child: Row(
+        //mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            width: width / 2,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+              //shrinkWrap: true,
+              children: <Widget>[
+                Text(
+                  brand.branches[index].branchName,
+                  style: TextStyle(color: Color(0xFFAD045D), fontSize: 15.0),
+                ),
+                Text(
+                  brand.branches[index].branchAddress,
+                  style: TextStyle(color: Color(0xFFAD045D), fontSize: 15.0),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: _buildFeatureImages(index),
+                )
+              ],
+            ),
+          ),
+          SizedBox(
+            width: width / 5,
+          ),
+          Container(
+            width: width / 4,
+            height: height / 7,
+            alignment: Alignment.topLeft,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Image.asset(
+                  'assets/Branches/phone.png',
+                  width: 35.0,
+                  height: 35.0,
+                ),
+                Image.asset(
+                  'assets/Branches/erea.png',
+                  width: 35.0,
+                  height: 35.0,
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _buildFeatureImages(int branchIndex) {
+    List<Widget> features = new List<Widget>();
+
+    for (var i = 0;
+        i < brand.branches[branchIndex].availableFeatures.length;
+        i++) {
+      features.add(Image.asset(
+        brand.branches[branchIndex].availableFeatures[i],
+        width: 35.0,
+        height: 35.0,
+      ));
+    }
+    return features;
+  }
+
+  Widget _buildBraches() {
+    return ListView(
+      // mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         _buildSortButton(),
         ListView.builder(
-            shrinkWrap: true,
-            itemBuilder: _buildBranchCard,
-            itemCount: brand.branches.length,
+          shrinkWrap: true,
+          itemBuilder: _buildBranchCard,
+          itemCount: brand.branches.length,
         ),
       ],
+    );
+  }
+
+  Widget _buildCouponCard(int index) {
+    Coupon c = brand.coupons[index];
+    return Container(
+      width: width/5,
+      height: height,
+      decoration: new BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        color: Colors.white,
+        
+      ),
+      //alignment: Alignment.center,
+      child: ListView(
+        children: <Widget>[
+          Image.asset(c.icon,width: 35.0,height: 35.0,),
+          Center(child:  Text(c.validTillAR, style: TextStyle(fontWeight:FontWeight.bold ,color: Colors.redAccent, fontSize: 5.0,),),),
+          Center(child:  Text(c.validTillEN,style: TextStyle(fontWeight:FontWeight.bold ,color: Colors.redAccent,fontSize: 5.0),),),
+          Image.asset(c.image),
+          Center(child:  Text(c.descriptionAR,style: TextStyle(fontWeight:FontWeight.bold ,fontSize: 5.0),),),
+          Center(child:  Text(c.descriptionEN,style: TextStyle(fontWeight:FontWeight.bold ,fontSize: 5.0),),),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _buildCouponItems() {
+    List<Widget> coupons = new List<Widget>();
+    Widget coupon;
+    for (var i = 0; i < brand.coupons.length; i++) {
+      coupon = _buildCouponCard(i);
+      coupons.add(coupon);
+    }
+    return coupons;
+  }
+
+  Widget _buildCoupons() {
+    return GridView.count(
+      crossAxisCount: 4,
+      mainAxisSpacing: 10.0,
+      
+      crossAxisSpacing: 10.0,
+      childAspectRatio: (width/4)/(height/4),
+      children: _buildCouponItems(),
     );
   }
 
@@ -254,9 +504,10 @@ class BrandPageState extends State<BrandPage> {
           //Text('data'),
           TabBar(
             indicatorColor: Color(0xFFAD045D),
-            indicatorSize: TabBarIndicatorSize.label,
+            //indicatorSize: TabBarIndicatorSize.label,
             labelColor: Color(0xFFAD045D),
-            indicatorPadding: EdgeInsets.all(20.0),
+            labelPadding: EdgeInsets.all(10.0),
+           // indicatorPadding: EdgeInsets.all(20.0),
             unselectedLabelColor: Colors.black,
             tabs: [
               Tab(
@@ -276,7 +527,7 @@ class BrandPageState extends State<BrandPage> {
           Center(
             child: Container(
               width: width,
-              height: height / 2,
+              height: height / 3,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.0),
                   //image: AssetImage('assetName'),
@@ -284,7 +535,7 @@ class BrandPageState extends State<BrandPage> {
               child: TabBarView(
                 children: [
                   _buildBraches(),
-                  Icon(Icons.directions_transit),
+                  _buildCoupons(),
                   Icon(Icons.directions_bike),
                 ],
               ),
@@ -293,20 +544,6 @@ class BrandPageState extends State<BrandPage> {
         ],
       ),
     );
-    /*Container(
-      width: width,
-      height: height / 2,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.0),
-        image: DecorationImage(
-          
-            colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.9), BlendMode.dstATop),
-            image: AssetImage('assets/Branches/background-3-tabs.png'),
-            fit: BoxFit.fill),
-      ),
-      child: Container(),
-    );*/
   }
 
   Widget _buildUserName() {
