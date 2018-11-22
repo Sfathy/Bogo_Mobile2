@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (BuildContext context) => AuthPage(),
           '/reg':(BuildContext context) => RegPage(),
-          '/home':(BuildContext context)=> HomePage(), 
+          '/home':(BuildContext context)=> HomePage(model), 
           '/reset':(BuildContext context)=> ResetPassword(),
           '/login':(BuildContext context)=> AuthPage(),
           '/product':(BuildContext context)=> ProductPage(),

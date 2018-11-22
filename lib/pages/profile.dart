@@ -133,7 +133,7 @@ class ProfilePage extends StatelessWidget {
         SizedBox(
           width: width / 50,
         ),
-        Text(
+        (userModel.AuthenticatedUser.mobileNumber==null && userModel.AuthenticatedUser.mobileNumber.isEmpty)?Container(): Text(
           userModel.AuthenticatedUser.mobileNumber,
           style: TextStyle(color: Colors.white, fontSize: 20.0),
         )

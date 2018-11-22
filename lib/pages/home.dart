@@ -6,22 +6,57 @@ import '../models/categoty.dart';
 import '../scoped_models/users.dart';
 
 class HomePage extends StatefulWidget {
+  UsersModel user;
+  HomePage(this.user);
   @override
-    State<StatefulWidget> createState() {
-      // TODO: implement createState
-      return new HomePageState();
-    }
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return new HomePageState();
+  }
 }
+
 class HomePageState extends State<HomePage> {
-
-  
-
+  List<Category> _catlist = new List<Category>();
+  @override
+  void initState()  {
+    
+    initializeCat();
+    super.initState();
+  }
+  void initializeCat()async{
+    Map<String, dynamic> responseData = await  widget.user.getCategoryList();
+    print(responseData);
+    if (responseData != null) {
+      _catlist = new List<Category>();
+      List<Brand> brands = new List<Brand>();
+      Brand b;
+      Category c;
+      responseData.forEach((String id, dynamic data) {
+        Map<String, dynamic> brandsData = data['brands'];
+        brands = new List<Brand>();
+        brandsData.forEach((String id, dynamic db) {
+          b = new Brand(
+              id: db['id'],
+              brandName: db['Name'],
+              brandDescription: db['Address'],
+              brandImage: db['LogoImage']);
+          brands.add(b);
+        });
+        c = new Category(
+            id: data['id'],
+            categoryName: data['name'],
+            icon: data['IconImage'],
+            brands: brands);
+        _catlist.add(c);
+      });
+    }
+  }
   BuildContext formContext;
   double width;
   double height;
   double devicePixelRatio;
-  int selectedCat = 0 ;
-  final List<Category> _categotyList = [
+  int selectedCat = 0;
+  List<Category> _categotyList = [
     new Category(
         categoryName: 'Resturants & Cafes',
         id: 0,
@@ -58,21 +93,22 @@ class HomePageState extends State<HomePage> {
               brandDescription: '15% Refund',
               brandImage: 'assets/HomePage/Starbucks.png'),
         ]),
-     new Category(
+    new Category(
         categoryName: 'Fashon',
         id: 1,
         icon: 'assets/HomePage/Specilas-Icons.png',
-        brands: [  new Brand(
+        brands: [
+          new Brand(
               id: 0,
               brandName: 'Chili\'s',
               brandDescription: '20% Refund',
               brandImage: 'assets/HomePage/Chilis.png'),
           new Brand(
-             id: 1,
+              id: 1,
               brandName: 'Pizza Hut',
               brandDescription: '25% Refund',
               brandImage: 'assets/HomePage/Pizza-Hut.png'),
-              ])
+        ])
   ];
 
   Widget _buildAppBar() {
@@ -119,10 +155,15 @@ class HomePageState extends State<HomePage> {
                 alignment: Alignment.topRight,
                 onPressed: () {},
               ),
-              Text(
-                'User Name',
-                style: TextStyle(color: Colors.white),
-              ),
+              (user.AuthenticatedUser != null &&
+                      user.AuthenticatedUser.firstName != null &&
+                      user.AuthenticatedUser.lastName != null)
+                  ? Text(
+                      user.AuthenticatedUser.firstName +
+                          ' ' +
+                          user.AuthenticatedUser.lastName,
+                      style: TextStyle(color: Colors.white))
+                  : Text('user Name', style: TextStyle(color: Colors.white))
             ],
           ),
         ),
@@ -364,7 +405,7 @@ class HomePageState extends State<HomePage> {
   Widget _buildAdvPic() {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
-      
+
       itemCount: _advList.length,
       // reverse: true,
 
@@ -401,16 +442,16 @@ class HomePageState extends State<HomePage> {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         child: Text(
-          _categotyList[index].categoryName,
+          _catlist[index].categoryName,
           style: TextStyle(color: Colors.white),
         ),
         color: Color(0xFFAD045D),
         onPressed: () {
           setState(() {
-                      selectedCat = index;
-                      print('index:' + index.toString());
-                      print('selected cat:' + selectedCat.toString());
-                    });
+            selectedCat = index;
+            print('index:' + index.toString());
+            print('selected cat:' + selectedCat.toString());
+          });
         },
       ),
     );
@@ -425,7 +466,7 @@ class HomePageState extends State<HomePage> {
         scrollDirection: Axis.horizontal,
         // itemExtent: 100.0,
         itemBuilder: _buildCatItemList,
-        itemCount: _categotyList.length,
+        itemCount: _catlist.length,
       ),
     );
   }
@@ -478,20 +519,21 @@ class HomePageState extends State<HomePage> {
       ),
     );
   }
-  Widget _buildLeftArrow(){
-      return  Image.asset(
-              'assets/HomePage/previous-icons-inner.png',
-              height: 30.0,
-              width: 30.0,
-            );
+
+  Widget _buildLeftArrow() {
+    return Image.asset(
+      'assets/HomePage/previous-icons-inner.png',
+      height: 30.0,
+      width: 30.0,
+    );
   }
 
-  Widget _buildRightArrow(){
-    return  Image.asset(
-              'assets/HomePage/next-icons-inner.png',
-              height: 30.0,
-              width: 30.0,
-            );
+  Widget _buildRightArrow() {
+    return Image.asset(
+      'assets/HomePage/next-icons-inner.png',
+      height: 30.0,
+      width: 30.0,
+    );
   }
 
   Widget _buildCategotyCard2() {
@@ -523,25 +565,31 @@ class HomePageState extends State<HomePage> {
                 // width: width/2,
                 child: Expanded(
                   flex: 1,
-                  child: Center(child:ListView(
-                    scrollDirection: Axis.horizontal,
-                    //width: width/1.5,
-                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      _buildLeftArrow(),
-                      Center(child:Container(
-                        width: width/1.3,
-                        child: ListView.builder(
-                        itemCount: _categotyList[selectedCat].brands.length,
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index) {
-                          return _buildBrandItem(index);
-                        },
-                      ),),),
-                      _buildRightArrow(),
-                    ],
-                  ),),
+                  child: Center(
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      //width: width/1.5,
+                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        _buildLeftArrow(),
+                        Center(
+                          child: Container(
+                            width: width / 1.3,
+                            child: ListView.builder(
+                              itemCount:
+                                  _categotyList[selectedCat].brands.length,
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext context, int index) {
+                                return _buildBrandItem(index);
+                              },
+                            ),
+                          ),
+                        ),
+                        _buildRightArrow(),
+                      ],
+                    ),
+                  ),
                 ),
               ), //],),
               _buildMoreButton(),
@@ -627,6 +675,7 @@ class HomePageState extends State<HomePage> {
     );
   }
 
+  UsersModel user;
   @override
   Widget build(BuildContext context) {
     formContext = context;
@@ -637,7 +686,9 @@ class HomePageState extends State<HomePage> {
     // TODO: implement build
     return ScopedModelDescendant<UsersModel>(
         builder: (BuildContext context, Widget child, UsersModel model) {
-      // model.getValues();
+      user = model;
+
+     // model.getValues();
       return Scaffold(
         appBar: _buildAppBar(),
         bottomNavigationBar: _buildBottomMenu(),

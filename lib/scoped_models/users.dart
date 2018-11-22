@@ -5,7 +5,8 @@ import 'dart:convert';
 import 'dart:async';
 
 class UsersModel extends Model {
-  final String baseURL = 'http://192.168.8.100:52994/api/Auth/';
+  //final String baseURL = 'http://192.168.8.102:52994/api/Auth/';
+  final String baseURL = 'http://192.168.1.100:52994/api/';
   User _authenticatedUser;
   User get AuthenticatedUser {
     return _authenticatedUser;
@@ -41,12 +42,12 @@ class UsersModel extends Model {
     Password: 123456}
     */
     Map<String, dynamic> userData = {
-      'FirstName': 'Hossam',
-      'LastName': 'Fathy',
+      'FirstName': user.firstName,
+      'LastName': user.lastName,
       'Mobile': user.mobileNumber,
       'FacebookName': 'soso',
-      'Gender': 0,
-      'BirthDate': '1987-09-30',
+      'Gender': user.gender,
+      'BirthDate': user.birthDate,
       'LocationId': null,
       'LatestIMEI': null,
       'ProfilePicture': 'test',
@@ -54,10 +55,10 @@ class UsersModel extends Model {
       'Email': user.email,
       'Password': user.password
     };
-    http.Response response = await http.post(baseURL + 'insertuser',
+    http.Response response = await http.post(baseURL + 'Auth/insertuser',
         headers: {'content-type': 'application/json'},
         body: json.encode(userData));
-    print('sign up response:' + response.toString());
+   // print('sign up response:' + response.toString());
    
     return login(user.email, user.password);
     //_authenticatedUser = User(userName:user.userName,token:'token',id: 0  );
@@ -74,29 +75,46 @@ class UsersModel extends Model {
     });
     print(json.decode(response.body));
   }
-
+  Future<Map<String, dynamic>> getCategoryList()async{
+    Map<String, dynamic> responseData = {'success': 'false', 'message': 'Error while communicating server'};
+    http.Response response = await http.get(baseURL + 'Category/get');
+    print('get cat response: ' +response.body.toString());
+    if (response.statusCode == 200) {
+      responseData = json.decode(response.body);
+    }
+    print(responseData);
+    return responseData;
+  }
   Future<Map<String, dynamic>> login(String email, String password) async {
     Map<String, dynamic> user = {'username': email, 'password': password};
-    http.Response response = await http.post(baseURL + 'Login',
+    http.Response response = await http.post(baseURL + 'Auth/Login',
         headers: {"Content-Type": "application/json"}, body: json.encode(user));
     bool hasError = true;
     String message = 'user name not exist or password is not valid';
     //http.Response response = await http.post(baseURL + 'login?username=' + email + '&password=' + password );
+    print(response.statusCode.toString());
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
-
+      print(responseData.toString());
       if (responseData.containsKey('token')) {
         hasError = false;
+        
         _authenticatedUser = User(
-            userName: responseData['userName'],
+            userName: responseData['user']['userName'],
             token: responseData['token'],
+            email: responseData['user']['email'],
             id: 0,
-            mobileNumber: responseData['Mobile'],
+            mobileNumber: responseData['user']['Mobile'],
             address: '',
-            birthDate: responseData['BirthDate']);
+            birthDate: responseData['user']['BirthDate'],
+            lastName: responseData['user']['lastName'],
+            gender: responseData['user']['gender'],
+            firstName: responseData['user']['firstName']);
+            print('authonticated user: '+_authenticatedUser.toString());
         message = 'Authontication succeeded';
       }
     }
+    print(message);
     return {'success': !hasError, 'message': message};
     //return truel
   }

@@ -208,7 +208,7 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'Birth Date',
-        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
+        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
@@ -292,8 +292,9 @@ class RegPageState extends State<RegPage> {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(75.0)),
         textColor: Colors.white,
         child: Text('Sign Up'),
-        onPressed: () {
-          user.signUp(new User(
+        onPressed: () async {
+          final Map<String, dynamic> successInfo =
+                        await user.signUp(new User(
               id: 0,
               userName: _emailValue,
               token: '',
@@ -301,7 +302,12 @@ class RegPageState extends State<RegPage> {
               email: _emailValue,
               password: _password,
               address: _address,
-              birthDate: _birthdate));
+              birthDate: _birthdate,
+              city: _city,
+              country: _country,
+              firstName: _firstName,
+              lastName: _lastName,
+              gender: 0));
           Navigator.pushReplacementNamed(context, '/home');
         },
       ),
