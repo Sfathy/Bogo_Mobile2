@@ -32,81 +32,134 @@ class _AuthPageState extends State<AuthPage> {
               image: AssetImage('assets/LoginPage/Background.jpg'),
               fit: BoxFit.cover),
         ),
-        padding: EdgeInsets.all(height/10),
+        padding: EdgeInsets.all(height / 10),
         child: ListView(
           children: <Widget>[
             Image.asset(
               'assets/LoginPage/Big-Logo.png',
-              width: width/3,
-              height: height/4,
+              width: width / 3,
+              height: height / 6,
             ),
-            SizedBox(height: height/25),
+            SizedBox(height: height / 25),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image.asset(
                   'assets/LoginPage/google-plus.png',
-                  width: width/9,
-                  height: height/10,
+                  width: width / 9,
+                  height: height / 10,
                 ),
                 SizedBox(
-                  width: width/20,
+                  width: width / 20,
                 ),
                 Image.asset(
                   'assets/LoginPage/facebook.png',
-                  width: width/9,
-                  height: height/10,
+                  width: width / 9,
+                  height: height / 10,
                 ),
                 SizedBox(
-                  width: width/20,
+                  width: width / 20,
                 ),
                 Image.asset(
                   'assets/LoginPage/twitter.png',
-                  width: width/9,
-                  height: height/10,
+                  width: width / 9,
+                  height: height / 10,
                 ),
               ],
             ),
             SizedBox(
-              height: height/25,
+              height: height / 25,
             ),
-            TextField(
-              decoration: InputDecoration(
-                  labelText: 'User Name',
-                  prefixIcon: const Icon(
-                    Icons.person,
-                    color: Colors.pink,
+            Row(
+              //mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+
+              children: <Widget>[
+                Container(
+                  width: width / 20,
+                  padding: EdgeInsets.only(right: 5.0),
+                  alignment: Alignment.bottomLeft,
+                  height: height / 30,
+                  child: Image.asset(
+                    'assets/LoginPage/username.png',
+                    width: width / 20,
+                    height: height / 30,
+                    fit: BoxFit.fill,
                   ),
-                  border: new UnderlineInputBorder(
-                      borderSide: new BorderSide(color: Colors.lime)),
-                  labelStyle: TextStyle(fontSize: 20.0, color: Colors.white)),
-              keyboardType: TextInputType.emailAddress,
-              style: new TextStyle(color: Colors.white),
-              onChanged: (String value) {
-                setState(() {
-                  _emailValue = value;
-                });
-              },
-            ),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Password',
-                labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
-                fillColor: Colors.yellowAccent,
-                prefixIcon: const Icon(
-                  Icons.lock,
-                  color: Colors.pink,
                 ),
-                border: new UnderlineInputBorder(
-                    borderSide: new BorderSide(color: Colors.yellowAccent)),
-              ),
-              obscureText: true,
-              style: new TextStyle(color: Colors.white),
-              onChanged: (String value) {
-                setState(() {
-                  _passwordValue = value;
-                });
-              },
+                Container(
+                  width: width / 1.7,
+                  alignment: Alignment.topCenter,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      labelText: 'User Name',
+                      enabledBorder: new UnderlineInputBorder(
+                          borderSide: new BorderSide(
+                        color: Color(0xFFEBA310),
+                      )),
+                      focusedBorder: new UnderlineInputBorder(
+                          borderSide: new BorderSide(
+                        color: Color(0xFFEBA310),
+                      )),
+                      labelStyle:
+                          TextStyle(fontSize: 20.0, color: Colors.white),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    style: new TextStyle(color: Colors.white),
+                    onChanged: (String value) {
+                      setState(() {
+                        _emailValue = value;
+                      });
+                    },
+                  ),
+                )
+              ],
+            ),
+            Row(
+              //mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+
+              children: <Widget>[
+                Container(
+                  width: width / 20,
+                  padding: EdgeInsets.only(right: 5.0),
+                  alignment: Alignment.bottomLeft,
+                  height: height / 25,
+                  child: Image.asset(
+                    'assets/LoginPage/password.png',
+                    width: width / 20,
+                    height: height / 25,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                Container(
+                  width: width / 1.7,
+                  alignment: Alignment.topCenter,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      labelStyle:
+                          TextStyle(fontSize: 20.0, color: Colors.white),
+                      fillColor: Colors.yellowAccent,
+                      enabledBorder: new UnderlineInputBorder(
+                          borderSide: new BorderSide(
+                        color: Color(0xFFEBA310),
+                      )),
+                      focusedBorder: new UnderlineInputBorder(
+                          borderSide: new BorderSide(
+                        color: Color(0xFFEBA310),
+                      )),
+                    ),
+                    obscureText: true,
+                    style: new TextStyle(color: Colors.white),
+                    onChanged: (String value) {
+                      setState(() {
+                        _passwordValue = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
             ),
 
             /*SwitchListTile(
@@ -119,7 +172,7 @@ class _AuthPageState extends State<AuthPage> {
               title: Text('Accept Terms'),
             ),*/
             SizedBox(
-              height: height/30,
+              height: height / 30,
             ),
             ScopedModelDescendant<UsersModel>(builder:
                 (BuildContext context, Widget child, UsersModel model) {
@@ -134,6 +187,7 @@ class _AuthPageState extends State<AuthPage> {
                         await model.login(_emailValue, _passwordValue);
                     if (successInfo['success']) {
                       Navigator.pushReplacementNamed(context, '/home');
+                      //Navigator.pushReplacementNamed(context, '/test');
                     } else {
                       showDialog(
                           context: context,
@@ -153,27 +207,45 @@ class _AuthPageState extends State<AuthPage> {
                     }
                     // Navigator.pushReplacementNamed(context, '/home');
                   });
-            }) ,
+            }),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+            
               children: <Widget>[
                 Row(
+                
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  //scrollDirection:Axis.horizontal,
+                  //shrinkWrap: true,
                   children: <Widget>[
-                    FlatButton(
-                      child: Text('Register'),
+                    Container( 
+                      //margin: EdgeInsets.symmetric(horizontal: 3.0),
+                      width: width/4,
+                      child:FlatButton(
+                      child: Text(
+                        'Register',
+                        style: TextStyle(fontSize: 15.0),
+                      ),
                       textColor: Colors.white,
                       onPressed: () {
                         Navigator.pushNamed(context, '/reg');
                       },
-                    ),
-                    FlatButton(
-                      child: Text('Forget Password'),
+                    ),),
+                     Container( 
+                      //margin: EdgeInsets.symmetric(horizontal: 3.0),
+                      width: width/2.5,
+                      child:FlatButton(
+                      child: Text(
+                        'Forget Password',
+                        style: TextStyle(fontSize: 15.0),
+                      ),
                       textColor: Colors.white,
                       onPressed: () {
                         Navigator.pushNamed(context, '/reset');
                       },
-                    ),
+                    ),),
                   ],
                 ),
               ],

@@ -18,21 +18,88 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   List<Category> _catlist = new List<Category>();
   @override
-  void initState()  {
-    
-    initializeCat();
+  void initState() {
+    // initializeCat();
+    getData();
     super.initState();
   }
-  void initializeCat()async{
-    Map<String, dynamic> responseData = await  widget.user.getCategoryList();
+
+  List data;
+
+  Future<String> getData() async {
+    List<Category> _catlst;
+    List dt = await widget.user.getCategoryList();
+    //var response = await http.get('http://192.168.8.101:52994/api/category/get');
+    setState(() {
+      data = dt; //json.decode(response.body);
+      if (data != null) {
+        _catlst = new List<Category>();
+        List<Brand> brands = new List<Brand>();
+        Brand b;
+        Category c;
+        for (var i = 0; i < data.length; i++) {
+          brands = new List<Brand>();
+          List bs = data[i]['brandsVM'];
+          for (var j = 0; j < bs.length; i++) {
+            b = new Brand(
+                id: 0,
+                brandName: bs[j]['name'],
+                brandDescription: '',
+                brandImage: '');
+            brands.add(b);
+          }
+          c = new Category(
+              id: 0,
+              categoryName: data[i]['name'],
+              icon: data[i]['iconImage'],
+              brands: brands);
+          _catlst.add(c);
+        }
+      }
+    });
+
+    return "success";
+  }
+
+  BuildContext formContext;
+  double width;
+  double height;
+  double devicePixelRatio;
+  int selectedCat = 0;
+
+  void initializeCat() async {
+    //List<Map>
+    List<Category> _catlst = new List<Category>();
+    List responseData = await widget.user.getCategoryList();
     print(responseData);
     if (responseData != null) {
-      _catlist = new List<Category>();
+      _catlst = new List<Category>();
       List<Brand> brands = new List<Brand>();
       Brand b;
       Category c;
-      responseData.forEach((String id, dynamic data) {
-        Map<String, dynamic> brandsData = data['brands'];
+      for (var i = 0; i < responseData.length; i++) {
+        brands = new List<Brand>();
+        List bs = responseData[i]['brandsVM'];
+        for (var j = 0; j < bs.length; i++) {
+          b = new Brand(
+              id: 0,
+              brandName: bs[j]['name'],
+              brandDescription: '',
+              brandImage: '');
+          brands.add(b);
+        }
+        c = new Category(
+            id: 0,
+            categoryName: responseData[i]['name'],
+            icon: responseData[i]['iconImage'],
+            brands: brands);
+        _catlst.add(c);
+      }
+      setState(() {
+        _catlist = _catlst;
+      });
+      /*responseData.forEach(( dynamic data) {
+        Map<String, dynamic> brandsData = data['brandsVM'];
         brands = new List<Brand>();
         brandsData.forEach((String id, dynamic db) {
           b = new Brand(
@@ -48,14 +115,10 @@ class HomePageState extends State<HomePage> {
             icon: data['IconImage'],
             brands: brands);
         _catlist.add(c);
-      });
+      });*/
     }
   }
-  BuildContext formContext;
-  double width;
-  double height;
-  double devicePixelRatio;
-  int selectedCat = 0;
+
   List<Category> _categotyList = [
     new Category(
         categoryName: 'Resturants & Cafes',
@@ -436,15 +499,22 @@ class HomePageState extends State<HomePage> {
     'Sweets'
   ];
   Widget _buildCatItemList(BuildContext context, int index) {
+    if (data != null) {
+      print(data[index]['name']);
+    }
+
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 5.0),
       child: RaisedButton(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-        child: Text(
-          _catlist[index].categoryName,
-          style: TextStyle(color: Colors.white),
-        ),
+        child: (data == null || data.length == 0)
+            ? Container()
+            : Text(
+                //_catlist[index].categoryName,
+                data[index]['name'],
+                style: TextStyle(color: Colors.white),
+              ),
         color: Color(0xFFAD045D),
         onPressed: () {
           setState(() {
@@ -460,14 +530,17 @@ class HomePageState extends State<HomePage> {
   Widget _buildCatButtons() {
     return Container(
       width: width - width / 6,
-      child: ListView.builder(
-        //shrinkWrap: true,
-        //reverse: true,
-        scrollDirection: Axis.horizontal,
-        // itemExtent: 100.0,
-        itemBuilder: _buildCatItemList,
-        itemCount: _catlist.length,
-      ),
+      child: (data == null || data.length == 0)
+          ? Container()
+          : ListView.builder(
+              //shrinkWrap: true,
+              //reverse: true,
+              scrollDirection: Axis.horizontal,
+              // itemExtent: 100.0,
+              itemBuilder: _buildCatItemList,
+              //itemCount: _catlist.length,
+              itemCount: data.length,
+            ),
     );
   }
 
@@ -682,13 +755,15 @@ class HomePageState extends State<HomePage> {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+    // _catlist = user.CatList;
+    //     initializeCat();
 
     // TODO: implement build
     return ScopedModelDescendant<UsersModel>(
         builder: (BuildContext context, Widget child, UsersModel model) {
       user = model;
 
-     // model.getValues();
+      // model.getValues();
       return Scaffold(
         appBar: _buildAppBar(),
         bottomNavigationBar: _buildBottomMenu(),

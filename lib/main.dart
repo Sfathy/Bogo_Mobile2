@@ -10,6 +10,7 @@ import './pages/rest_password.dart';
 import './pages/product.dart';
 import './pages/profile.dart';
 import './pages/brand.dart';
+import './pages/test_page.dart';
 
 import 'package:flutter/rendering.dart';
 
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
           '/product':(BuildContext context)=> ProductPage(),
           '/profile':(BuildContext context)=> ProfilePage(),
           '/brand':(BuildContext context)=> BrandPage(),
+          '/test':(BuildContext context)=> MyTestPage(model),
         },
         title: 'BOGO',
 

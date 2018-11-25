@@ -3,11 +3,16 @@ import '../models/user.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
+import '../models/categoty.dart';
 
 class UsersModel extends Model {
-  //final String baseURL = 'http://192.168.8.102:52994/api/Auth/';
-  final String baseURL = 'http://192.168.1.100:52994/api/';
+  //final String baseURL = 'http://192.168.8.101:52994/api/';
+  final String baseURL = 'http://192.168.1.145:52994/api/';
   User _authenticatedUser;
+  List<Category> _catlist = new List<Category>();
+  List<Category> get CatList {
+    return _catlist;
+  }
   User get AuthenticatedUser {
     return _authenticatedUser;
   }
@@ -75,16 +80,20 @@ class UsersModel extends Model {
     });
     print(json.decode(response.body));
   }
-  Future<Map<String, dynamic>> getCategoryList()async{
-    Map<String, dynamic> responseData = {'success': 'false', 'message': 'Error while communicating server'};
+  //Future<List<Map<String, dynamic>> getCategoryList()async{
+    Future<List> getCategoryList()async{
+    //Future<Map<String, dynamic>> responseData= {'success': 'false', 'message': 'Error while communicating server'};
     http.Response response = await http.get(baseURL + 'Category/get');
+    List  res;
     print('get cat response: ' +response.body.toString());
     if (response.statusCode == 200) {
-      responseData = json.decode(response.body);
+      res = json.decode(response.body);
     }
-    print(responseData);
-    return responseData;
+    print(res);
+    return res;
   }
+
+  
   Future<Map<String, dynamic>> login(String email, String password) async {
     Map<String, dynamic> user = {'username': email, 'password': password};
     http.Response response = await http.post(baseURL + 'Auth/Login',
@@ -112,6 +121,7 @@ class UsersModel extends Model {
             firstName: responseData['user']['firstName']);
             print('authonticated user: '+_authenticatedUser.toString());
         message = 'Authontication succeeded';
+        //await initializeCat();
       }
     }
     print(message);
