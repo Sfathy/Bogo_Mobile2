@@ -218,7 +218,7 @@ class _AuthPageState extends State<AuthPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   //scrollDirection:Axis.horizontal,
-                  //shrinkWrap: true,
+               //shrinkWrap: true,
                   children: <Widget>[
                     Container( 
                       //margin: EdgeInsets.symmetric(horizontal: 3.0),
