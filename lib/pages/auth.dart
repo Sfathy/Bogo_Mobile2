@@ -68,7 +68,7 @@ class _AuthPageState extends State<AuthPage> {
               ],
             ),
             SizedBox(
-              height: height / 25,
+              height: height / 35,
             ),
             Row(
               //mainAxisAlignment: MainAxisAlignment.end,
