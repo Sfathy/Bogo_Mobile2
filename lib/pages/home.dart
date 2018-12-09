@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:scoped_model/scoped_model.dart';
 import '../models/categoty.dart';
-
+import 'dart:async';
 import '../scoped_models/users.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,6 +25,7 @@ class HomePageState extends State<HomePage> {
   }
 
   List data;
+  ScrollController _buttonScrollercnt = new ScrollController();
 
   Future<String> getData() async {
     List<Category> _catlst;
@@ -40,21 +41,24 @@ class HomePageState extends State<HomePage> {
         for (var i = 0; i < data.length; i++) {
           brands = new List<Brand>();
           List bs = data[i]['brandsVM'];
-          for (var j = 0; j < bs.length; i++) {
-            b = new Brand(
-                id: 0,
-                brandName: bs[j]['name'],
-                brandDescription: '',
-                brandImage: '');
-            brands.add(b);
+          if (bs != null) {
+            for (var j = 0; j < bs.length; j++) {
+              b = new Brand(
+                  id: 0,
+                  brandName: bs[j]['name'] != null ? bs[j]['name'] : '',
+                  brandDescription: '',
+                  brandImage: '');
+              brands.add(b);
+            }
           }
           c = new Category(
               id: 0,
-              categoryName: data[i]['name'],
-              icon: data[i]['iconImage'],
+              categoryName: (data[i]['name'] != null) ? data[i]['name'] : '',
+              icon: data[i]['iconImage'] != null ? data[i]['iconImage'] : '',
               brands: brands);
           _catlst.add(c);
         }
+        _catlist = _catlst;
       }
     });
 
@@ -508,11 +512,11 @@ class HomePageState extends State<HomePage> {
       child: RaisedButton(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-        child: (data == null || data.length == 0)
+        child: (_catlist == null || _catlist.length == 0)
             ? Container()
             : Text(
                 //_catlist[index].categoryName,
-                data[index]['name'],
+                _catlist[index].categoryName,
                 style: TextStyle(color: Colors.white),
               ),
         color: Color(0xFFAD045D),
@@ -535,6 +539,7 @@ class HomePageState extends State<HomePage> {
           : ListView.builder(
               //shrinkWrap: true,
               //reverse: true,
+              controller: _buttonScrollercnt,
               scrollDirection: Axis.horizontal,
               // itemExtent: 100.0,
               itemBuilder: _buildCatItemList,
@@ -561,9 +566,29 @@ class HomePageState extends State<HomePage> {
           alignment: Alignment.center,
           child: Row(
             children: <Widget>[
-              Image.asset('assets/HomePage/previous-icons.png'),
+              GestureDetector(
+                child: Image.asset('assets/HomePage/previous-icons.png'),
+                onTap: () {
+                  print('previous page');
+                  setState(() {
+                    _buttonScrollercnt.animateTo(1.0,
+                        duration: new Duration(seconds: 2), curve: Curves.ease);
+                  });
+                },
+              ),
+
               _buildCatButtons(),
-              Image.asset('assets/HomePage/next-icons.png'),
+              GestureDetector(
+                child: Image.asset('assets/HomePage/next-icons.png'),
+                onTap: () {
+                  setState(() {
+                    print('next page');
+                    _buttonScrollercnt.animateTo(2.0,
+                        duration: new Duration(seconds: 2), curve: Curves.ease);
+                  });
+                },
+              ),
+              //Image.asset('assets/HomePage/next-icons.png'),
             ],
           ),
         ),
@@ -578,14 +603,18 @@ class HomePageState extends State<HomePage> {
       margin: EdgeInsets.symmetric(horizontal: 2.0),
       child: Column(
         children: <Widget>[
-          Image.asset(_categotyList[selectedCat].brands[index].brandImage,
-              height: height / 6, width: width / 4.1),
+          _catlist[selectedCat].brands[index].brandImage == null
+              ? Image.asset(user.DefaultImage,
+                  height: height / 6, width: width / 4.1)
+              : Image.network(_catlist[selectedCat].brands[index].brandImage,
+                  height: height / 6, width: width / 4.1),
+          //height: height / 6, width: width / 4.1),
           Text(
-            _categotyList[selectedCat].brands[index].brandName,
+            _catlist[selectedCat].brands[index].brandName,
             style: TextStyle(color: Colors.white),
           ),
           Text(
-            _categotyList[selectedCat].brands[index].brandDescription,
+            _catlist[selectedCat].brands[index].brandDescription,
             style: TextStyle(color: Colors.white),
           ),
         ],
@@ -624,10 +653,13 @@ class HomePageState extends State<HomePage> {
               Row(
                 children: <Widget>[
                   IconButton(
-                    icon: Image.asset(_categotyList[selectedCat].icon),
+                    icon: _catlist[selectedCat].icon == null
+                        ? Image.asset(_categotyList[selectedCat].icon)
+                        : Image.network(
+                            user.ImagePath + _catlist[selectedCat].icon),
                   ),
                   Text(
-                    _categotyList[selectedCat].categoryName,
+                    _catlist[selectedCat].categoryName,
                     style: TextStyle(color: Colors.white),
                   ),
                 ],
@@ -649,8 +681,7 @@ class HomePageState extends State<HomePage> {
                           child: Container(
                             width: width / 1.3,
                             child: ListView.builder(
-                              itemCount:
-                                  _categotyList[selectedCat].brands.length,
+                              itemCount: _catlist[selectedCat].brands.length,
                               scrollDirection: Axis.horizontal,
                               shrinkWrap: true,
                               itemBuilder: (BuildContext context, int index) {

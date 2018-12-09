@@ -17,23 +17,38 @@ import 'package:flutter/rendering.dart';
 void main() {
   //debugPaintSizeEnabled = true;
 
-  runApp(MyApp(model: UsersModel()));
+  runApp(MyApp());
   
 }
 
-class MyApp extends StatelessWidget {
-  final UsersModel model;
-  MyApp({Key key, this.model}) : super(key: key);
+class MyApp extends StatefulWidget {
+ 
+  @override
+  State<StatefulWidget> createState(){
+      return _MyAppState();
+  }
+   MyApp({Key key}) : super(key: key);
+}
+class _MyAppState extends State<MyApp>{
+   final UsersModel model = UsersModel() ;
+
+   @override
+   void initState(){
+     model.AutoAuth();
+     super.initState();
+   }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return ScopedModel(
+    return ScopedModel<UsersModel>(
       model: model,
       
       child: MaterialApp(
         debugShowCheckedModeBanner:false,
         routes: {
-          '/': (BuildContext context) => AuthPage(),
+          '/': (BuildContext context) =>ScopedModelDescendant(builder: (BuildContext context,Widget child,UsersModel _model){
+            return _model.AuthenticatedUser!=null?HomePage(model):AuthPage();
+          },) ,
           '/reg':(BuildContext context) => RegPage(),
           '/home':(BuildContext context)=> HomePage(model), 
           '/reset':(BuildContext context)=> ResetPassword(),

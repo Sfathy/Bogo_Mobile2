@@ -506,7 +506,7 @@ class BrandPageState extends State<BrandPage> {
             indicatorColor: Color(0xFFAD045D),
             //indicatorSize: TabBarIndicatorSize.label,
             labelColor: Color(0xFFAD045D),
-            labelPadding: EdgeInsets.all(10.0),
+            //labelPadding: EdgeInsets.all(10.0),
            // indicatorPadding: EdgeInsets.all(20.0),
             unselectedLabelColor: Colors.black,
             tabs: [

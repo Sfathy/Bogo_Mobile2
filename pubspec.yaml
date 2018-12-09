@@ -11,6 +11,7 @@ dependencies:
   scoped_model: ^0.3.0
   http: ^0.11.3+16
   carousel_slider: ^0.0.7
+  shared_preferences: ^0.4.3
 
 #dev_dependencies:
  # flutter_test:
