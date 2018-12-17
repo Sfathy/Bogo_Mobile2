@@ -5,25 +5,48 @@ import '../models/categoty.dart';
 
 import '../scoped_models/users.dart';
 
-class ProductPage extends StatelessWidget {
+class ProductPage extends StatefulWidget {
+    final int catID ;
+    
+  ProductPage(this.catID);
+  @override
+    State<StatefulWidget> createState() {
+      // TODO: implement createState
+      return _productPageState();
+    }
+}
+class _productPageState extends State<ProductPage> {
+   UsersModel user;
+   @override
+  void initState() {
+    // initializeCat();
+    getData();
+    //_catlist = _categotyList;
+    super.initState();
+  }
+  void getData(){
+    brands = user.CatList[widget.catID].brands;
+    /* [
+    new Brand(brandImage: 'assets/HomePage/Pizza-Hut.png',brandDescription: '25% Refund',brandName: 'Pizza-Hut'),
+    new Brand(brandImage: 'assets/HomePage/Chilis.png',brandDescription: '25% Refund',brandName: 'Chilis'),
+    new Brand(brandImage: 'assets/HomePage/Starbucks.png',brandDescription: '25% Refund',brandName: 'Starbucks'),
+    new Brand(brandImage: 'assets/HomePage/Pizza-Hut.png',brandDescription: '25% Refund',brandName: 'Pizza-Hut'),
+    new Brand(brandImage: 'assets/HomePage/Chilis.png',brandDescription: '25% Refund',brandName: 'Chilis'),
+    new Brand(brandImage: 'assets/HomePage/Starbucks.png',brandDescription: '25% Refund',brandName: 'Starbucks'),
+    new Brand(brandImage: 'assets/HomePage/Pizza-Hut.png',brandDescription: '25% Refund',brandName: 'Pizza-Hut'),
+    new Brand(brandImage: 'assets/HomePage/Chilis.png',brandDescription: '25% Refund',brandName: 'Chilis'),
+    new Brand(brandImage: 'assets/HomePage/Starbucks.png',brandDescription: '25% Refund',brandName: 'Starbucks'),
+    new Brand(brandImage: 'assets/HomePage/Pizza-Hut.png',brandDescription: '25% Refund',brandName: 'Pizza-Hut'),
+
+  ];*/
+  }
   double width;
   double height;
   double devicePixelRatio;
   BuildContext formContext;
 
-  List<Brand> brands = [
-    new Brand(brandImage: 'assets/HomePage/Pizza-Hut.png',brandDescription: '25% Refund',brandName: 'Pizza-Hut'),
-    new Brand(brandImage: 'assets/HomePage/Chilis.png',brandDescription: '25% Refund',brandName: 'Chilis'),
-    new Brand(brandImage: 'assets/HomePage/Starbucks.png',brandDescription: '25% Refund',brandName: 'Starbucks'),
-    new Brand(brandImage: 'assets/HomePage/Pizza-Hut.png',brandDescription: '25% Refund',brandName: 'Pizza-Hut'),
-    new Brand(brandImage: 'assets/HomePage/Chilis.png',brandDescription: '25% Refund',brandName: 'Chilis'),
-    new Brand(brandImage: 'assets/HomePage/Starbucks.png',brandDescription: '25% Refund',brandName: 'Starbucks'),
-    new Brand(brandImage: 'assets/HomePage/Pizza-Hut.png',brandDescription: '25% Refund',brandName: 'Pizza-Hut'),
-    new Brand(brandImage: 'assets/HomePage/Chilis.png',brandDescription: '25% Refund',brandName: 'Chilis'),
-    new Brand(brandImage: 'assets/HomePage/Starbucks.png',brandDescription: '25% Refund',brandName: 'Starbucks'),
-    new Brand(brandImage: 'assets/HomePage/Pizza-Hut.png',brandDescription: '25% Refund',brandName: 'Pizza-Hut'),
 
-  ];
+  List<Brand> brands;
   Widget _buildAppBar() {
     return AppBar(
       backgroundColor: Colors.black12,
@@ -288,6 +311,7 @@ class ProductPage extends StatelessWidget {
     return Divider(color: Color(0xFFFDB813),height: 15.0,);
   }
   Widget _buildBody() {
+    //print('cat ID:' + catID.toString());
     return Container(
       width: width,
       height: height,
@@ -313,9 +337,11 @@ class ProductPage extends StatelessWidget {
     height = MediaQuery.of(context).size.height;
     devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
     formContext = context;
+
     // TODO: implement build
     return ScopedModelDescendant<UsersModel>(
       builder: (BuildContext context, Widget child, UsersModel model) {
+        user = model;
         // model.getValues();
         return Scaffold(
           appBar: _buildAppBar(),

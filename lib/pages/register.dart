@@ -327,7 +327,7 @@ class RegPageState extends State<RegPage> {
           //Text('data'),
           //  image,
           //  SizedBox(height:  20.0),
-          box,
+         // box,
           signUpButton,
         ],
       ),

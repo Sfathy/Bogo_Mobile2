@@ -21,18 +21,20 @@ class HomePageState extends State<HomePage> {
   void initState() {
     // initializeCat();
     getData();
+    //_catlist = _categotyList;
     super.initState();
   }
 
   List data;
   ScrollController _buttonScrollercnt = new ScrollController();
-
+  double _currButtonInd = 0.0;
   Future<String> getData() async {
     List<Category> _catlst;
     List dt = await widget.user.getCategoryList();
     //var response = await http.get('http://192.168.8.101:52994/api/category/get');
     setState(() {
-      data = dt; //json.decode(response.body);
+      _catlist = dt;
+      /*data = dt; //json.decode(response.body);
       if (data != null) {
         _catlst = new List<Category>();
         List<Brand> brands = new List<Brand>();
@@ -44,22 +46,22 @@ class HomePageState extends State<HomePage> {
           if (bs != null) {
             for (var j = 0; j < bs.length; j++) {
               b = new Brand(
-                  id: 0,
+                  id:  bs[j]['id'],
                   brandName: bs[j]['name'] != null ? bs[j]['name'] : '',
-                  brandDescription: '',
-                  brandImage: '');
+                  brandDescription: bs[j]['brandDescription'] != null ? bs[j]['brandDescription'] : '',
+                  brandImage: bs[j]['logoImage'] != null ? bs[j]['logoImage'] : '',);
               brands.add(b);
             }
           }
           c = new Category(
-              id: 0,
+              id: data[i]['id'],
               categoryName: (data[i]['name'] != null) ? data[i]['name'] : '',
               icon: data[i]['iconImage'] != null ? data[i]['iconImage'] : '',
               brands: brands);
           _catlst.add(c);
         }
         _catlist = _catlst;
-      }
+      }*/
     });
 
     return "success";
@@ -71,11 +73,11 @@ class HomePageState extends State<HomePage> {
   double devicePixelRatio;
   int selectedCat = 0;
 
-  void initializeCat() async {
+  /* void initializeCat() async {
     //List<Map>
     List<Category> _catlst = new List<Category>();
     List responseData = await widget.user.getCategoryList();
-    print(responseData);
+    //print(responseData);
     if (responseData != null) {
       _catlst = new List<Category>();
       List<Brand> brands = new List<Brand>();
@@ -122,7 +124,7 @@ class HomePageState extends State<HomePage> {
       });*/
     }
   }
-
+*/
   List<Category> _categotyList = [
     new Category(
         categoryName: 'Resturants & Cafes',
@@ -406,7 +408,8 @@ class HomePageState extends State<HomePage> {
         textColor: Colors.white,
         child: Text('More'),
         onPressed: () {
-          Navigator.pushNamed(formContext, '/product');
+          Navigator.pushNamed(
+              formContext, '/product/' + _catlist[selectedCat].id.toString());
         },
       ),
     );
@@ -472,7 +475,7 @@ class HomePageState extends State<HomePage> {
   Widget _buildAdvPic() {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
-
+      //primary: ,
       itemCount: _advList.length,
       // reverse: true,
 
@@ -494,27 +497,17 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  List<String> _mainCatList = [
-    'Fasion',
-    'Health & Medical',
-    'Sweets',
-    'Fasion',
-    'Health & Medical',
-    'Sweets'
-  ];
   Widget _buildCatItemList(BuildContext context, int index) {
-    if (data != null) {
-      print(data[index]['name']);
-    }
+   
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 5.0),
-      child: RaisedButton(
+      child: (_catlist == null || _catlist.length == 0)
+            ? Container():RaisedButton(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-        child: (_catlist == null || _catlist.length == 0)
-            ? Container()
-            : Text(
+        child: 
+            Text(
                 //_catlist[index].categoryName,
                 _catlist[index].categoryName,
                 style: TextStyle(color: Colors.white),
@@ -523,8 +516,10 @@ class HomePageState extends State<HomePage> {
         onPressed: () {
           setState(() {
             selectedCat = index;
-            print('index:' + index.toString());
-            print('selected cat:' + selectedCat.toString());
+             Navigator.pushNamed(
+              formContext, '/product/' + selectedCat.toString());
+            // print('index:' + index.toString());
+            //print('selected cat:' + selectedCat.toString());
           });
         },
       ),
@@ -534,7 +529,7 @@ class HomePageState extends State<HomePage> {
   Widget _buildCatButtons() {
     return Container(
       width: width - width / 6,
-      child: (data == null || data.length == 0)
+      child: (_catlist == null || _catlist.length == 0)
           ? Container()
           : ListView.builder(
               //shrinkWrap: true,
@@ -544,7 +539,7 @@ class HomePageState extends State<HomePage> {
               // itemExtent: 100.0,
               itemBuilder: _buildCatItemList,
               //itemCount: _catlist.length,
-              itemCount: data.length,
+              itemCount: _catlist.length,
             ),
     );
   }
@@ -569,10 +564,11 @@ class HomePageState extends State<HomePage> {
               GestureDetector(
                 child: Image.asset('assets/HomePage/previous-icons.png'),
                 onTap: () {
-                  print('previous page');
+                  //print('previous page');
                   setState(() {
-                    _buttonScrollercnt.animateTo(1.0,
-                        duration: new Duration(seconds: 2), curve: Curves.ease);
+                    _currButtonInd -= 100;
+                    _buttonScrollercnt.animateTo(_currButtonInd,
+                        duration: new Duration(seconds: 1), curve: Curves.ease);
                   });
                 },
               ),
@@ -582,9 +578,10 @@ class HomePageState extends State<HomePage> {
                 child: Image.asset('assets/HomePage/next-icons.png'),
                 onTap: () {
                   setState(() {
-                    print('next page');
-                    _buttonScrollercnt.animateTo(2.0,
-                        duration: new Duration(seconds: 2), curve: Curves.ease);
+                    _currButtonInd += 100;
+                    //print('next page');
+                    _buttonScrollercnt.animateTo(_currButtonInd,
+                        duration: new Duration(seconds: 1), curve: Curves.ease);
                   });
                 },
               ),
@@ -592,13 +589,27 @@ class HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        _buildCategotyCard2(),
+        _buildCategotyCards(),
         // Container(),
       ],
     );
   }
-
+  Widget _buildCategotyCards(){
+    List<Widget> catCards = new List<Widget>();
+    for (var i = 0; i < _catlist.length; i++) {
+      selectedCat = i;
+      catCards.add(_buildCategotyCard2());
+    }
+    return ListView(
+      shrinkWrap: true,
+      children: catCards
+    );
+    //return _buildCategotyCard2();
+  }
   Widget _buildBrandItem(int index) {
+    if (_catlist[selectedCat].brands[index].brandImage != null) {
+      // print(user.ImagePath + _catlist[selectedCat].brands[index].brandImage);
+    }
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 2.0),
       child: Column(
@@ -606,8 +617,11 @@ class HomePageState extends State<HomePage> {
           _catlist[selectedCat].brands[index].brandImage == null
               ? Image.asset(user.DefaultImage,
                   height: height / 6, width: width / 4.1)
-              : Image.network(_catlist[selectedCat].brands[index].brandImage,
-                  height: height / 6, width: width / 4.1),
+              : Image.network(
+                  user.ImagePath +
+                      _catlist[selectedCat].brands[index].brandImage,
+                  height: height / 6,
+                  width: width / 4.1),
           //height: height / 6, width: width / 4.1),
           Text(
             _catlist[selectedCat].brands[index].brandName,
@@ -638,44 +652,68 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildCategotyCard2() {
-    return Column(
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20.0),
-            color: Color.fromARGB(127, 127, 127, 127),
+  List<Widget> _buildCatItems() {
+    List<Widget> items = new List<Widget>();
+    items.add(_buildLeftArrow());
+    items.add( Center(
+        child: Container(
+          width: width / 1.3,
+          child: ListView.builder(
+            itemCount: _catlist[selectedCat].brands.length,
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index) {
+              return _buildBrandItem(index);
+            },
           ),
-          height: height / 2.7,
-          margin: EdgeInsets.all(10.0),
-          child: Column(
+        ),
+      ));
+    items.add(_buildRightArrow());
+    
+    return items;
+  }
+
+  Widget _buildCategotyCard2() {
+    return (_catlist == null || _catlist.length <= 0)
+        ? Container()
+        : Column(
             children: <Widget>[
-              Row(
-                children: <Widget>[
-                  IconButton(
-                    icon: _catlist[selectedCat].icon == null
-                        ? Image.asset(_categotyList[selectedCat].icon)
-                        : Image.network(
-                            user.ImagePath + _catlist[selectedCat].icon),
-                  ),
-                  Text(
-                    _catlist[selectedCat].categoryName,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
-              // Row(children: <Widget>[
-              //TextField(),
               Container(
-                // width: width/2,
-                child: Expanded(
-                  flex: 1,
-                  child: Center(
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      //width: width/1.5,
-                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: Color.fromARGB(127, 127, 127, 127),
+                ),
+                height: height / 2.7,
+                margin: EdgeInsets.all(10.0),
+                child: Column(
+                  children: <Widget>[
+                    Row(
                       children: <Widget>[
+                        IconButton(
+                          icon: (_catlist == null || _catlist.length == 0)
+                              ? Image.asset(_categotyList[selectedCat].icon)
+                              : Image.network(
+                                  user.ImagePath + _catlist[selectedCat].icon),
+                        ),
+                        Text(
+                          _catlist[selectedCat].categoryName,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                    // Row(children: <Widget>[
+                    //TextField(),
+                    Container(
+                      // width: width/2,
+                      child: Expanded(
+                        flex: 1,
+                        child: Center(
+                          child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              //width: width/1.5,
+                              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: _buildCatItems()
+                              /*<Widget>[
                         _buildLeftArrow(),
                         Center(
                           child: Container(
@@ -691,17 +729,17 @@ class HomePageState extends State<HomePage> {
                           ),
                         ),
                         _buildRightArrow(),
-                      ],
-                    ),
-                  ),
+                      ],*/
+                              ),
+                        ),
+                      ),
+                    ), //],),
+                    _buildMoreButton(),
+                  ],
                 ),
-              ), //],),
-              _buildMoreButton(),
+              )
             ],
-          ),
-        )
-      ],
-    );
+          );
     /*Coainer(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.0),

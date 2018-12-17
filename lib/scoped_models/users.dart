@@ -7,19 +7,22 @@ import '../models/categoty.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UsersModel extends Model {
-  final String baseURL = 'http://192.168.8.104:52994/api/';
+  final String baseURL = 'http://10.41.9.58:52994/api/';
   //final String baseURL = 'http://192.168.1.198:52994/api/';
   User _authenticatedUser;
   List<Category> _catlist = new List<Category>();
   List<Category> get CatList {
     return _catlist;
   }
+
   User get AuthenticatedUser {
     return _authenticatedUser;
   }
+
   String get ImagePath {
     return "http://bogo.dragonssolution.com/uploads/img/";
   }
+
   String get DefaultImage {
     return "assets/HomePage/Pizza-Hut.png";
   }
@@ -70,8 +73,8 @@ class UsersModel extends Model {
     http.Response response = await http.post(baseURL + 'Auth/insertuser',
         headers: {'content-type': 'application/json'},
         body: json.encode(userData));
-   // print('sign up response:' + response.toString());
-   
+    // print('sign up response:' + response.toString());
+
     return login(user.email, user.password);
     //_authenticatedUser = User(userName:user.userName,token:'token',id: 0  );
     //notifyListeners();
@@ -87,20 +90,54 @@ class UsersModel extends Model {
     });
     print(json.decode(response.body));
   }
+
   //Future<List<Map<String, dynamic>> getCategoryList()async{
-    Future<List> getCategoryList()async{
+  Future<List> getCategoryList() async {
     //Future<Map<String, dynamic>> responseData= {'success': 'false', 'message': 'Error while communicating server'};
     http.Response response = await http.get(baseURL + 'Category/get');
-    List  res;
-    print('get cat response: ' +response.body.toString());
+    List res;
+    print('get cat response: ' + response.body.toString());
     if (response.statusCode == 200) {
       res = json.decode(response.body);
+      var data = res; //json.decode(response.body);
+      if (data != null) {
+        var _catlst = new List<Category>();
+        List<Brand> brands = new List<Brand>();
+        Brand b;
+        Category c;
+        for (var i = 0; i < data.length; i++) {
+          brands = new List<Brand>();
+          List bs = data[i]['brandsVM'];
+          if (bs != null) {
+            for (var j = 0; j < bs.length; j++) {
+              b = new Brand(
+                id: bs[j]['id'],
+                brandName: bs[j]['name'] != null ? bs[j]['name'] : '',
+                brandDescription: bs[j]['brandDescription'] != null
+                    ? bs[j]['brandDescription']
+                    : '',
+                brandImage:
+                    bs[j]['logoImage'] != null ? bs[j]['logoImage'] : '',
+              );
+              brands.add(b);
+            }
+          }
+          c = new Category(
+              id: data[i]['id'],
+              categoryName: (data[i]['name'] != null) ? data[i]['name'] : '',
+              icon: data[i]['iconImage'] != null ? data[i]['iconImage'] : '',
+              brands: brands);
+          _catlst.add(c);
+        }
+        _catlist = _catlst;
+      }
     }
+
     print(res);
-    return res;
+    //return res;
+    return _catlist;
   }
 
-  
   Future<Map<String, dynamic>> login(String email, String password) async {
     Map<String, dynamic> user = {'username': email, 'password': password};
     http.Response response = await http.post(baseURL + 'Auth/Login',
@@ -114,7 +151,7 @@ class UsersModel extends Model {
       print(responseData.toString());
       if (responseData.containsKey('token')) {
         hasError = false;
-        
+
         _authenticatedUser = User(
             userName: responseData['user']['userName'],
             token: responseData['token'],
@@ -126,18 +163,23 @@ class UsersModel extends Model {
             lastName: responseData['user']['lastName'],
             gender: responseData['user']['gender'],
             firstName: responseData['user']['firstName']);
-            print('authonticated user: '+_authenticatedUser.toString());
+        print('authonticated user: ' + _authenticatedUser.toString());
         message = 'Authontication succeeded';
         final SharedPreferences preps = await SharedPreferences.getInstance();
         preps.setString('token', responseData['token'].toString());
-        preps.setString('userName',  responseData['user']['userName'].toString());
+        preps.setString(
+            'userName', responseData['user']['userName'].toString());
         preps.setString('email', responseData['user']['email'].toString());
-        preps.setString('mobileNumber', responseData['user']['Mobile'].toString());
-        preps.setString('birthDate', responseData['user']['BirthDate'].toString());
-        preps.setString('lastName', responseData['user']['lastName'].toString());
-        preps.setString('firstName', responseData['user']['firstName'].toString());
+        preps.setString(
+            'mobileNumber', responseData['user']['Mobile'].toString());
+        preps.setString(
+            'birthDate', responseData['user']['BirthDate'].toString());
+        preps.setString(
+            'lastName', responseData['user']['lastName'].toString());
+        preps.setString(
+            'firstName', responseData['user']['firstName'].toString());
         preps.setString('gender', responseData['user']['gender'].toString());
-        
+
         //await initializeCat();
       }
     }
@@ -146,10 +188,10 @@ class UsersModel extends Model {
     //return truel
   }
 
-  void AutoAuth() async{
+  void AutoAuth() async {
     final SharedPreferences preps = await SharedPreferences.getInstance();
     final String token = preps.getString('token');
-    if(token != null){
+    if (token != null) {
       final String userName = preps.getString('userName');
       final String email = preps.getString('email');
       final String mobileNumber = preps.getString('mobileNumber');
@@ -158,19 +200,17 @@ class UsersModel extends Model {
       final String firstName = preps.getString('firstName');
       final String gender = preps.getString('gender');
       _authenticatedUser = User(
-            userName: userName,
-            token:token,
-            email:email,
-            id: 0,
-            mobileNumber: mobileNumber,
-            address: '',
-            //birthDate:DateTime.parse( birthDate),
-            lastName: lastName,
-            gender: int.parse(gender),
-            firstName: firstName);
-            notifyListeners();
-
+          userName: userName,
+          token: token,
+          email: email,
+          id: 0,
+          mobileNumber: mobileNumber,
+          address: '',
+          //birthDate:DateTime.parse( birthDate),
+          lastName: lastName,
+          gender: int.parse(gender),
+          firstName: firstName);
+      notifyListeners();
     }
-
   }
 }

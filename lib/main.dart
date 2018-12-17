@@ -53,10 +53,21 @@ class _MyAppState extends State<MyApp>{
           '/home':(BuildContext context)=> HomePage(model), 
           '/reset':(BuildContext context)=> ResetPassword(),
           '/login':(BuildContext context)=> AuthPage(),
-          '/product':(BuildContext context)=> ProductPage(),
+          '/product':(BuildContext context)=> ProductPage(0),
           '/profile':(BuildContext context)=> ProfilePage(),
           '/brand':(BuildContext context)=> BrandPage(),
           '/test':(BuildContext context)=> MyTestPage(model),
+        },
+        onGenerateRoute: (RouteSettings seting ){
+          final List<String> pathEmlement = seting.name.split('/');
+          if(pathEmlement[0]!=''){
+            return null;
+          }
+          if(pathEmlement[1] == 'product'){
+            final int catID = int.parse(pathEmlement[2]);
+            return MaterialPageRoute(builder: (BuildContext contxt)=> ProductPage(catID));
+          }
+
         },
         title: 'BOGO',
 

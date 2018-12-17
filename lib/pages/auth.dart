@@ -57,14 +57,14 @@ class _AuthPageState extends State<AuthPage> {
                   width: width / 9,
                   height: height / 10,
                 ),
-                SizedBox(
+                /*SizedBox(
                   width: width / 20,
                 ),
                 Image.asset(
                   'assets/LoginPage/twitter.png',
                   width: width / 9,
                   height: height / 10,
-                ),
+                ),*/
               ],
             ),
             SizedBox(
