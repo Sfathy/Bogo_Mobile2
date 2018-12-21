@@ -7,8 +7,8 @@ import '../scoped_models/users.dart';
 
 class ProductPage extends StatefulWidget {
     final int catID ;
-    
-  ProductPage(this.catID);
+    final UsersModel user;
+  ProductPage(this.catID,this.user);
   @override
     State<StatefulWidget> createState() {
       // TODO: implement createState
@@ -16,7 +16,7 @@ class ProductPage extends StatefulWidget {
     }
 }
 class _productPageState extends State<ProductPage> {
-   UsersModel user;
+   //UsersModel user;
    @override
   void initState() {
     // initializeCat();
@@ -25,7 +25,7 @@ class _productPageState extends State<ProductPage> {
     super.initState();
   }
   void getData(){
-    brands = user.CatList[widget.catID].brands;
+    brands = widget.user.CatList[widget.catID].brands;
     /* [
     new Brand(brandImage: 'assets/HomePage/Pizza-Hut.png',brandDescription: '25% Refund',brandName: 'Pizza-Hut'),
     new Brand(brandImage: 'assets/HomePage/Chilis.png',brandDescription: '25% Refund',brandName: 'Chilis'),
@@ -275,11 +275,12 @@ class _productPageState extends State<ProductPage> {
     for (var i = 0; i < brands.length; i++) {
       item = GestureDetector( 
         onTap: (){
-            Navigator.pushNamed(formContext, '/brand');
+            Navigator.pushNamed(formContext, '/brand/'+i.toString());
         },
         child:Column(
           children: <Widget>[
-            Image.asset(brands[i].brandImage),
+            
+            Image.network(widget.user.ImagePath + brands[i].brandImage),
             Text(brands[i].brandName,style: TextStyle(color: Colors.white),),
             Text(brands[i].brandDescription,style: TextStyle(color: Colors.white),),
           ],
@@ -341,7 +342,7 @@ class _productPageState extends State<ProductPage> {
     // TODO: implement build
     return ScopedModelDescendant<UsersModel>(
       builder: (BuildContext context, Widget child, UsersModel model) {
-        user = model;
+        //user = model;
         // model.getValues();
         return Scaffold(
           appBar: _buildAppBar(),

@@ -53,9 +53,9 @@ class _MyAppState extends State<MyApp>{
           '/home':(BuildContext context)=> HomePage(model), 
           '/reset':(BuildContext context)=> ResetPassword(),
           '/login':(BuildContext context)=> AuthPage(),
-          '/product':(BuildContext context)=> ProductPage(0),
+          '/product':(BuildContext context)=> ProductPage(0,null),
           '/profile':(BuildContext context)=> ProfilePage(),
-          '/brand':(BuildContext context)=> BrandPage(),
+          '/brand':(BuildContext context)=> BrandPage(0,null),
           '/test':(BuildContext context)=> MyTestPage(model),
         },
         onGenerateRoute: (RouteSettings seting ){
@@ -65,7 +65,11 @@ class _MyAppState extends State<MyApp>{
           }
           if(pathEmlement[1] == 'product'){
             final int catID = int.parse(pathEmlement[2]);
-            return MaterialPageRoute(builder: (BuildContext contxt)=> ProductPage(catID));
+            return MaterialPageRoute(builder: (BuildContext contxt)=> ProductPage(catID,model));
+          }
+          if(pathEmlement[1] == 'brand'){
+            final int brandID = int.parse(pathEmlement[2]);
+            return MaterialPageRoute(builder: (BuildContext contxt)=> BrandPage(brandID,model));
           }
 
         },

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../models/categoty.dart';
+import '../scoped_models/users.dart';
 
 class BrandPage extends StatefulWidget {
+  final int brandID;
+  final UsersModel user;
+  BrandPage(this.brandID, this.user);
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -11,22 +15,16 @@ class BrandPage extends StatefulWidget {
 }
 
 class BrandPageState extends State<BrandPage> {
-  BuildContext formContext;
-  double width;
-  double height;
-  double devicePixelRatio;
-  /*
-      assets/Branches/air.png
-    - assets/Branches/erea.png
-    - assets/Branches/face-icon-for-branches.png
-    - assets/Branches/parking.png
-    - assets/Branches/phone.png
-    - assets/Branches/smoking.png
-    - assets/Branches/telegram-icon-for-branches.png
-    - assets/Branches/twttier-icon-for-branches.png
-    - assets/Branches/background-3-tabs.png
-  */
-  BrandDetails brand = new BrandDetails(
+  void initData() async {
+    BrandDetails b = await widget.user.getBrandDetails(widget.brandID);
+    setState(() {
+      brand = b;
+    });
+  }
+
+  void initState() {
+    initData();
+    /*brand = new BrandDetails(
       brandName: 'Cook Door Resturant',
       brandDescription: 'Terms & Condition',
       brandImage: 'assets/Branches/img-product.jpg',
@@ -221,8 +219,27 @@ class BrandPageState extends State<BrandPage> {
                 'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
             descriptionEN:
                 'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
-      ]);
+      ]);*/
 
+    super.initState();
+  }
+
+  BuildContext formContext;
+  double width;
+  double height;
+  double devicePixelRatio;
+  /*
+      assets/Branches/air.png
+    - assets/Branches/erea.png
+    - assets/Branches/face-icon-for-branches.png
+    - assets/Branches/parking.png
+    - assets/Branches/phone.png
+    - assets/Branches/smoking.png
+    - assets/Branches/telegram-icon-for-branches.png
+    - assets/Branches/twttier-icon-for-branches.png
+    - assets/Branches/background-3-tabs.png
+  */
+  BrandDetails brand;
   Widget _buildAppBar() {
     return AppBar(
       backgroundColor: Colors.black12,
@@ -252,7 +269,7 @@ class BrandPageState extends State<BrandPage> {
       children: <Widget>[
         _buildUserName(),
         _buildLocation(),
-        _buildBrandImage(),
+        brand == null ? Container() : _buildBrandImage(),
         SizedBox(
           height: height / 75,
         ),
@@ -260,8 +277,8 @@ class BrandPageState extends State<BrandPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            _buildBrandLogo(),
-            _buildBrandText(),
+            brand == null ? Container() : _buildBrandLogo(),
+            brand == null ? Container() : _buildBrandText(),
           ],
         ),
         SizedBox(
@@ -293,10 +310,16 @@ class BrandPageState extends State<BrandPage> {
                 width: 20.0,
                 height: 20.0,
               ),
-              Image.asset('assets/Branches/telegram-icon-for-branches.png',
-                  width: 20.0, height: 20.0),
-              Image.asset('assets/Branches/twttier-icon-for-branches.png',
-                  width: 20.0, height: 20.0),
+              brand.brandFaceLink != null && brand.brandFaceLink != ''
+                  ? Image.asset(
+                      'assets/Branches/telegram-icon-for-branches.png',
+                      width: 20.0,
+                      height: 20.0)
+                  : Container(),
+              brand.brandTwttierLink != null && brand.brandTwttierLink != ''
+                  ? Image.asset('assets/Branches/twttier-icon-for-branches.png',
+                      width: 20.0, height: 20.0)
+                  : Container(),
               Text(
                 brand.brandDescription,
                 style: TextStyle(color: Colors.white, fontSize: 10.0),
@@ -309,22 +332,37 @@ class BrandPageState extends State<BrandPage> {
   }
 
   Widget _buildBrandImage() {
-    return Image.asset(
-      brand.brandImage,
-      width: width,
-      height: height / 4,
-      fit: BoxFit.fill,
-    );
+    return brand == null || brand.brandImage == null
+        ? Image.asset(
+            'assets/Branches/img-product.jpg',
+            width: width,
+            height: height / 4,
+            fit: BoxFit.fill,
+          )
+        : Image.network(
+            widget.user.ImagePath + brand.brandImage,
+            width: width,
+            height: height / 4,
+            fit: BoxFit.fill,
+          );
   }
 
   Widget _buildBrandLogo() {
-    return Image.asset(
-      brand.brandIcon,
-      fit: BoxFit.fill,
-      width: width / 5,
-      height: height / 11,
-      alignment: Alignment.topLeft,
-    );
+    return brand == null || brand.brandIcon == null
+        ? Image.asset(
+            'assets/HomePage/Starbucks.png',
+            fit: BoxFit.fill,
+            width: width / 5,
+            height: height / 11,
+            alignment: Alignment.topLeft,
+          )
+        : Image.network(
+            widget.user.ImagePath + brand.brandIcon,
+            fit: BoxFit.fill,
+            width: width / 5,
+            height: height / 11,
+            alignment: Alignment.topLeft,
+          );
   }
 
   Widget _buildSortButton() {
@@ -344,6 +382,8 @@ class BrandPageState extends State<BrandPage> {
   }
 
   Widget _buildBranchCard(BuildContext build, int index) {
+    if (brand == null) return Container();
+    Branch b = brand.branches[index];
     return Container(
       decoration: BoxDecoration(
         border: new Border(
@@ -393,16 +433,22 @@ class BrandPageState extends State<BrandPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Image.asset(
-                  'assets/Branches/phone.png',
-                  width: 35.0,
-                  height: 35.0,
-                ),
-                Image.asset(
-                  'assets/Branches/erea.png',
-                  width: 35.0,
-                  height: 35.0,
-                ),
+                brand.branches[index].branchTelephone == null ||
+                        brand.branches[index].branchTelephone == ''
+                    ? Container()
+                    : Image.asset(
+                        'assets/Branches/phone.png',
+                        width: 35.0,
+                        height: 35.0,
+                      ),
+                brand.branches[index].branchLocation == null ||
+                        brand.branches[index].branchLocation == ''
+                    ? Container()
+                    : Image.asset(
+                        'assets/Branches/erea.png',
+                        width: 35.0,
+                        height: 35.0,
+                      ),
               ],
             ),
           )
@@ -413,12 +459,15 @@ class BrandPageState extends State<BrandPage> {
 
   List<Widget> _buildFeatureImages(int branchIndex) {
     List<Widget> features = new List<Widget>();
-
+    if (brand == null || brand.branches == null || brand.branches.length == 0) {
+      features.add(Container());
+      return features;
+    }
     for (var i = 0;
         i < brand.branches[branchIndex].availableFeatures.length;
         i++) {
       features.add(Image.asset(
-        brand.branches[branchIndex].availableFeatures[i],
+        'assets/Branches/' + brand.branches[branchIndex].availableFeatures[i],
         width: 35.0,
         height: 35.0,
       ));
@@ -427,6 +476,9 @@ class BrandPageState extends State<BrandPage> {
   }
 
   Widget _buildBraches() {
+    if (brand == null || brand.branches == null || brand.branches.length == 0) {
+      return Container();
+    }
     return ListView(
       // mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
@@ -441,24 +493,65 @@ class BrandPageState extends State<BrandPage> {
   }
 
   Widget _buildCouponCard(int index) {
+    if (brand == null || brand.coupons == null || brand.coupons.length == 0) {
+      return Container();
+    }
     Coupon c = brand.coupons[index];
     return Container(
-      width: width/5,
+      width: width / 5,
       height: height,
       decoration: new BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
         color: Colors.white,
-        
       ),
       //alignment: Alignment.center,
       child: ListView(
         children: <Widget>[
-          Image.asset(c.icon,width: 35.0,height: 35.0,),
-          Center(child:  Text(c.validTillAR, style: TextStyle(fontWeight:FontWeight.bold ,color: Colors.redAccent, fontSize: 5.0,),),),
-          Center(child:  Text(c.validTillEN,style: TextStyle(fontWeight:FontWeight.bold ,color: Colors.redAccent,fontSize: 5.0),),),
-          Image.asset(c.image),
-          Center(child:  Text(c.descriptionAR,style: TextStyle(fontWeight:FontWeight.bold ,fontSize: 5.0),),),
-          Center(child:  Text(c.descriptionEN,style: TextStyle(fontWeight:FontWeight.bold ,fontSize: 5.0),),),
+          c.icon == null
+              ? Image.asset(
+                  c.icon,
+                  width: 35.0,
+                  height: 35.0,
+                )
+              : Image.network(
+                  widget.user.ImagePath + c.icon,
+                  width: 35.0,
+                  height: 35.0,
+                ),
+          Center(
+            child: Text(
+              c.validTillAR,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.redAccent,
+                fontSize: 5.0,
+              ),
+            ),
+          ),
+          Center(
+            child: Text(
+              c.validTillEN,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.redAccent,
+                  fontSize: 5.0),
+            ),
+          ),
+          c.image == null
+              ? Image.asset(c.image)
+              : Image.network(widget.user.ImagePath + c.image),
+          Center(
+            child: Text(
+              c.descriptionAR,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 5.0),
+            ),
+          ),
+          Center(
+            child: Text(
+              c.descriptionEN,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 5.0),
+            ),
+          ),
         ],
       ),
     );
@@ -466,7 +559,12 @@ class BrandPageState extends State<BrandPage> {
 
   List<Widget> _buildCouponItems() {
     List<Widget> coupons = new List<Widget>();
-    Widget coupon;
+
+    Widget coupon = Container();
+    if (brand == null || brand.coupons == null || brand.coupons.length == 0) {
+      coupons.add(coupon);
+      return coupons;
+    }
     for (var i = 0; i < brand.coupons.length; i++) {
       coupon = _buildCouponCard(i);
       coupons.add(coupon);
@@ -478,9 +576,8 @@ class BrandPageState extends State<BrandPage> {
     return GridView.count(
       crossAxisCount: 4,
       mainAxisSpacing: 10.0,
-      
       crossAxisSpacing: 10.0,
-      childAspectRatio: (width/4)/(height/4),
+      childAspectRatio: (width / 4) / (height / 4),
       children: _buildCouponItems(),
     );
   }
@@ -507,7 +604,7 @@ class BrandPageState extends State<BrandPage> {
             //indicatorSize: TabBarIndicatorSize.label,
             labelColor: Color(0xFFAD045D),
             //labelPadding: EdgeInsets.all(10.0),
-           // indicatorPadding: EdgeInsets.all(20.0),
+            // indicatorPadding: EdgeInsets.all(20.0),
             unselectedLabelColor: Colors.black,
             tabs: [
               Tab(

@@ -18,10 +18,12 @@ class Category{
 class Brand {
   final String brandName;
   final String brandImage;
+  final String brandFaceLink;
+  final String brandTwttierLink;
   final int id;
   final String brandDescription;
   Brand({@required this.id,@required this.brandImage,@required this.brandName,
-  @required this.brandDescription});
+  @required this.brandDescription, @required this.brandFaceLink,@required this.brandTwttierLink});
 }
 class Branch {
   final int id;
@@ -51,11 +53,17 @@ class BrandDetails {
   final String brandName;
   final String brandImage;
   final String brandIcon;
+  final String brandFaceLink;
+  final String brandTwttierLink;
+  final String brandPhone;
+  final String brandLocation;
   final List<Branch> branches;
   final List<Coupon> coupons;
   final int id;
   final String brandDescription;
   BrandDetails({@required this.id,@required this.brandImage,@required this.brandIcon,
-  @required this.brandDescription,@required this.brandName, @required this.branches,@required this.coupons});
+  @required this.brandDescription,@required this.brandName, @required this.branches,
+  @required this.coupons, @required this.brandFaceLink,@required this.brandTwttierLink,
+  @required this.brandLocation,@required this.brandPhone});
   
 }

@@ -409,7 +409,7 @@ class HomePageState extends State<HomePage> {
         child: Text('More'),
         onPressed: () {
           Navigator.pushNamed(
-              formContext, '/product/' + _catlist[selectedCat].id.toString());
+              formContext, '/product/' + selectedCat.toString());
         },
       ),
     );
@@ -690,7 +690,7 @@ class HomePageState extends State<HomePage> {
                     Row(
                       children: <Widget>[
                         IconButton(
-                          icon: (_catlist == null || _catlist.length == 0)
+                          icon: (_catlist == null || _catlist.length == 0||_catlist[selectedCat].icon=='')
                               ? Image.asset(_categotyList[selectedCat].icon)
                               : Image.network(
                                   user.ImagePath + _catlist[selectedCat].icon),

@@ -7,7 +7,7 @@ import '../models/categoty.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UsersModel extends Model {
-  final String baseURL = 'http://10.41.9.58:52994/api/';
+  final String baseURL = 'http://192.168.8.102:52994/api/';
   //final String baseURL = 'http://192.168.1.198:52994/api/';
   User _authenticatedUser;
   List<Category> _catlist = new List<Category>();
@@ -96,7 +96,7 @@ class UsersModel extends Model {
     //Future<Map<String, dynamic>> responseData= {'success': 'false', 'message': 'Error while communicating server'};
     http.Response response = await http.get(baseURL + 'Category/get');
     List res;
-    print('get cat response: ' + response.body.toString());
+    // print('get cat response: ' + response.body.toString());
     if (response.statusCode == 200) {
       res = json.decode(response.body);
       var data = res; //json.decode(response.body);
@@ -133,9 +133,95 @@ class UsersModel extends Model {
       }
     }
 
-    print(res);
+    // print(res);
     //return res;
     return _catlist;
+  }
+
+  Future<BrandDetails> getBrandDetails(int brandID) async {
+    //Future<Map<String, dynamic>> responseData= {'success': 'false', 'message': 'Error while communicating server'};
+    http.Response response =
+        await http.get(baseURL + 'Brands/get/' + brandID.toString());
+    print('brand details response: ' + response.body.toString());
+    BrandDetails res;
+    var data;
+    List<Branch> branches;
+    List<Coupon> coupons;
+    //   print('get cat response: ' + response.body.toString());
+    if (response.statusCode == 200) {
+      data = json.decode(response.body);
+      if (data != null) {
+        Branch b;
+        Coupon c;
+        //res.id = int.parse( data['id'].toString());
+        branches = new List<Branch>();
+        List bs = data['branches'];
+        List cs = data['coupons'];
+        List<dynamic> f;
+        List<String> fs;
+        if (bs != null) {
+          for (var j = 0; j < bs.length; j++) {
+            f = bs[j]['availableFeatures'];
+            fs = new List<String>();
+            if(f!=null){
+                for (var i = 0; i < f.length; i++) {
+                  fs.add(f[i].toString());
+                }
+            }
+            b = new Branch(
+              id: bs[j]['id'],
+              branchName:
+                  bs[j]['branchName'] != null ? bs[j]['branchName'] : '',
+              branchAddress:
+                  bs[j]['branchAddress'] != null ? bs[j]['branchAddress'] : '',
+              branchLocation: bs[j]['branchLocation'] != null
+                  ? bs[j]['branchLocation']
+                  : '',
+              branchTelephone: bs[j]['branchTelephone'] != null
+                  ? bs[j]['branchTelephone']
+                  : '',
+              availableFeatures: fs,
+            );
+            branches.add(b);
+          }
+        }
+
+        if (cs != null) {
+          coupons = new List<Coupon>();
+          for (var j = 0; j < cs.length; j++) {
+            f = cs[j]['availableFeatures'];
+            c = new Coupon(
+              id: cs[j]['id'],
+              validTillEN:
+                  cs[j]['validTillEN'] != null ? cs[j]['validTillEN'] : '',
+              validTillAR:
+                  cs[j]['validTillAR'] != null ? cs[j]['validTillAR'] : '',
+              image: cs[j]['image'] != null ? cs[j]['image'] : '',
+              icon: cs[j]['icon'] != null ? cs[j]['icon'] : '',
+              descriptionAR:
+                  cs[j]['descriptionAR'] != null ? cs[j]['descriptionAR'] : '',
+              descriptionEN:
+                  cs[j]['descriptionEN'] != null ? cs[j]['descriptionEN'] : '',
+            );
+            coupons.add(c);
+          }
+        }
+        res = new BrandDetails(
+            id: int.parse(data['id'].toString()),
+            brandName: data['brandName'].toString(),
+            brandDescription: data['brandDescription'].toString(),
+            brandPhone: data['brandPhone'].toString(),
+            brandLocation: data['brandLocation'].toString(),
+            brandIcon: data['brandIcon'].toString(),
+            brandImage: data['brandImage'].toString(),
+            brandTwttierLink: data['brandTwttierLink'].toString(),
+            brandFaceLink: data['brandFaceLink'].toString(),
+            branches: branches,
+            coupons: coupons);
+      }
+    }
+    print(res);
+    return res;
   }
 
   Future<Map<String, dynamic>> login(String email, String password) async {
