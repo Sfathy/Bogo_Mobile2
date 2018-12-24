@@ -582,6 +582,127 @@ class BrandPageState extends State<BrandPage> {
     );
   }
 
+  Widget _buildPlatinumCard(int index) {
+    if (brand == null ||
+        brand.platinums == null ||
+        brand.platinums.length == 0) {
+      return Container();
+    }
+    Platinum c = brand.platinums[index];
+    return Container(
+      width: width / 5,
+      height: height,
+      decoration: new BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        color: Colors.grey,
+      ),
+      //alignment: Alignment.center,
+      child: ListView(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Text(
+                  c.title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 15.0,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Image.network(
+                  widget.user.ImagePath + c.image,
+                  width: 35.0,
+                  height: 35.0,
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.all(5.0),
+            child: Text(
+              c.description,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 10.0),
+            ),
+          ),
+          Row(
+            children: <Widget>[
+              Image.asset(
+                'assets/PlatinumTicket/facebook-icon-01.png',
+                width: 20.0,
+                height: 20.0,
+              ),
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Text(
+                  c.faceBookLink,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 9.0,
+                      color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Image.asset(
+                'assets/PlatinumTicket/whattsapp-icon-01.png',
+                width: 20.0,
+                height: 20.0,
+              ),
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Text(
+                  c.whatsNumber,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 9.0,
+                      color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _buildPlatinumItems() {
+    List<Widget> platinums = new List<Widget>();
+
+    Widget platinum = Container();
+    if (brand == null ||
+        brand.platinums == null ||
+        brand.platinums.length == 0) {
+      platinums.add(platinum);
+      return platinums;
+    }
+    for (var i = 0; i < brand.platinums.length; i++) {
+      platinum = _buildPlatinumCard(i);
+      platinums.add(platinum);
+    }
+    return platinums;
+  }
+
+  Widget _buildPlatinum() {
+    return GridView.count(
+        crossAxisCount: 2,
+        mainAxisSpacing: 10.0,
+        crossAxisSpacing: 10.0,
+        padding: EdgeInsets.all(5.0),
+        childAspectRatio: (width / 2) / (height / 4),
+        children: _buildPlatinumItems());
+  }
+
   //TabController _controller;
   Widget _buildTabs() {
     return Container(
@@ -633,7 +754,7 @@ class BrandPageState extends State<BrandPage> {
                 children: [
                   _buildBraches(),
                   _buildCoupons(),
-                  Icon(Icons.directions_bike),
+                  _buildPlatinum(),
                 ],
               ),
             ),

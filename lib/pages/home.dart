@@ -72,6 +72,7 @@ class HomePageState extends State<HomePage> {
   double height;
   double devicePixelRatio;
   int selectedCat = 0;
+  int _selectedTabIndex = 0;
 
   /* void initializeCat() async {
     //List<Map>
@@ -498,31 +499,29 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _buildCatItemList(BuildContext context, int index) {
-   
-
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 5.0),
       child: (_catlist == null || _catlist.length == 0)
-            ? Container():RaisedButton(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-        child: 
-            Text(
+          ? Container()
+          : RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              child: Text(
                 //_catlist[index].categoryName,
                 _catlist[index].categoryName,
                 style: TextStyle(color: Colors.white),
               ),
-        color: Color(0xFFAD045D),
-        onPressed: () {
-          setState(() {
-            selectedCat = index;
-             Navigator.pushNamed(
-              formContext, '/product/' + selectedCat.toString());
-            // print('index:' + index.toString());
-            //print('selected cat:' + selectedCat.toString());
-          });
-        },
-      ),
+              color: Color(0xFFAD045D),
+              onPressed: () {
+                setState(() {
+                  selectedCat = index;
+                  Navigator.pushNamed(
+                      formContext, '/product/' + selectedCat.toString());
+                  // print('index:' + index.toString());
+                  //print('selected cat:' + selectedCat.toString());
+                });
+              },
+            ),
     );
   }
 
@@ -544,7 +543,7 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildHomeBody() {
     return //Column(children:<Widget>[ _buildCatButtons()]);
         ListView(
       // mainAxisAlignment: MainAxisAlignment.start,
@@ -594,18 +593,17 @@ class HomePageState extends State<HomePage> {
       ],
     );
   }
-  Widget _buildCategotyCards(){
+
+  Widget _buildCategotyCards() {
     List<Widget> catCards = new List<Widget>();
     for (var i = 0; i < _catlist.length; i++) {
       selectedCat = i;
       catCards.add(_buildCategotyCard2());
     }
-    return ListView(
-      shrinkWrap: true,
-      children: catCards
-    );
+    return ListView(shrinkWrap: true, children: catCards);
     //return _buildCategotyCard2();
   }
+
   Widget _buildBrandItem(int index) {
     if (_catlist[selectedCat].brands[index].brandImage != null) {
       // print(user.ImagePath + _catlist[selectedCat].brands[index].brandImage);
@@ -655,21 +653,21 @@ class HomePageState extends State<HomePage> {
   List<Widget> _buildCatItems() {
     List<Widget> items = new List<Widget>();
     items.add(_buildLeftArrow());
-    items.add( Center(
-        child: Container(
-          width: width / 1.3,
-          child: ListView.builder(
-            itemCount: _catlist[selectedCat].brands.length,
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemBuilder: (BuildContext context, int index) {
-              return _buildBrandItem(index);
-            },
-          ),
+    items.add(Center(
+      child: Container(
+        width: width / 1.3,
+        child: ListView.builder(
+          itemCount: _catlist[selectedCat].brands.length,
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            return _buildBrandItem(index);
+          },
         ),
-      ));
+      ),
+    ));
     items.add(_buildRightArrow());
-    
+
     return items;
   }
 
@@ -690,7 +688,9 @@ class HomePageState extends State<HomePage> {
                     Row(
                       children: <Widget>[
                         IconButton(
-                          icon: (_catlist == null || _catlist.length == 0||_catlist[selectedCat].icon=='')
+                          icon: (_catlist == null ||
+                                  _catlist.length == 0 ||
+                                  _catlist[selectedCat].icon == '')
                               ? Image.asset(_categotyList[selectedCat].icon)
                               : Image.network(
                                   user.ImagePath + _catlist[selectedCat].icon),
@@ -779,12 +779,19 @@ class HomePageState extends State<HomePage> {
         });*/
   }
 
+ void _onItemTapped(int index) {
+   setState(() {
+     _selectedTabIndex = index;
+   });
+ }
   Widget _buildBottomMenu() {
     return BottomNavigationBar(
-      currentIndex: 0,
+      currentIndex: _selectedTabIndex,
+      onTap: _onItemTapped,
       items: [
         BottomNavigationBarItem(
           icon: IconButton(icon: Image.asset('assets/HomePage/Home-Icons.png')),
+        
           title: Text(
             'Home',
             style: TextStyle(color: Color(0xFFAD045D)),
@@ -816,7 +823,124 @@ class HomePageState extends State<HomePage> {
       ],
     );
   }
+  Widget _buildCouponCard(int index) {
+    if (user == null || user.CouponList == null || user.CouponList.length == 0) {
+      return Container();
+    }
+    Coupon c = user.CouponList[index];
+    return Container(
+      width: width / 5,
+      height: height,
+      decoration: new BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        color: Colors.white,
+      ),
+      //alignment: Alignment.center,
+      child: ListView(
+        children: <Widget>[
+          c.icon == null
+              ? Image.asset(
+                  c.icon,
+                  width: 35.0,
+                  height: 35.0,
+                )
+              : Image.network(
+                  widget.user.ImagePath + c.icon,
+                  width: 35.0,
+                  height: 35.0,
+                ),
+          Center(
+            child: Text(
+              c.validTillAR,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.redAccent,
+                fontSize: 9.0,
+              ),
+            ),
+          ),
+          Center(
+            child: Text(
+              c.validTillEN,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.redAccent,
+                  fontSize: 9.0),
+            ),
+          ),
+          c.image == null
+              ? Image.asset(c.image)
+              : Image.network(widget.user.ImagePath + c.image),
+          Center(
+            child: Text(
+              c.descriptionAR,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 9.0),
+            ),
+          ),
+          Center(
+            child: Text(
+              c.descriptionEN,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 9.0),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
+  List<Widget> _buildCouponItems() {
+    List<Widget> coupons = new List<Widget>();
+
+    Widget coupon = Container();
+    if (user == null || user.CouponList == null || user.CouponList.length == 0) {
+      coupons.add(coupon);
+      return coupons;
+    }
+    for (var i = 0; i < user.CouponList.length; i++) {
+      coupon = _buildCouponCard(i);
+      coupons.add(coupon);
+    }
+    return coupons;
+  }
+
+  Widget _buildCoupons() {
+    
+    return GridView.count(
+      crossAxisCount: 3,
+      mainAxisSpacing: 10.0,
+      crossAxisSpacing: 10.0,
+      padding: EdgeInsets.only(top: 10.0,left: 10.0,right: 10.0),
+      childAspectRatio: (width / 3) / (height / 3),
+      children: _buildCouponItems(),
+    );
+  }
+  Widget _buildCopounBody(){
+    return _buildCoupons();
+  }
+  Widget _buildPlatinumBody(){
+     return Center(child: Text('Platinum'),);
+  }
+  Widget _buildMoreBody(){
+    return Center(child: Text('More'),);
+  }
+  Widget _buildBody(){
+    switch (_selectedTabIndex) {
+      case 0:
+        return _buildHomeBody();
+        break;
+      case 1:
+        return  _buildCopounBody();
+          break;
+      case 2:
+        return _buildPlatinumBody();
+        break;
+      case 3:
+        return _buildMoreBody();
+        break;
+      default:
+        return Container();
+    }
+  }
   UsersModel user;
   @override
   Widget build(BuildContext context) {
@@ -845,7 +969,7 @@ class HomePageState extends State<HomePage> {
                 image: AssetImage('assets/LoginPage/Background.jpg'),
                 fit: BoxFit.fill),
           ),
-          child: _buildBody(), // _buildCategotyCard2(), //_buildBody(),
+          child: _buildBody()// _buildCategotyCard2(), //_buildBody(),
         ),
       );
     });

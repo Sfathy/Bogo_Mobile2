@@ -7,12 +7,54 @@ import '../models/categoty.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UsersModel extends Model {
-  final String baseURL = 'http://192.168.8.102:52994/api/';
+  final String baseURL = 'http://192.168.8.100:52994/api/';
   //final String baseURL = 'http://192.168.1.198:52994/api/';
   User _authenticatedUser;
   List<Category> _catlist = new List<Category>();
+  List<Coupon> _couponList = new List<Coupon>();
   List<Category> get CatList {
     return _catlist;
+  }
+  List<Coupon> get CouponList {
+    if (_couponList==null||_couponList.length==0)
+    {
+      //get coupon list from the server
+      getCouponList();
+      notifyListeners();
+    }
+    return _couponList;
+  }
+  void getCouponList() async{
+    http.Response response = await http.get(baseURL + 'Customer/getCoupon/' + _authenticatedUser.id.toString());
+    List res;
+    var data;
+    if (response.statusCode == 200) {
+      data = json.decode(response.body);
+      print(data);
+      if (data != null) {
+        Coupon c;
+          List<Coupon> coupons = new List<Coupon>();
+          for (var j = 0; j < data.length; j++) {
+            //f = cs[j]['availableFeatures'];
+            c = new Coupon(
+              id: data[j]['id'],
+              validTillEN:
+                  data[j]['validTillEN'] != null ? data[j]['validTillEN'] : '',
+              validTillAR:
+                  data[j]['validTillAR'] != null ? data[j]['validTillAR'] : '',
+              image: data[j]['image'] != null ? data[j]['image'] : '',
+              icon: data[j]['icon'] != null ? data[j]['icon'] : '',
+              descriptionAR:
+                  data[j]['descriptionAR'] != null ? data[j]['descriptionAR'] : '',
+              descriptionEN:
+                  data[j]['descriptionEN'] != null ? data[j]['descriptionEN'] : '',
+            );
+              coupons.add(c);
+          }
+          _couponList = coupons;
+      }
+    }
+    
   }
 
   User get AuthenticatedUser {
@@ -147,16 +189,19 @@ class UsersModel extends Model {
     var data;
     List<Branch> branches;
     List<Coupon> coupons;
+    List<Platinum> platinums;
     //   print('get cat response: ' + response.body.toString());
     if (response.statusCode == 200) {
       data = json.decode(response.body);
       if (data != null) {
         Branch b;
         Coupon c;
+        Platinum p;
         //res.id = int.parse( data['id'].toString());
         branches = new List<Branch>();
         List bs = data['branches'];
         List cs = data['coupons'];
+        List ps = data['platinums'];
         List<dynamic> f;
         List<String> fs;
         if (bs != null) {
@@ -206,6 +251,21 @@ class UsersModel extends Model {
             coupons.add(c);
           }
         }
+        if (ps != null) {
+          platinums = new List<Platinum>();
+          for (var j = 0; j < ps.length; j++) {
+            //f = cs[j]['availableFeatures'];
+            p = new Platinum(
+              id: ps[j]['id'],
+             description: ps[j]['description'],
+             title: ps[j]['title'],
+             faceBookLink: ps[j]['faceBookLink'],
+             image: ps[j]['image'],
+             whatsNumber: ps[j]['whatsNumber'],
+            );
+            platinums.add(p);
+          }
+        }
         res = new BrandDetails(
             id: int.parse(data['id'].toString()),
             brandName: data['brandName'].toString(),
@@ -217,6 +277,7 @@ class UsersModel extends Model {
             brandTwttierLink: data['brandTwttierLink'].toString(),
             brandFaceLink: data['brandFaceLink'].toString(),
             branches: branches,
+            platinums: platinums,
             coupons: coupons);
       }
     }
