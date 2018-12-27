@@ -62,6 +62,8 @@ flutter:
     - assets/HomePage/small-image.png
     - assets/ProfilePage/background-profile-img.jpg
     - assets/ProfilePage/Profile-img.png
+    - assets/ProfilePage/en.png
+    - assets/ProfilePage/ar.png
     - assets/Branches/img-product.jpg
     - assets/Branches/air.png
     - assets/Branches/erea.png

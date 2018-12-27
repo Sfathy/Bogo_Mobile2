@@ -12,8 +12,36 @@ class UsersModel extends Model {
   User _authenticatedUser;
   List<Category> _catlist = new List<Category>();
   List<Coupon> _couponList = new List<Coupon>();
+  List<Platinum> _platinumList = new List<Platinum>();
   List<Category> get CatList {
     return _catlist;
+  }
+  List<String> _cartItems;
+  void getCartItems()async{
+    http.Response response = await http.get(baseURL + 'Customer/getCart/' + _authenticatedUser.id.toString());
+    List res;
+    var data;
+    if (response.statusCode == 200) {
+      data = json.decode(response.body);
+      print(data);
+      if (data != null) {
+        String c;
+          List<String> carts = new List<String>();
+          for (var j = 0; j < data.length; j++) {
+            //f = cs[j]['availableFeatures'];
+            c =  data[j];
+              carts.add(c);
+          }
+          _cartItems = carts;
+      }
+    }
+  }
+  List<String> get CartItems{
+    if(_cartItems == null||_cartItems.length==0){
+      getCartItems();
+      notifyListeners();
+    }
+    return _cartItems;
   }
   List<Coupon> get CouponList {
     if (_couponList==null||_couponList.length==0)
@@ -24,6 +52,41 @@ class UsersModel extends Model {
     }
     return _couponList;
   }
+  List<Platinum> get PlatinumList{
+ if (_platinumList==null||_platinumList.length==0)
+    {
+      //get coupon list from the server
+      getPlatinumList();
+      notifyListeners();
+    }
+    return _platinumList;
+  }
+   void getPlatinumList() async{
+    http.Response response = await http.get(baseURL + 'Customer/getPlatinum/' + _authenticatedUser.id.toString());
+    List res;
+    var data;
+    if (response.statusCode == 200) {
+      data = json.decode(response.body);
+      print(data);
+      if (data != null) {
+        Platinum c;
+          List<Platinum> coupons = new List<Platinum>();
+          for (var j = 0; j < data.length; j++) {
+            //f = cs[j]['availableFeatures'];
+            c = new Platinum(
+              id: data[j]['id'],
+              title: data[j]['title'],
+              description: data[j]['description'],
+              faceBookLink: data[j]['faceBookLink'],
+              image: data[j]['image'],
+              whatsNumber: data[j]['whatsNumber'],
+            );
+              coupons.add(c);
+          }
+          _platinumList = coupons;
+      }
+    }
+   }
   void getCouponList() async{
     http.Response response = await http.get(baseURL + 'Customer/getCoupon/' + _authenticatedUser.id.toString());
     List res;
@@ -309,7 +372,8 @@ class UsersModel extends Model {
             birthDate: responseData['user']['BirthDate'],
             lastName: responseData['user']['lastName'],
             gender: responseData['user']['gender'],
-            firstName: responseData['user']['firstName']);
+            firstName: responseData['user']['firstName'],
+            image: '');
         print('authonticated user: ' + _authenticatedUser.toString());
         message = 'Authontication succeeded';
         final SharedPreferences preps = await SharedPreferences.getInstance();

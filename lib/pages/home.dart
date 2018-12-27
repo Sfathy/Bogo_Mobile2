@@ -73,6 +73,7 @@ class HomePageState extends State<HomePage> {
   double devicePixelRatio;
   int selectedCat = 0;
   int _selectedTabIndex = 0;
+  bool _enabled = false;
 
   /* void initializeCat() async {
     //List<Map>
@@ -779,11 +780,12 @@ class HomePageState extends State<HomePage> {
         });*/
   }
 
- void _onItemTapped(int index) {
-   setState(() {
-     _selectedTabIndex = index;
-   });
- }
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedTabIndex = index;
+    });
+  }
+
   Widget _buildBottomMenu() {
     return BottomNavigationBar(
       currentIndex: _selectedTabIndex,
@@ -791,7 +793,6 @@ class HomePageState extends State<HomePage> {
       items: [
         BottomNavigationBarItem(
           icon: IconButton(icon: Image.asset('assets/HomePage/Home-Icons.png')),
-        
           title: Text(
             'Home',
             style: TextStyle(color: Color(0xFFAD045D)),
@@ -823,8 +824,11 @@ class HomePageState extends State<HomePage> {
       ],
     );
   }
+
   Widget _buildCouponCard(int index) {
-    if (user == null || user.CouponList == null || user.CouponList.length == 0) {
+    if (user == null ||
+        user.CouponList == null ||
+        user.CouponList.length == 0) {
       return Container();
     }
     Coupon c = user.CouponList[index];
@@ -892,7 +896,9 @@ class HomePageState extends State<HomePage> {
     List<Widget> coupons = new List<Widget>();
 
     Widget coupon = Container();
-    if (user == null || user.CouponList == null || user.CouponList.length == 0) {
+    if (user == null ||
+        user.CouponList == null ||
+        user.CouponList.length == 0) {
       coupons.add(coupon);
       return coupons;
     }
@@ -904,33 +910,247 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _buildCoupons() {
-    
     return GridView.count(
       crossAxisCount: 3,
       mainAxisSpacing: 10.0,
       crossAxisSpacing: 10.0,
-      padding: EdgeInsets.only(top: 10.0,left: 10.0,right: 10.0),
+      padding: EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
       childAspectRatio: (width / 3) / (height / 3),
       children: _buildCouponItems(),
     );
   }
-  Widget _buildCopounBody(){
+
+  Widget _buildCopounBody() {
     return _buildCoupons();
   }
-  Widget _buildPlatinumBody(){
-     return Center(child: Text('Platinum'),);
+
+  Widget _buildPlatinumCard(int index) {
+    if (user == null ||
+        user.PlatinumList == null ||
+        user.PlatinumList.length == 0) {
+      return Container();
+    }
+    Platinum c = user.PlatinumList[index];
+    return Container(
+      width: width / 5,
+      height: height,
+      decoration: new BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        color: Colors.grey,
+      ),
+      //alignment: Alignment.center,
+      child: ListView(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Text(
+                  c.title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 15.0,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Image.network(
+                  widget.user.ImagePath + c.image,
+                  width: 35.0,
+                  height: 35.0,
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.all(5.0),
+            child: Text(
+              c.description,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 10.0),
+            ),
+          ),
+          Row(
+            children: <Widget>[
+              Image.asset(
+                'assets/PlatinumTicket/facebook-icon-01.png',
+                width: 20.0,
+                height: 20.0,
+              ),
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Text(
+                  c.faceBookLink,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 9.0,
+                      color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Image.asset(
+                'assets/PlatinumTicket/whattsapp-icon-01.png',
+                width: 20.0,
+                height: 20.0,
+              ),
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Text(
+                  c.whatsNumber,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 9.0,
+                      color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
-  Widget _buildMoreBody(){
-    return Center(child: Text('More'),);
+
+  List<Widget> _buildPlatinumItems() {
+    List<Widget> platinums = new List<Widget>();
+
+    Widget platinum = Container();
+    if (user == null ||
+        user.PlatinumList == null ||
+        user.PlatinumList.length == 0) {
+      platinums.add(platinum);
+      return platinums;
+    }
+    for (var i = 0; i < user.PlatinumList.length; i++) {
+      platinum = _buildPlatinumCard(i);
+      platinums.add(platinum);
+    }
+    return platinums;
   }
-  Widget _buildBody(){
+
+  Widget _buildPlatinum() {
+    return GridView.count(
+        crossAxisCount: 2,
+        mainAxisSpacing: 10.0,
+        crossAxisSpacing: 10.0,
+        padding: EdgeInsets.all(5.0),
+        childAspectRatio: (width / 2) / (height / 4),
+        children: _buildPlatinumItems());
+  }
+
+  Widget _buildPlatinumBody() {
+    return _buildPlatinum();
+  }
+
+  Widget _buildMoreBody() {
+    Widget userImag;
+    if (user != null &&
+        user.AuthenticatedUser != null &&
+        user.AuthenticatedUser.image != null &&
+        user.AuthenticatedUser.image != '') {
+      userImag = Image.network(user.AuthenticatedUser.image);
+    } else {
+      userImag = Image.asset('assets/ProfilePage/Profile-img.png');
+    }
+    return ListView(
+      children: <Widget>[
+        Container(
+          child: userImag,
+          width: width / 3,
+          height: height / 5,
+        ),
+        Center(
+          child: FlatButton(
+            child: Text(
+              'My Profile',
+              style: TextStyle(color: Colors.white),
+            ),
+            onPressed: () {
+              Navigator.pushNamed(formContext, '/profile');
+            },
+          ),
+        ),
+        Center(
+          child: FlatButton(
+            child: Text(
+              'My Cart',
+              style: TextStyle(color: Colors.white),
+            ),
+            onPressed: () {
+              Navigator.pushNamed(formContext, '/mycart');
+            },
+          ),
+        ),
+        Center(
+          child: FlatButton(
+            child: Text(
+              'My Package',
+              style: TextStyle(color: Colors.white),
+            ),
+            onPressed: () {
+              Navigator.pushNamed(formContext, '/package');
+            },
+          ),
+        ),
+        Center(
+          child: FlatButton(
+            child: Text(
+              'History',
+              style: TextStyle(color: Colors.white),
+            ),
+            onPressed: () {
+              Navigator.pushNamed(formContext, '/history');
+            },
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal:  100.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                'Language',
+                style: TextStyle(color: Colors.white),
+              ),
+              GestureDetector(
+                child: _enabled
+                    ? Image.asset('assets/ProfilePage/en.png')
+                    : Image.asset('assets/ProfilePage/ar.png'),
+                onTap: () {
+                  setState(() {
+                    _enabled = !_enabled;
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+          Image.asset('assets/Branches/face-icon-for-branches.png',width: 35.0,height: 35.0,),
+          Image.asset('assets/Coupons/logo-bogo-in-coupons.png',width: 35.0,height: 35.0,),
+          FlatButton(child: Text('Logout',style: TextStyle(color: Colors.white),),),
+        ],)
+      ],
+    );
+  }
+
+  Widget _buildBody() {
     switch (_selectedTabIndex) {
       case 0:
         return _buildHomeBody();
         break;
       case 1:
-        return  _buildCopounBody();
-          break;
+        return _buildCopounBody();
+        break;
       case 2:
         return _buildPlatinumBody();
         break;
@@ -941,6 +1161,7 @@ class HomePageState extends State<HomePage> {
         return Container();
     }
   }
+
   UsersModel user;
   @override
   Widget build(BuildContext context) {
@@ -962,15 +1183,15 @@ class HomePageState extends State<HomePage> {
         bottomNavigationBar: _buildBottomMenu(),
         body: //_buildCategotyCard2()
             Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.9), BlendMode.dstATop),
-                image: AssetImage('assets/LoginPage/Background.jpg'),
-                fit: BoxFit.fill),
-          ),
-          child: _buildBody()// _buildCategotyCard2(), //_buildBody(),
-        ),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(0.9), BlendMode.dstATop),
+                      image: AssetImage('assets/LoginPage/Background.jpg'),
+                      fit: BoxFit.fill),
+                ),
+                child: _buildBody() // _buildCategotyCard2(), //_buildBody(),
+                ),
       );
     });
     // });
