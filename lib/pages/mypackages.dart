@@ -4,9 +4,9 @@ import 'package:flutter/rendering.dart';
 
 import '../scoped_models/users.dart';
 
-class CartPage extends StatelessWidget {
+class MyPackagesPage extends StatelessWidget {
   final UsersModel user;
-  CartPage(this.user);
+  MyPackagesPage(this.user);
   Widget _buildAppBar() {
     return AppBar(
       backgroundColor: Colors.black12,
@@ -15,7 +15,7 @@ class CartPage extends StatelessWidget {
         icon: new Image.asset('assets/LoginPage/Big-Logo.png'),
       ),
       title: Text(
-        'My Cart',
+        'My Packages',
         style: TextStyle(color: Color(0xFFAD045D)),
       ),
       actions: <Widget>[
@@ -33,8 +33,7 @@ class CartPage extends StatelessWidget {
   List<Widget> _buildCartItems(){
     List<Widget> items = new List<Widget>();
     if (user != null) {
-     // List<String> cs = user.CartItems;
-      List<String> cs = user.CartItems== null? new List<String>(): user.CartItems;
+      List<String> cs = user.CartItems;
       for (var i = 0; i < cs.length; i++) {
         items.add(Text(cs[i],style: TextStyle(color: Colors.white),) );
         items.add(SizedBox(height: 10.0,));

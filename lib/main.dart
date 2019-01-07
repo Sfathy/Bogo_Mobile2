@@ -12,6 +12,9 @@ import './pages/profile.dart';
 import './pages/brand.dart';
 import './pages/test_page.dart';
 import './pages/cart.dart';
+import './pages/mypackages.dart';
+import './pages/history.dart';
+import './pages/buypackage.dart';
 
 import 'package:flutter/rendering.dart';
 
@@ -59,6 +62,9 @@ class _MyAppState extends State<MyApp>{
           '/brand':(BuildContext context)=> BrandPage(0,null),
           '/test':(BuildContext context)=> MyTestPage(model),
            '/mycart':(BuildContext context)=> CartPage(model),
+           '/package':(BuildContext context)=> MyPackagesPage(model),
+           '/history':(BuildContext context)=> HistoryPage(model),
+           '/buyPackage':(BuildContext context)=> BuyPackagePage(model),
         },
         onGenerateRoute: (RouteSettings seting ){
           final List<String> pathEmlement = seting.name.split('/');

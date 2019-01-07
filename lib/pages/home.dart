@@ -4,6 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 import '../models/categoty.dart';
 import 'dart:async';
 import '../scoped_models/users.dart';
+import 'package:snaplist/snaplist.dart';
 
 class HomePage extends StatefulWidget {
   UsersModel user;
@@ -477,6 +478,7 @@ class HomePageState extends State<HomePage> {
   Widget _buildAdvPic() {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
+
       //primary: ,
       itemCount: _advList.length,
       // reverse: true,
@@ -496,6 +498,55 @@ class HomePageState extends State<HomePage> {
           ),
         );
       },
+    );
+  }
+
+  List<Widget> _buildAdvPicList() {
+    List<Widget> items = new List<Widget>();
+    Widget c;
+    for (var i = 0; i < _advList.length; i++) {
+      c = Card(
+        child: Column(
+          children: <Widget>[
+            Image.asset(
+              _advList[i],
+              fit: BoxFit.contain,
+              alignment: Alignment.center,
+              //height: height/7,
+              width: width / 3,
+            ),
+          ],
+        ),
+      );
+      items.add(c);
+    }
+    return items;
+  }
+
+  Widget _buildAdvPic2() {
+    final Size cardSize = Size(width / 3, height / 7);
+    return SnapList(
+      padding: EdgeInsets.only(
+          left: (MediaQuery.of(context).size.width - cardSize.width) / 2),
+      sizeProvider: (index, data) => cardSize,
+      separatorProvider: (index, data) => Size(10.0, 10.0),
+      builder: (context, index, data) {
+        print(data.center);
+        return data.center + 1 == index
+            ? ClipRRect(
+                borderRadius: new BorderRadius.circular(16.0),
+                child: Image.asset(_advList[index], fit: BoxFit.fill),
+              )
+            : ClipRRect(
+                borderRadius: new BorderRadius.circular(16.0),
+                child: Image.asset(
+                  _advList[index],
+                  fit: BoxFit.scaleDown,
+                  height: height / 9,
+                ),
+              );
+      },
+      count: _advList.length,
     );
   }
 
@@ -552,9 +603,9 @@ class HomePageState extends State<HomePage> {
         _buildUserName(),
         _buildLocation(),
         Container(
-          height: height / 7,
+          height: height / 6,
           alignment: Alignment.topLeft,
-          child: _buildAdvPic(),
+          child: _buildAdvPic2(),
         ),
         Container(
           height: height / 20,
@@ -789,13 +840,14 @@ class HomePageState extends State<HomePage> {
   Widget _buildBottomMenu() {
     return BottomNavigationBar(
       currentIndex: _selectedTabIndex,
+      type: BottomNavigationBarType.fixed,
       onTap: _onItemTapped,
       items: [
         BottomNavigationBarItem(
           icon: IconButton(icon: Image.asset('assets/HomePage/Home-Icons.png')),
           title: Text(
             'Home',
-            style: TextStyle(color: Color(0xFFAD045D)),
+            style: TextStyle(color: Color(0xFFAD045D), fontSize: 18.0),
           ),
         ),
         BottomNavigationBarItem(
@@ -803,7 +855,7 @@ class HomePageState extends State<HomePage> {
               icon: Image.asset('assets/HomePage/Coupons-Icons.png')),
           title: Text(
             'Category',
-            style: TextStyle(color: Color(0xFFAD045D)),
+            style: TextStyle(color: Color(0xFFAD045D), fontSize: 18.0),
           ),
         ),
         BottomNavigationBarItem(
@@ -811,14 +863,14 @@ class HomePageState extends State<HomePage> {
               icon: Image.asset('assets/HomePage/Platinum-Icons.png')),
           title: Text(
             'Platinum',
-            style: TextStyle(color: Color(0xFFAD045D)),
+            style: TextStyle(color: Color(0xFFAD045D), fontSize: 18.0),
           ),
         ),
         BottomNavigationBarItem(
           icon: IconButton(icon: Image.asset('assets/HomePage/More-Icons.png')),
           title: Text(
             'More',
-            style: TextStyle(color: Color(0xFFAD045D)),
+            style: TextStyle(color: Color(0xFFAD045D), fontSize: 18.0),
           ),
         ),
       ],
@@ -1059,87 +1111,118 @@ class HomePageState extends State<HomePage> {
     } else {
       userImag = Image.asset('assets/ProfilePage/Profile-img.png');
     }
-    return ListView(
-      children: <Widget>[
-        Container(
-          child: userImag,
-          width: width / 3,
-          height: height / 5,
-        ),
-        Center(
-          child: FlatButton(
-            child: Text(
-              'My Profile',
-              style: TextStyle(color: Colors.white),
-            ),
-            onPressed: () {
-              Navigator.pushNamed(formContext, '/profile');
-            },
+    return Center(
+      heightFactor: width / 5,
+      child: ListView(
+        children: <Widget>[
+          Container(
+            child: userImag,
+            width: width / 3,
+            height: height / 5,
           ),
-        ),
-        Center(
-          child: FlatButton(
-            child: Text(
-              'My Cart',
-              style: TextStyle(color: Colors.white),
-            ),
-            onPressed: () {
-              Navigator.pushNamed(formContext, '/mycart');
-            },
-          ),
-        ),
-        Center(
-          child: FlatButton(
-            child: Text(
-              'My Package',
-              style: TextStyle(color: Colors.white),
-            ),
-            onPressed: () {
-              Navigator.pushNamed(formContext, '/package');
-            },
-          ),
-        ),
-        Center(
-          child: FlatButton(
-            child: Text(
-              'History',
-              style: TextStyle(color: Colors.white),
-            ),
-            onPressed: () {
-              Navigator.pushNamed(formContext, '/history');
-            },
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal:  100.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                'Language',
+          Center(
+            child: FlatButton(
+              child: Text(
+                'My Profile',
                 style: TextStyle(color: Colors.white),
               ),
-              GestureDetector(
-                child: _enabled
-                    ? Image.asset('assets/ProfilePage/en.png')
-                    : Image.asset('assets/ProfilePage/ar.png'),
-                onTap: () {
-                  setState(() {
-                    _enabled = !_enabled;
-                  });
+              onPressed: () {
+                Navigator.pushNamed(formContext, '/profile');
+              },
+            ),
+          ),
+          Center(
+            child: FlatButton(
+              child: Text(
+                'My Cart',
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {
+                Navigator.pushNamed(formContext, '/mycart');
+              },
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              FlatButton(
+                child: Text(
+                  'My Package: ' + user.AuthenticatedUser.currentPackage,
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(formContext, '/package');
                 },
               ),
+              user.AuthenticatedUser.currentPackage == null ||
+                      user.AuthenticatedUser.currentPackage == ''
+                  ? RaisedButton(child: Text('Buy Package'), onPressed: () {
+                    Navigator.pushNamed(formContext, '/buyPackage');
+                  })
+                  : RaisedButton(
+                      child: Text('Renew'),
+                      onPressed: () {
+                        Navigator.pushNamed(formContext, '/renewPackage');
+                      },
+                    )
             ],
           ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-          Image.asset('assets/Branches/face-icon-for-branches.png',width: 35.0,height: 35.0,),
-          Image.asset('assets/Coupons/logo-bogo-in-coupons.png',width: 35.0,height: 35.0,),
-          FlatButton(child: Text('Logout',style: TextStyle(color: Colors.white),),),
-        ],)
-      ],
+          Center(
+            child: FlatButton(
+              child: Text(
+                'History',
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {
+                Navigator.pushNamed(formContext, '/history');
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 100.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  'Language',
+                  style: TextStyle(color: Colors.white),
+                ),
+                GestureDetector(
+                  child: _enabled
+                      ? Image.asset('assets/ProfilePage/en.png')
+                      : Image.asset('assets/ProfilePage/ar.png'),
+                  onTap: () {
+                    setState(() {
+                      _enabled = !_enabled;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Image.asset(
+                'assets/Branches/face-icon-for-branches.png',
+                width: 35.0,
+                height: 35.0,
+              ),
+              Image.asset(
+                'assets/Coupons/logo-bogo-in-coupons.png',
+                width: 35.0,
+                height: 35.0,
+              ),
+              FlatButton(
+                child: Text(
+                  'Logout',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 

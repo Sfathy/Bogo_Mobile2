@@ -7,7 +7,7 @@ import '../models/categoty.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UsersModel extends Model {
-  final String baseURL = 'http://192.168.8.100:52994/api/';
+  final String baseURL = 'http://192.168.8.101:52994/api/';
   //final String baseURL = 'http://192.168.1.198:52994/api/';
   User _authenticatedUser;
   List<Category> _catlist = new List<Category>();
@@ -119,6 +119,63 @@ class UsersModel extends Model {
     }
     
   }
+
+ List<String> _history;
+  void getHistory()async{
+    http.Response response = await http.get(baseURL + 'Customer/getHistory/' + _authenticatedUser.id.toString());
+    List res;
+    var data;
+    if (response.statusCode == 200) {
+      data = json.decode(response.body);
+      print(data);
+      if (data != null) {
+        String c;
+          List<String> history = new List<String>();
+          for (var j = 0; j < data.length; j++) {
+            //f = cs[j]['availableFeatures'];
+            c =  data[j];
+              history.add(c);
+          }
+          _history = history;
+      }
+    }
+  }
+  List<String> get History{
+    if(_history == null||_history.length==0){
+      getHistory();
+      notifyListeners();
+    }
+    return _history;
+  }
+
+  List<dynamic> _prePackages;
+  void getPrePackages()async{
+    http.Response response = await http.get(baseURL + 'Packages/getPackages');
+    List res;
+    var data;
+    if (response.statusCode == 200) {
+      data = json.decode(response.body);
+      print(data);
+      if (data != null) {
+        String c;
+          List<dynamic> prePackages = new List<dynamic>();
+          for (var j = 0; j < data.length; j++) {
+            //f = cs[j]['availableFeatures'];
+            c =  data[j];
+              prePackages.add(c);
+          }
+          _prePackages = prePackages;
+      }
+    }
+  }
+  List<dynamic> get PrePackages {
+    if(_prePackages == null||_prePackages.length==0){
+      getPrePackages();
+      notifyListeners();
+    }
+    return _prePackages;
+  }
+  
 
   User get AuthenticatedUser {
     return _authenticatedUser;
@@ -420,7 +477,8 @@ class UsersModel extends Model {
           //birthDate:DateTime.parse( birthDate),
           lastName: lastName,
           gender: int.parse(gender),
-          firstName: firstName);
+          firstName: firstName,
+          currentPackage: '');
       notifyListeners();
     }
   }
