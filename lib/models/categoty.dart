@@ -20,10 +20,11 @@ class Brand {
   final String brandImage;
   final String brandFaceLink;
   final String brandTwttierLink;
+  final double price;
   final int id;
   final String brandDescription;
   Brand({@required this.id,@required this.brandImage,@required this.brandName,
-  @required this.brandDescription, @required this.brandFaceLink,@required this.brandTwttierLink});
+  @required this.brandDescription, @required this.brandFaceLink,@required this.brandTwttierLink,@required this.price});
 }
 class Branch {
   final int id;
@@ -49,7 +50,12 @@ class Coupon {
 
 
 }
-
+class PredefinedPackage {
+  final int id;
+  final String name;
+  final double price;
+  PredefinedPackage({@required this.id,@required this.name, @required this.price});
+}
 class Platinum {
   final int id;
   final String title;

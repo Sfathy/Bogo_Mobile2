@@ -7,7 +7,7 @@ import '../models/categoty.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UsersModel extends Model {
-  final String baseURL = 'http://192.168.8.101:52994/api/';
+  final String baseURL = 'http://192.168.8.102:52994/api/';
   //final String baseURL = 'http://192.168.1.198:52994/api/';
   User _authenticatedUser;
   List<Category> _catlist = new List<Category>();
@@ -148,7 +148,7 @@ class UsersModel extends Model {
     return _history;
   }
 
-  List<dynamic> _prePackages;
+  List<PredefinedPackage> _prePackages;
   void getPrePackages()async{
     http.Response response = await http.get(baseURL + 'Packages/getPackages');
     List res;
@@ -157,11 +157,11 @@ class UsersModel extends Model {
       data = json.decode(response.body);
       print(data);
       if (data != null) {
-        String c;
-          List<dynamic> prePackages = new List<dynamic>();
+        PredefinedPackage c;
+          List<PredefinedPackage> prePackages = new List<PredefinedPackage>();
           for (var j = 0; j < data.length; j++) {
             //f = cs[j]['availableFeatures'];
-            c =  data[j];
+            c =  new PredefinedPackage(id:data[j]['id'],name:data[j]['name'],price:data[j]['price']   ) ;
               prePackages.add(c);
           }
           _prePackages = prePackages;
@@ -176,6 +176,44 @@ class UsersModel extends Model {
     return _prePackages;
   }
   
+List<Brand>  _offers;
+  void getoffers()async{
+    http.Response response = await http.get(baseURL + 'Packages/getOffers');
+    List res;
+    var data;
+    if (response.statusCode == 200) {
+      data = json.decode(response.body);
+      print(data);
+      if (data != null) {
+        dynamic c;
+          List<Brand> offers  = new List<Brand>();
+          for (var j = 0; j < data.length; j++) {
+            //f = cs[j]['availableFeatures'];
+          c = new Brand(
+              id: data[j]['id'],
+                brandName: data[j]['name'] != null ? data[j]['name'] : '',
+                brandDescription: data[j]['brandDescription'] != null
+                    ? data[j]['brandDescription']
+                    : '',
+                brandImage:
+                    data[j]['logoImage'] != null ? data[j]['logoImage'] : '',
+                    price: data[j]['price'] != null ? double.parse( data[j]['price'].toString()) : 0.0,
+            );
+              offers.add(c);
+          }
+          _offers = offers;
+      } 
+    }
+  }
+  List<dynamic> get Offers {
+    if(_offers == null||_offers.length==0){
+      getoffers();
+      notifyListeners();
+    }
+    return _offers;
+  }
+  
+
 
   User get AuthenticatedUser {
     return _authenticatedUser;
@@ -482,4 +520,38 @@ class UsersModel extends Model {
       notifyListeners();
     }
   }
+
+
+Future<List<Brand>>  getPackageOffers(int packageID) async{
+  List<Brand> coupons = new List<Brand>();
+     http.Response response = await http.get(baseURL + 'Packages/getPackage/' + packageID.toString());
+    List res;
+    var data;
+    if (response.statusCode == 200) {
+      data = json.decode(response.body);
+     // print(data);
+      if (data != null) {
+        Brand c;
+          
+          for (var j = 0; j < data.length; j++) {
+            //f = cs[j]['availableFeatures'];
+            c = new Brand(
+              id: data[j]['id'],
+                brandName: data[j]['name'] != null ? data[j]['name'] : '',
+                brandDescription: data[j]['brandDescription'] != null
+                    ? data[j]['brandDescription']
+                    : '',
+                brandImage:
+                    data[j]['logoImage'] != null ? data[j]['logoImage'] : '',
+                    price: data[j]['price'] != null ? double.parse( data[j]['price'].toString()) : 0.0,
+            );
+              coupons.add(c);
+          }
+         // _couponList = coupons;
+      }
+    }
+    notifyListeners();
+    return coupons;
+  }
+ 
 }
