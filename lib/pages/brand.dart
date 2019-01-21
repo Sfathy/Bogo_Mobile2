@@ -3,9 +3,102 @@ import 'package:flutter/material.dart';
 import '../models/categoty.dart';
 import '../scoped_models/users.dart';
 
+
+class CustomWidget extends StatefulWidget {
+  final int index;
+  final bool longPressEnabled;
+  final VoidCallback callback;
+  final bool isselected;
+  final UsersModel user;
+  final BrandDetails brand;
+
+  const CustomWidget({Key key, this.index, this.longPressEnabled, this.callback,this.isselected,
+  this.brand,this.user}) : super(key: key);
+
+  @override
+  _CustomWidgetState createState() => new _CustomWidgetState();
+}
+
+class _CustomWidgetState extends State<CustomWidget> {
+  bool selected = false;
+
+  @override
+  Widget build(BuildContext context) {
+    Coupon c = widget.brand.coupons[widget.index];
+    return new GestureDetector(
+      onLongPress: () {
+        widget.callback();
+      },
+      onTap: () {
+        if (widget.longPressEnabled) {
+          widget.callback();
+        }
+      },
+      child: new Container(
+        margin: new EdgeInsets.all(5.0),
+        child: ListView(
+        children: <Widget>[
+          c.icon == null
+              ? Image.asset(
+                  c.icon,
+                  width: 35.0,
+                  height: 35.0,
+                )
+              : Image.network(
+                  widget.user.ImagePath + c.icon,
+                  width: 35.0,
+                  height: 35.0,
+                ),
+          Center(
+            child: Text(
+              c.validTillAR,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.redAccent,
+                fontSize: 5.0,
+              ),
+            ),
+          ),
+          Center(
+            child: Text(
+              c.validTillEN,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.redAccent,
+                  fontSize: 5.0),
+            ),
+          ),
+          c.image == null
+              ? Image.asset(c.image)
+              : Image.network(widget.user.ImagePath + c.image),
+          Center(
+            child: Text(
+              c.descriptionAR,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 5.0),
+            ),
+          ),
+          Center(
+            child: Text(
+              c.descriptionEN,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 5.0),
+            ),
+          ),
+        ],
+      ),
+        decoration: c.isSelected
+            ? new BoxDecoration(color: Colors.black38, border: new Border.all(color: Colors.black))
+            : new BoxDecoration(),
+      ),
+    );
+  }
+}
+
+
+
 class BrandPage extends StatefulWidget {
   final int brandID;
   final UsersModel user;
+  BrandDetails brand;
   BrandPage(this.brandID, this.user);
   @override
   State<StatefulWidget> createState() {
@@ -15,211 +108,42 @@ class BrandPage extends StatefulWidget {
 }
 
 class BrandPageState extends State<BrandPage> {
+  bool longPressFlag = false;
   void initData() async {
     BrandDetails b = await widget.user.getBrandDetails(widget.brandID);
     setState(() {
       brand = b;
+      widget.brand = b;
     });
   }
+ onCoupon_selected(int index){
+    setState((){
+      brand.coupons[index].isSelected = !brand.coupons[index].isSelected;  
+      //indexList[index].isselected=!indexList[index].isselected;
+    });
 
+  }
+
+   onPlatinum_selected(int index){
+    setState((){
+      brand.platinums[index].isSelected = !brand.platinums[index].isSelected;  
+      //indexList[index].isselected=!indexList[index].isselected;
+    });
+
+  }
+
+  void longPressCoupon() {
+    setState(() {
+      if (brand.coupons.isEmpty) {
+        longPressFlag = false;
+      } else {
+        longPressFlag = true;
+      }
+    });
+  }
   void initState() {
     initData();
-    /*brand = new BrandDetails(
-      brandName: 'Cook Door Resturant',
-      brandDescription: 'Terms & Condition',
-      brandImage: 'assets/Branches/img-product.jpg',
-      brandIcon: 'assets/HomePage/Starbucks.png',
-      id: 1,
-      branches: [
-        new Branch(
-            id: 0,
-            branchName: '5th Settlement',
-            branchAddress: 'Gallaria Mall, 90 Street',
-            branchLocation: '',
-            branchTelephone: '01000',
-            availableFeatures: [
-              'assets/Branches/air.png',
-              'assets/Branches/erea.png',
-              'assets/Branches/parking.png',
-              'assets/Branches/smoking.png',
-            ]),
-        new Branch(
-            id: 0,
-            branchName: 'Nasr City',
-            branchAddress: 'City Stars mall',
-            branchLocation: '',
-            branchTelephone: '01000',
-            availableFeatures: [
-              'assets/Branches/air.png',
-              'assets/Branches/erea.png',
-              'assets/Branches/parking.png',
-              'assets/Branches/smoking.png',
-            ]),
-        new Branch(
-            id: 0,
-            branchName: 'Nasr City',
-            branchAddress: 'City Center Mall',
-            branchLocation: '',
-            branchTelephone: '01000',
-            availableFeatures: [
-              'assets/Branches/air.png',
-              'assets/Branches/erea.png',
-              'assets/Branches/parking.png',
-              'assets/Branches/smoking.png',
-            ]),
-      ],
-      coupons: [
-        new Coupon(
-            id: 1,
-            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
-            image: 'assets/Branches/img-product.jpg',
-            validTillAR: 'سارى حتى 31 ديسمبر 2018',
-            validTillEN: 'valid till 31 decemper 2018',
-            descriptionAR:
-                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
-            descriptionEN:
-                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
-        new Coupon(
-            id: 1,
-            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
-            image: 'assets/Branches/img-product.jpg',
-            validTillAR: 'سارى حتى 31 ديسمبر 2018',
-            validTillEN: 'valid till 31 decemper 2018',
-            descriptionAR:
-                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
-            descriptionEN:
-                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
-        new Coupon(
-            id: 1,
-            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
-            image: 'assets/Branches/img-product.jpg',
-            validTillAR: 'سارى حتى 31 ديسمبر 2018',
-            validTillEN: 'valid till 31 decemper 2018',
-            descriptionAR:
-                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
-            descriptionEN:
-                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
-        new Coupon(
-            id: 1,
-            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
-            image: 'assets/Branches/img-product.jpg',
-            validTillAR: 'سارى حتى 31 ديسمبر 2018',
-            validTillEN: 'valid till 31 decemper 2018',
-            descriptionAR:
-                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
-            descriptionEN:
-                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
-        new Coupon(
-            id: 1,
-            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
-            image: 'assets/Branches/img-product.jpg',
-            validTillAR: 'سارى حتى 31 ديسمبر 2018',
-            validTillEN: 'valid till 31 decemper 2018',
-            descriptionAR:
-                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
-            descriptionEN:
-                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
-        new Coupon(
-            id: 1,
-            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
-            image: 'assets/Branches/img-product.jpg',
-            validTillAR: 'سارى حتى 31 ديسمبر 2018',
-            validTillEN: 'valid till 31 decemper 2018',
-            descriptionAR:
-                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
-            descriptionEN:
-                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
-        new Coupon(
-            id: 1,
-            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
-            image: 'assets/Branches/img-product.jpg',
-            validTillAR: 'سارى حتى 31 ديسمبر 2018',
-            validTillEN: 'valid till 31 decemper 2018',
-            descriptionAR:
-                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
-            descriptionEN:
-                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
-        new Coupon(
-            id: 1,
-            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
-            image: 'assets/Branches/img-product.jpg',
-            validTillAR: 'سارى حتى 31 ديسمبر 2018',
-            validTillEN: 'valid till 31 decemper 2018',
-            descriptionAR:
-                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
-            descriptionEN:
-                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
-        new Coupon(
-            id: 1,
-            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
-            image: 'assets/Branches/img-product.jpg',
-            validTillAR: 'سارى حتى 31 ديسمبر 2018',
-            validTillEN: 'valid till 31 decemper 2018',
-            descriptionAR:
-                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
-            descriptionEN:
-                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
-        new Coupon(
-            id: 1,
-            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
-            image: 'assets/Branches/img-product.jpg',
-            validTillAR: 'سارى حتى 31 ديسمبر 2018',
-            validTillEN: 'valid till 31 decemper 2018',
-            descriptionAR:
-                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
-            descriptionEN:
-                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
-        new Coupon(
-            id: 1,
-            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
-            image: 'assets/Branches/img-product.jpg',
-            validTillAR: 'سارى حتى 31 ديسمبر 2018',
-            validTillEN: 'valid till 31 decemper 2018',
-            descriptionAR:
-                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
-            descriptionEN:
-                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
-        new Coupon(
-            id: 1,
-            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
-            image: 'assets/Branches/img-product.jpg',
-            validTillAR: 'سارى حتى 31 ديسمبر 2018',
-            validTillEN: 'valid till 31 decemper 2018',
-            descriptionAR:
-                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
-            descriptionEN:
-                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
-        new Coupon(
-            id: 1,
-            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
-            image: 'assets/Branches/img-product.jpg',
-            validTillAR: 'سارى حتى 31 ديسمبر 2018',
-            validTillEN: 'valid till 31 decemper 2018',
-            descriptionAR:
-                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
-            descriptionEN:
-                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
-        new Coupon(
-            id: 1,
-            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
-            image: 'assets/Branches/img-product.jpg',
-            validTillAR: 'سارى حتى 31 ديسمبر 2018',
-            validTillEN: 'valid till 31 decemper 2018',
-            descriptionAR:
-                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
-            descriptionEN:
-                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
-        new Coupon(
-            id: 1,
-            icon: 'assets/Coupons/logo-bogo-in-coupons.png',
-            image: 'assets/Branches/img-product.jpg',
-            validTillAR: 'سارى حتى 31 ديسمبر 2018',
-            validTillEN: 'valid till 31 decemper 2018',
-            descriptionAR:
-                'ندعوك انت وضيفك للاستمتاع بروديو باربكيو تشيز برجر  ساندوتش مجانا عند شراء روديو باربكيو تشيز برجر بنفس القيمه',
-            descriptionEN:
-                'you and your guest are cordially invited to enjoy one complimentery Rodeo BBQ cheese burger sandwitch when a BBQ cheese burger sandwitch is purchased with similar value'),
-      ]);*/
+    
 
     super.initState();
   }
@@ -228,17 +152,7 @@ class BrandPageState extends State<BrandPage> {
   double width;
   double height;
   double devicePixelRatio;
-  /*
-      assets/Branches/air.png
-    - assets/Branches/erea.png
-    - assets/Branches/face-icon-for-branches.png
-    - assets/Branches/parking.png
-    - assets/Branches/phone.png
-    - assets/Branches/smoking.png
-    - assets/Branches/telegram-icon-for-branches.png
-    - assets/Branches/twttier-icon-for-branches.png
-    - assets/Branches/background-3-tabs.png
-  */
+  
   BrandDetails brand;
   Widget _buildAppBar() {
     return AppBar(
@@ -263,6 +177,9 @@ class BrandPageState extends State<BrandPage> {
     );
   }
 
+Widget _buildGenButton(){
+  return FloatingActionButton(child: Text('G'),);
+}
   TabController _controller;
   Widget _buildBody(BuildContext context) {
     return ListView(
@@ -285,6 +202,7 @@ class BrandPageState extends State<BrandPage> {
           height: height / 50,
         ),
         _buildTabs(),
+        _buildGenButton(),
       ],
     );
   }
@@ -505,55 +423,24 @@ class BrandPageState extends State<BrandPage> {
         color: Colors.white,
       ),
       //alignment: Alignment.center,
-      child: ListView(
-        children: <Widget>[
-          c.icon == null
-              ? Image.asset(
-                  c.icon,
-                  width: 35.0,
-                  height: 35.0,
-                )
-              : Image.network(
-                  widget.user.ImagePath + c.icon,
-                  width: 35.0,
-                  height: 35.0,
-                ),
-          Center(
-            child: Text(
-              c.validTillAR,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.redAccent,
-                fontSize: 5.0,
-              ),
-            ),
-          ),
-          Center(
-            child: Text(
-              c.validTillEN,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.redAccent,
-                  fontSize: 5.0),
-            ),
-          ),
-          c.image == null
-              ? Image.asset(c.image)
-              : Image.network(widget.user.ImagePath + c.image),
-          Center(
-            child: Text(
-              c.descriptionAR,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 5.0),
-            ),
-          ),
-          Center(
-            child: Text(
-              c.descriptionEN,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 5.0),
-            ),
-          ),
-        ],
-      ),
+      child: CustomWidget(
+            index: index,
+            isselected: brand.coupons[index].isSelected,
+            brand: brand,
+            user: widget.user,
+            longPressEnabled: longPressFlag,
+            callback: () {
+             onCoupon_selected(index);
+             /*if (indexList.contains(index)) {
+                indexList.remove(index);
+              } else {
+                indexList.add(Element());
+              }*/
+
+              longPressCoupon();
+            },
+          )
+      
     );
   }
 

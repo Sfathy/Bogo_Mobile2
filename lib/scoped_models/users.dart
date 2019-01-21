@@ -7,8 +7,8 @@ import '../models/categoty.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UsersModel extends Model {
-  final String baseURL = 'http://192.168.8.102:52994/api/';
-  //final String baseURL = 'http://192.168.1.198:52994/api/';
+  //final String baseURL = 'http://bogocustomer.dragonssolution.com/api/';
+  final String baseURL = 'http://192.168.1.144:52994/api/';
   User _authenticatedUser;
   List<Category> _catlist = new List<Category>();
   List<Coupon> _couponList = new List<Coupon>();
@@ -16,9 +16,11 @@ class UsersModel extends Model {
   List<Category> get CatList {
     return _catlist;
   }
+
   List<String> _cartItems;
-  void getCartItems()async{
-    http.Response response = await http.get(baseURL + 'Customer/getCart/' + _authenticatedUser.id.toString());
+  void getCartItems() async {
+    http.Response response = await http
+        .get(baseURL + 'Customer/getCart/' + _authenticatedUser.id.toString());
     List res;
     var data;
     if (response.statusCode == 200) {
@@ -26,43 +28,46 @@ class UsersModel extends Model {
       print(data);
       if (data != null) {
         String c;
-          List<String> carts = new List<String>();
-          for (var j = 0; j < data.length; j++) {
-            //f = cs[j]['availableFeatures'];
-            c =  data[j];
-              carts.add(c);
-          }
-          _cartItems = carts;
+        List<String> carts = new List<String>();
+        for (var j = 0; j < data.length; j++) {
+          //f = cs[j]['availableFeatures'];
+          c = data[j];
+          carts.add(c);
+        }
+        _cartItems = carts;
       }
     }
   }
-  List<String> get CartItems{
-    if(_cartItems == null||_cartItems.length==0){
+
+  List<String> get CartItems {
+    if (_cartItems == null || _cartItems.length == 0) {
       getCartItems();
       notifyListeners();
     }
     return _cartItems;
   }
+
   List<Coupon> get CouponList {
-    if (_couponList==null||_couponList.length==0)
-    {
+    if (_couponList == null || _couponList.length == 0) {
       //get coupon list from the server
       getCouponList();
       notifyListeners();
     }
     return _couponList;
   }
-  List<Platinum> get PlatinumList{
- if (_platinumList==null||_platinumList.length==0)
-    {
+
+  List<Platinum> get PlatinumList {
+    if (_platinumList == null || _platinumList.length == 0) {
       //get coupon list from the server
       getPlatinumList();
       notifyListeners();
     }
     return _platinumList;
   }
-   void getPlatinumList() async{
-    http.Response response = await http.get(baseURL + 'Customer/getPlatinum/' + _authenticatedUser.id.toString());
+
+  void getPlatinumList() async {
+    http.Response response = await http.get(
+        baseURL + 'Customer/getPlatinum/' + _authenticatedUser.id.toString());
     List res;
     var data;
     if (response.statusCode == 200) {
@@ -70,25 +75,27 @@ class UsersModel extends Model {
       print(data);
       if (data != null) {
         Platinum c;
-          List<Platinum> coupons = new List<Platinum>();
-          for (var j = 0; j < data.length; j++) {
-            //f = cs[j]['availableFeatures'];
-            c = new Platinum(
-              id: data[j]['id'],
-              title: data[j]['title'],
-              description: data[j]['description'],
-              faceBookLink: data[j]['faceBookLink'],
-              image: data[j]['image'],
-              whatsNumber: data[j]['whatsNumber'],
-            );
-              coupons.add(c);
-          }
-          _platinumList = coupons;
+        List<Platinum> coupons = new List<Platinum>();
+        for (var j = 0; j < data.length; j++) {
+          //f = cs[j]['availableFeatures'];
+          c = new Platinum(
+            id: data[j]['id'],
+            title: data[j]['title'],
+            description: data[j]['description'],
+            faceBookLink: data[j]['faceBookLink'],
+            image: data[j]['image'],
+            whatsNumber: data[j]['whatsNumber'],
+          );
+          coupons.add(c);
+        }
+        _platinumList = coupons;
       }
     }
-   }
-  void getCouponList() async{
-    http.Response response = await http.get(baseURL + 'Customer/getCoupon/' + _authenticatedUser.id.toString());
+  }
+
+  void getCouponList() async {
+    http.Response response = await http.get(
+        baseURL + 'Customer/getCoupon/' + _authenticatedUser.id.toString());
     List res;
     var data;
     if (response.statusCode == 200) {
@@ -96,33 +103,35 @@ class UsersModel extends Model {
       print(data);
       if (data != null) {
         Coupon c;
-          List<Coupon> coupons = new List<Coupon>();
-          for (var j = 0; j < data.length; j++) {
-            //f = cs[j]['availableFeatures'];
-            c = new Coupon(
-              id: data[j]['id'],
-              validTillEN:
-                  data[j]['validTillEN'] != null ? data[j]['validTillEN'] : '',
-              validTillAR:
-                  data[j]['validTillAR'] != null ? data[j]['validTillAR'] : '',
-              image: data[j]['image'] != null ? data[j]['image'] : '',
-              icon: data[j]['icon'] != null ? data[j]['icon'] : '',
-              descriptionAR:
-                  data[j]['descriptionAR'] != null ? data[j]['descriptionAR'] : '',
-              descriptionEN:
-                  data[j]['descriptionEN'] != null ? data[j]['descriptionEN'] : '',
-            );
-              coupons.add(c);
-          }
-          _couponList = coupons;
+        List<Coupon> coupons = new List<Coupon>();
+        for (var j = 0; j < data.length; j++) {
+          //f = cs[j]['availableFeatures'];
+          c = new Coupon(
+            id: data[j]['id'],
+            validTillEN:
+                data[j]['validTillEN'] != null ? data[j]['validTillEN'] : '',
+            validTillAR:
+                data[j]['validTillAR'] != null ? data[j]['validTillAR'] : '',
+            image: data[j]['image'] != null ? data[j]['image'] : '',
+            icon: data[j]['icon'] != null ? data[j]['icon'] : '',
+            descriptionAR: data[j]['descriptionAR'] != null
+                ? data[j]['descriptionAR']
+                : '',
+            descriptionEN: data[j]['descriptionEN'] != null
+                ? data[j]['descriptionEN']
+                : '',
+          );
+          coupons.add(c);
+        }
+        _couponList = coupons;
       }
     }
-    
   }
 
- List<String> _history;
-  void getHistory()async{
-    http.Response response = await http.get(baseURL + 'Customer/getHistory/' + _authenticatedUser.id.toString());
+  List<String> _history;
+  void getHistory() async {
+    http.Response response = await http.get(
+        baseURL + 'Customer/getHistory/' + _authenticatedUser.id.toString());
     List res;
     var data;
     if (response.statusCode == 200) {
@@ -130,18 +139,19 @@ class UsersModel extends Model {
       print(data);
       if (data != null) {
         String c;
-          List<String> history = new List<String>();
-          for (var j = 0; j < data.length; j++) {
-            //f = cs[j]['availableFeatures'];
-            c =  data[j];
-              history.add(c);
-          }
-          _history = history;
+        List<String> history = new List<String>();
+        for (var j = 0; j < data.length; j++) {
+          //f = cs[j]['availableFeatures'];
+          c = data[j];
+          history.add(c);
+        }
+        _history = history;
       }
     }
   }
-  List<String> get History{
-    if(_history == null||_history.length==0){
+
+  List<String> get History {
+    if (_history == null || _history.length == 0) {
       getHistory();
       notifyListeners();
     }
@@ -149,7 +159,7 @@ class UsersModel extends Model {
   }
 
   List<PredefinedPackage> _prePackages;
-  void getPrePackages()async{
+  void getPrePackages() async {
     http.Response response = await http.get(baseURL + 'Packages/getPackages');
     List res;
     var data;
@@ -158,26 +168,30 @@ class UsersModel extends Model {
       print(data);
       if (data != null) {
         PredefinedPackage c;
-          List<PredefinedPackage> prePackages = new List<PredefinedPackage>();
-          for (var j = 0; j < data.length; j++) {
-            //f = cs[j]['availableFeatures'];
-            c =  new PredefinedPackage(id:data[j]['id'],name:data[j]['name'],price:data[j]['price']   ) ;
-              prePackages.add(c);
-          }
-          _prePackages = prePackages;
+        List<PredefinedPackage> prePackages = new List<PredefinedPackage>();
+        for (var j = 0; j < data.length; j++) {
+          //f = cs[j]['availableFeatures'];
+          c = new PredefinedPackage(
+              id: data[j]['id'],
+              name: data[j]['name'],
+              price: data[j]['price']);
+          prePackages.add(c);
+        }
+        _prePackages = prePackages;
       }
     }
   }
+
   List<dynamic> get PrePackages {
-    if(_prePackages == null||_prePackages.length==0){
+    if (_prePackages == null || _prePackages.length == 0) {
       getPrePackages();
       notifyListeners();
     }
     return _prePackages;
   }
-  
-List<Brand>  _offers;
-  void getoffers()async{
+
+  List<Brand> _offers;
+  void getoffers() async {
     http.Response response = await http.get(baseURL + 'Packages/getOffers');
     List res;
     var data;
@@ -186,34 +200,35 @@ List<Brand>  _offers;
       print(data);
       if (data != null) {
         dynamic c;
-          List<Brand> offers  = new List<Brand>();
-          for (var j = 0; j < data.length; j++) {
-            //f = cs[j]['availableFeatures'];
+        List<Brand> offers = new List<Brand>();
+        for (var j = 0; j < data.length; j++) {
+          //f = cs[j]['availableFeatures'];
           c = new Brand(
-              id: data[j]['id'],
-                brandName: data[j]['name'] != null ? data[j]['name'] : '',
-                brandDescription: data[j]['brandDescription'] != null
-                    ? data[j]['brandDescription']
-                    : '',
-                brandImage:
-                    data[j]['logoImage'] != null ? data[j]['logoImage'] : '',
-                    price: data[j]['price'] != null ? double.parse( data[j]['price'].toString()) : 0.0,
-            );
-              offers.add(c);
-          }
-          _offers = offers;
-      } 
+            id: data[j]['id'],
+            brandName: data[j]['name'] != null ? data[j]['name'] : '',
+            brandDescription: data[j]['brandDescription'] != null
+                ? data[j]['brandDescription']
+                : '',
+            brandImage:
+                data[j]['logoImage'] != null ? data[j]['logoImage'] : '',
+            price: data[j]['price'] != null
+                ? double.parse(data[j]['price'].toString())
+                : 0.0,
+          );
+          offers.add(c);
+        }
+        _offers = offers;
+      }
     }
   }
+
   List<dynamic> get Offers {
-    if(_offers == null||_offers.length==0){
+    if (_offers == null || _offers.length == 0) {
       getoffers();
       notifyListeners();
     }
     return _offers;
   }
-  
-
 
   User get AuthenticatedUser {
     return _authenticatedUser;
@@ -366,10 +381,10 @@ List<Brand>  _offers;
           for (var j = 0; j < bs.length; j++) {
             f = bs[j]['availableFeatures'];
             fs = new List<String>();
-            if(f!=null){
-                for (var i = 0; i < f.length; i++) {
-                  fs.add(f[i].toString());
-                }
+            if (f != null) {
+              for (var i = 0; i < f.length; i++) {
+                fs.add(f[i].toString());
+              }
             }
             b = new Branch(
               id: bs[j]['id'],
@@ -405,6 +420,7 @@ List<Brand>  _offers;
                   cs[j]['descriptionAR'] != null ? cs[j]['descriptionAR'] : '',
               descriptionEN:
                   cs[j]['descriptionEN'] != null ? cs[j]['descriptionEN'] : '',
+              isSelected: false,
             );
             coupons.add(c);
           }
@@ -415,11 +431,11 @@ List<Brand>  _offers;
             //f = cs[j]['availableFeatures'];
             p = new Platinum(
               id: ps[j]['id'],
-             description: ps[j]['description'],
-             title: ps[j]['title'],
-             faceBookLink: ps[j]['faceBookLink'],
-             image: ps[j]['image'],
-             whatsNumber: ps[j]['whatsNumber'],
+              description: ps[j]['description'],
+              title: ps[j]['title'],
+              faceBookLink: ps[j]['faceBookLink'],
+              image: ps[j]['image'],
+              whatsNumber: ps[j]['whatsNumber'],
             );
             platinums.add(p);
           }
@@ -521,37 +537,38 @@ List<Brand>  _offers;
     }
   }
 
-
-Future<List<Brand>>  getPackageOffers(int packageID) async{
-  List<Brand> coupons = new List<Brand>();
-     http.Response response = await http.get(baseURL + 'Packages/getPackage/' + packageID.toString());
+  Future<List<Brand>> getPackageOffers(int packageID) async {
+    List<Brand> coupons = new List<Brand>();
+    http.Response response =
+        await http.get(baseURL + 'Packages/getPackage/' + packageID.toString());
     List res;
     var data;
     if (response.statusCode == 200) {
       data = json.decode(response.body);
-     // print(data);
+      // print(data);
       if (data != null) {
         Brand c;
-          
-          for (var j = 0; j < data.length; j++) {
-            //f = cs[j]['availableFeatures'];
-            c = new Brand(
-              id: data[j]['id'],
-                brandName: data[j]['name'] != null ? data[j]['name'] : '',
-                brandDescription: data[j]['brandDescription'] != null
-                    ? data[j]['brandDescription']
-                    : '',
-                brandImage:
-                    data[j]['logoImage'] != null ? data[j]['logoImage'] : '',
-                    price: data[j]['price'] != null ? double.parse( data[j]['price'].toString()) : 0.0,
-            );
-              coupons.add(c);
-          }
-         // _couponList = coupons;
+
+        for (var j = 0; j < data.length; j++) {
+          //f = cs[j]['availableFeatures'];
+          c = new Brand(
+            id: data[j]['id'],
+            brandName: data[j]['name'] != null ? data[j]['name'] : '',
+            brandDescription: data[j]['brandDescription'] != null
+                ? data[j]['brandDescription']
+                : '',
+            brandImage:
+                data[j]['logoImage'] != null ? data[j]['logoImage'] : '',
+            price: data[j]['price'] != null
+                ? double.parse(data[j]['price'].toString())
+                : 0.0,
+          );
+          coupons.add(c);
+        }
+        // _couponList = coupons;
       }
     }
     notifyListeners();
     return coupons;
   }
- 
 }

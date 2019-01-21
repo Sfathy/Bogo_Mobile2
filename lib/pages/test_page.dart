@@ -17,39 +17,105 @@ class MyTestPage extends StatefulWidget {
 class _MyTestPageState extends State<MyTestPage>
     {
   
+ bool longPressFlag = false;
+  List<Element> indexList = new List();
 
-  List data;
+  onelement_selected(int index){
+    setState((){
+      indexList[index].isselected=!indexList[index].isselected;
+    });
 
-  Future<String> getData() async{
-    List dt = await widget.user.getCategoryList();
-    //var response = await http.get('http://192.168.8.101:52994/api/category/get');
+  }
+  void longPress() {
     setState(() {
-          data = dt;//json.decode(response.body);      
-        });
-    
-    return "success";
-
-  }
-  @override
-  void initState() {
-    getData();
-    super.initState();
-    
+      if (indexList.isEmpty) {
+        longPressFlag = false;
+      } else {
+        longPressFlag = true;
+      }
+    });
   }
 
-  
   @override
   Widget build(BuildContext context) {
-    
-    //getData();
+    for(var i=0;i<15;i++){
+      indexList.add(Element(isselected: false));
+    }
+
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Test Page'),
+        title: new Text('Selected ${indexList.length}  ' + indexList.toString()),
       ),
-      body: data==null?Container(): ListView.builder(itemCount: data.length,itemBuilder: (BuildContext context,int index){
-        return Text(index.toString() +' '+data[index]['name'].toString());
-      },)
+      body: new ListView.builder(
+        itemCount: 15,
+        itemBuilder: (context, index) {
+          return new CustomWidget(
+            index: index,
+            isselected: indexList[index].isselected,
+            
+            longPressEnabled: longPressFlag,
+            callback: () {
+             onelement_selected(index);
+             if (indexList.contains(index)) {
+                indexList.remove(index);
+              } else {
+                indexList.add(Element());
+              }
+
+              longPress();
+            },
+          );
+        },
+      ),
+      floatingActionButton: new FloatingActionButton(
+        onPressed: () {},
+        tooltip: 'Increment',
+        child: new Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
 
+class CustomWidget extends StatefulWidget {
+  final int index;
+  final bool longPressEnabled;
+  final VoidCallback callback;
+  final bool isselected;
+
+  const CustomWidget({Key key, this.index, this.longPressEnabled, this.callback,this.isselected}) : super(key: key);
+
+  @override
+  _CustomWidgetState createState() => new _CustomWidgetState();
+}
+
+class _CustomWidgetState extends State<CustomWidget> {
+  bool selected = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return new GestureDetector(
+      onLongPress: () {
+        widget.callback();
+      },
+      onTap: () {
+        if (widget.longPressEnabled) {
+          widget.callback();
+        }
+      },
+      child: new Container(
+        margin: new EdgeInsets.all(5.0),
+        child: new ListTile(
+          title: new Text("Title ${widget.index}"),
+          subtitle: new Text("Description ${widget.index}"),
+        ),
+        decoration: widget.isselected
+            ? new BoxDecoration(color: Colors.black38, border: new Border.all(color: Colors.black))
+            : new BoxDecoration(),
+      ),
+    );
+  }
+}
+class Element{
+   bool isselected;
+  Element({this.isselected});
+ }

@@ -76,58 +76,8 @@ class HomePageState extends State<HomePage> {
   int _selectedTabIndex = 0;
   bool _enabled = false;
 
-  /* void initializeCat() async {
-    //List<Map>
-    List<Category> _catlst = new List<Category>();
-    List responseData = await widget.user.getCategoryList();
-    //print(responseData);
-    if (responseData != null) {
-      _catlst = new List<Category>();
-      List<Brand> brands = new List<Brand>();
-      Brand b;
-      Category c;
-      for (var i = 0; i < responseData.length; i++) {
-        brands = new List<Brand>();
-        List bs = responseData[i]['brandsVM'];
-        for (var j = 0; j < bs.length; i++) {
-          b = new Brand(
-              id: 0,
-              brandName: bs[j]['name'],
-              brandDescription: '',
-              brandImage: '');
-          brands.add(b);
-        }
-        c = new Category(
-            id: 0,
-            categoryName: responseData[i]['name'],
-            icon: responseData[i]['iconImage'],
-            brands: brands);
-        _catlst.add(c);
-      }
-      setState(() {
-        _catlist = _catlst;
-      });
-      /*responseData.forEach(( dynamic data) {
-        Map<String, dynamic> brandsData = data['brandsVM'];
-        brands = new List<Brand>();
-        brandsData.forEach((String id, dynamic db) {
-          b = new Brand(
-              id: db['id'],
-              brandName: db['Name'],
-              brandDescription: db['Address'],
-              brandImage: db['LogoImage']);
-          brands.add(b);
-        });
-        c = new Category(
-            id: data['id'],
-            categoryName: data['name'],
-            icon: data['IconImage'],
-            brands: brands);
-        _catlist.add(c);
-      });*/
-    }
-  }
-*/
+
+
   List<Category> _categotyList = [
     new Category(
         categoryName: 'Resturants & Cafes',
@@ -306,6 +256,7 @@ class HomePageState extends State<HomePage> {
     return ListView(
       //mainxAxisAlignment: MainAxisAlignment.center,
       scrollDirection: Axis.horizontal,
+      primary: false,
       children: <Widget>[
         Image.asset(
           'assets/HomePage/previous-icons-inner.png',
@@ -316,6 +267,7 @@ class HomePageState extends State<HomePage> {
           margin: EdgeInsets.symmetric(horizontal: 2.0),
           child: ListView.builder(
             itemCount: _categotyList[index].brands.length,
+            primary: false,
             itemBuilder: _buildBrandCard,
           ),
         ),
@@ -434,6 +386,7 @@ class HomePageState extends State<HomePage> {
         ),
         ListView.builder(
           itemCount: _categotyList[0].brands.length,
+          primary: false,
           itemBuilder: (BuildContext context, int brandIndex) {},
         ),
         //   _buildBrandList(index),
@@ -447,6 +400,7 @@ class HomePageState extends State<HomePage> {
   Widget _buildCatItem2(BuildContext context, int index) {
     return ListView.builder(
         itemCount: _categotyList[0].brands.length,
+        primary: false,
         itemBuilder: (BuildContext context, int brandIndex) {
           return Container();
         });
@@ -454,7 +408,7 @@ class HomePageState extends State<HomePage> {
 
   Widget _buildCategoryContet() {
     return ListView.builder(
-        itemCount: _categotyList.length, itemBuilder: _buildCatItem2);
+        itemCount: _categotyList.length,primary: false, itemBuilder: _buildCatItem2);
 
     /*Container(
       constraints: BoxConstraints(minWidth: width, minHeight: height / 4),
@@ -650,6 +604,7 @@ class HomePageState extends State<HomePage> {
     List<Widget> catCards = new List<Widget>();
     for (var i = 0; i < _catlist.length; i++) {
       selectedCat = i;
+      print('_buildCategotyCards No Of Brand:' + _catlist[selectedCat].brands.length.toString());
       catCards.add(_buildCategotyCard2());
     }
     return ListView(shrinkWrap: true, children: catCards);
@@ -657,9 +612,13 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _buildBrandItem(int index) {
-    if (_catlist[selectedCat].brands[index].brandImage != null) {
-      // print(user.ImagePath + _catlist[selectedCat].brands[index].brandImage);
+    selectedCat = 0;
+    print('selectedCat: ' + selectedCat.toString());
+    if (_catlist[selectedCat].brands == null ||_catlist[selectedCat].brands.length==0|| _catlist[selectedCat].brands.length<=index ) {
+     // print('selectedCat: ' + selectedCat.toString()); 
+      return Container();
     }
+    print('brandName: ' + _catlist[selectedCat].brands[index].brandName); 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 2.0),
       child: Column(
@@ -704,6 +663,7 @@ class HomePageState extends State<HomePage> {
 
   List<Widget> _buildCatItems() {
     List<Widget> items = new List<Widget>();
+    print('Category: ' + _catlist[selectedCat].categoryName +'No Of Brand:' + _catlist[selectedCat].brands.length.toString());
     items.add(_buildLeftArrow());
     items.add(Center(
       child: Container(
@@ -712,6 +672,7 @@ class HomePageState extends State<HomePage> {
           itemCount: _catlist[selectedCat].brands.length,
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
+          primary: false,
           itemBuilder: (BuildContext context, int index) {
             return _buildBrandItem(index);
           },
@@ -724,6 +685,7 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _buildCategotyCard2() {
+    //print('Category: ' + _catlist[selectedCat].categoryName +' No Of Brand:' + _catlist[selectedCat].brands.length.toString());
     return (_catlist == null || _catlist.length <= 0)
         ? Container()
         : Column(
@@ -755,13 +717,14 @@ class HomePageState extends State<HomePage> {
                     ),
                     // Row(children: <Widget>[
                     //TextField(),
-                    Container(
+                    _catlist[selectedCat].brands.length==0? Container(): Container(
                       // width: width/2,
                       child: Expanded(
                         flex: 1,
                         child: Center(
                           child: ListView(
                               scrollDirection: Axis.horizontal,
+                              primary: false,
                               //width: width/1.5,
                               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: _buildCatItems()

@@ -45,8 +45,10 @@ class Coupon {
   final String icon;
   final String descriptionEN;
   final String descriptionAR;
+  bool isSelected;
   Coupon({@required this.id,@required this.validTillEN,@required this.validTillAR, 
-  @required this.image,@required this.descriptionEN,@required this.descriptionAR,@required this.icon});
+  @required this.image,@required this.descriptionEN,@required this.descriptionAR,
+  @required this.icon,@required this.isSelected});
 
 
 }
@@ -63,9 +65,10 @@ class Platinum {
   final String image;
   final String faceBookLink;
   final String whatsNumber;
+  bool isSelected;
   //final String descriptionAR;
   Platinum({@required this.id,@required this.title,@required this.description, 
-  @required this.image,@required this.faceBookLink,@required this.whatsNumber});
+  @required this.image,@required this.faceBookLink,@required this.whatsNumber,@required this.isSelected});
 
 
 }

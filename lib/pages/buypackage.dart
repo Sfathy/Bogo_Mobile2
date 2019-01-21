@@ -314,7 +314,7 @@ class BuyPackagePageState extends State<BuyPackagePage> {
                   child: Text('Buy'),
                   onPressed: ()  {
                     print('package ' + _selectedPackage.toString()+' will be buyed');
-                    // Navigator.pushReplacementNamed(context, '/home');
+                     Navigator.pushReplacementNamed(context, '/test');
                   }),
             
           ],
