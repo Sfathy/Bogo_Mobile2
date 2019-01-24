@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../models/categoty.dart';
 import '../scoped_models/users.dart';
 
-
 class CustomWidget extends StatefulWidget {
   final int index;
   final bool longPressEnabled;
@@ -12,8 +11,15 @@ class CustomWidget extends StatefulWidget {
   final UsersModel user;
   final BrandDetails brand;
 
-  const CustomWidget({Key key, this.index, this.longPressEnabled, this.callback,this.isselected,
-  this.brand,this.user}) : super(key: key);
+  const CustomWidget(
+      {Key key,
+      this.index,
+      this.longPressEnabled,
+      this.callback,
+      this.isselected,
+      this.brand,
+      this.user})
+      : super(key: key);
 
   @override
   _CustomWidgetState createState() => new _CustomWidgetState();
@@ -27,73 +33,77 @@ class _CustomWidgetState extends State<CustomWidget> {
     Coupon c = widget.brand.coupons[widget.index];
     return new GestureDetector(
       onLongPress: () {
+         if ( !c.isActive && !c.isUsed){
         widget.callback();
+         }
       },
       onTap: () {
         if (widget.longPressEnabled) {
+           if ( !c.isActive && !c.isUsed){
           widget.callback();
+           }
         }
       },
       child: new Container(
         margin: new EdgeInsets.all(5.0),
         child: ListView(
-        children: <Widget>[
-          c.icon == null
-              ? Image.asset(
-                  c.icon,
-                  width: 35.0,
-                  height: 35.0,
-                )
-              : Image.network(
-                  widget.user.ImagePath + c.icon,
-                  width: 35.0,
-                  height: 35.0,
-                ),
-          Center(
-            child: Text(
-              c.validTillAR,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.redAccent,
-                fontSize: 5.0,
-              ),
-            ),
-          ),
-          Center(
-            child: Text(
-              c.validTillEN,
-              style: TextStyle(
+          children: <Widget>[
+            c.icon == null
+                ? Image.asset(
+                    c.icon,
+                    width: 35.0,
+                    height: 35.0,
+                  )
+                : Image.network(
+                    widget.user.ImagePath + c.icon,
+                    width: 35.0,
+                    height: 35.0,
+                  ),
+            Center(
+              child: Text(
+                c.validTillAR,
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.redAccent,
-                  fontSize: 5.0),
+                  fontSize: 5.0,
+                ),
+              ),
             ),
-          ),
-          c.image == null
-              ? Image.asset(c.image)
-              : Image.network(widget.user.ImagePath + c.image),
-          Center(
-            child: Text(
-              c.descriptionAR,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 5.0),
+            Center(
+              child: Text(
+                c.validTillEN,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.redAccent,
+                    fontSize: 5.0),
+              ),
             ),
-          ),
-          Center(
-            child: Text(
-              c.descriptionEN,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 5.0),
+            c.image == null
+                ? Image.asset(c.image)
+                : Image.network(widget.user.ImagePath + c.image),
+            Center(
+              child: Text(
+                c.descriptionAR,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 5.0),
+              ),
             ),
-          ),
-        ],
-      ),
+            Center(
+              child: Text(
+                c.descriptionEN,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 5.0),
+              ),
+            ),
+          ],
+        ),
         decoration: c.isSelected
-            ? new BoxDecoration(color: Colors.black38, border: new Border.all(color: Colors.black))
+            ? new BoxDecoration(
+                color: Colors.blue,
+                border: new Border.all(color: Colors.black))
             : new BoxDecoration(),
       ),
     );
   }
 }
-
-
 
 class BrandPage extends StatefulWidget {
   final int brandID;
@@ -116,20 +126,19 @@ class BrandPageState extends State<BrandPage> {
       widget.brand = b;
     });
   }
- onCoupon_selected(int index){
-    setState((){
-      brand.coupons[index].isSelected = !brand.coupons[index].isSelected;  
+
+  onCoupon_selected(int index) {
+    setState(() {
+      brand.coupons[index].isSelected = !brand.coupons[index].isSelected;
       //indexList[index].isselected=!indexList[index].isselected;
     });
-
   }
 
-   onPlatinum_selected(int index){
-    setState((){
-      brand.platinums[index].isSelected = !brand.platinums[index].isSelected;  
+  onPlatinum_selected(int index) {
+    setState(() {
+      brand.platinums[index].isSelected = !brand.platinums[index].isSelected;
       //indexList[index].isselected=!indexList[index].isselected;
     });
-
   }
 
   void longPressCoupon() {
@@ -141,9 +150,21 @@ class BrandPageState extends State<BrandPage> {
       }
     });
   }
+
+   void longPressPlat() {
+    setState(() {
+      if (brand.platinums.isEmpty) {
+        longPressFlag = false;
+      } else {
+        longPressFlag = true;
+      }
+    });
+  }
+
+
+
   void initState() {
     initData();
-    
 
     super.initState();
   }
@@ -152,7 +173,7 @@ class BrandPageState extends State<BrandPage> {
   double width;
   double height;
   double devicePixelRatio;
-  
+
   BrandDetails brand;
   Widget _buildAppBar() {
     return AppBar(
@@ -177,31 +198,83 @@ class BrandPageState extends State<BrandPage> {
     );
   }
 
-Widget _buildGenButton(){
-  return FloatingActionButton(child: Text('G'),);
-}
+  Widget _buildGenButton() {
+    return Positioned(
+      bottom: 5.0,
+      right: 10.0,
+      child: FloatingActionButton(
+        child: Icon(Icons.data_usage),
+        onPressed: () async {
+          final Map<String, dynamic> successInfo =
+              await widget.user.generateCode(brand.coupons, brand.platinums);
+          if (successInfo['success']) {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                      //title: Text('An Error Occurred!'),
+                      content: Text(successInfo['message']),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('Ok'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      ]);
+                });
+          } else {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                      title: Text('An Error Occurred!'),
+                      content: Text(
+                          'Error while generating the code,please try again later'),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('Ok'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      ]);
+                });
+          }
+        },
+      ),
+    );
+  }
+
   TabController _controller;
   Widget _buildBody(BuildContext context) {
-    return ListView(
+    if (brand == null) {
+      print('brand ID ' + widget.brandID.toString() + '= null');
+    }
+    return Stack(
       children: <Widget>[
-        _buildUserName(),
-        _buildLocation(),
-        brand == null ? Container() : _buildBrandImage(),
-        SizedBox(
-          height: height / 75,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.end,
+        ListView(
           children: <Widget>[
-            brand == null ? Container() : _buildBrandLogo(),
-            brand == null ? Container() : _buildBrandText(),
+            _buildUserName(),
+            _buildLocation(),
+            brand == null ? Container() : _buildBrandImage(),
+            SizedBox(
+              height: height / 75,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                brand == null ? Container() : _buildBrandLogo(),
+                brand == null ? Container() : _buildBrandText(),
+              ],
+            ),
+            SizedBox(
+              height: height / 50,
+            ),
+            _buildTabs(),
           ],
         ),
-        SizedBox(
-          height: height / 50,
-        ),
-        _buildTabs(),
         _buildGenButton(),
       ],
     );
@@ -416,32 +489,30 @@ Widget _buildGenButton(){
     }
     Coupon c = brand.coupons[index];
     return Container(
-      width: width / 5,
-      height: height,
-      decoration: new BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-        color: Colors.white,
-      ),
-      //alignment: Alignment.center,
-      child: CustomWidget(
-            index: index,
-            isselected: brand.coupons[index].isSelected,
-            brand: brand,
-            user: widget.user,
-            longPressEnabled: longPressFlag,
-            callback: () {
-             onCoupon_selected(index);
-             /*if (indexList.contains(index)) {
+        width: width / 5,
+        height: height,
+        decoration: new BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          color: Colors.white,
+        ),
+        //alignment: Alignment.center,
+        child: CustomWidget(
+          index: index,
+          isselected: brand.coupons[index].isSelected,
+          brand: brand,
+          user: widget.user,
+          longPressEnabled: longPressFlag,
+          callback: () {
+            onCoupon_selected(index);
+            /*if (indexList.contains(index)) {
                 indexList.remove(index);
               } else {
                 indexList.add(Element());
               }*/
 
-              longPressCoupon();
-            },
-          )
-      
-    );
+            longPressCoupon();
+          },
+        ));
   }
 
   List<Widget> _buildCouponItems() {
@@ -484,85 +555,26 @@ Widget _buildGenButton(){
         color: Colors.grey,
       ),
       //alignment: Alignment.center,
-      child: ListView(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Text(
-                  c.title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 15.0,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Image.network(
-                  widget.user.ImagePath + c.image,
-                  width: 35.0,
-                  height: 35.0,
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.all(5.0),
-            child: Text(
-              c.description,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 10.0),
-            ),
-          ),
-          Row(
-            children: <Widget>[
-              Image.asset(
-                'assets/PlatinumTicket/facebook-icon-01.png',
-                width: 20.0,
-                height: 20.0,
-              ),
-              Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Text(
-                  c.faceBookLink,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 9.0,
-                      color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Image.asset(
-                'assets/PlatinumTicket/whattsapp-icon-01.png',
-                width: 20.0,
-                height: 20.0,
-              ),
-              Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Text(
-                  c.whatsNumber,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 9.0,
-                      color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+      child: CustomPlatWidget(
+          index: index,
+          isselected: brand.platinums[index].isSelected,
+          brand: brand,
+          user: widget.user,
+          longPressEnabled: longPressFlag,
+          callback: () {
+            onPlatinum_selected(index);
+            /*if (indexList.contains(index)) {
+                indexList.remove(index);
+              } else {
+                indexList.add(Element());
+              }*/
 
+            longPressPlat();
+          },
+        ));
+      
+  }
+      
   List<Widget> _buildPlatinumItems() {
     List<Widget> platinums = new List<Widget>();
 
@@ -732,6 +744,151 @@ Widget _buildGenButton(){
 
           //padding: EdgeInsets.all(10.0),
           //),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomPlatWidget extends StatefulWidget {
+  final int index;
+  final bool longPressEnabled;
+  final VoidCallback callback;
+  final bool isselected;
+  final UsersModel user;
+  final BrandDetails brand;
+
+  const CustomPlatWidget(
+      {Key key,
+      this.index,
+      this.longPressEnabled,
+      this.callback,
+      this.isselected,
+      this.brand,
+      this.user})
+      : super(key: key);
+
+  @override
+  _CustomPlatWidgetState createState() => new _CustomPlatWidgetState();
+}
+
+class _CustomPlatWidgetState extends State<CustomPlatWidget> {
+  bool selected = false;
+
+  @override
+  Widget build(BuildContext context) {
+    Platinum c = widget.brand.platinums[widget.index];
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    return new GestureDetector(
+      onLongPress: () {
+       if ( c.isActive && !c.isUsed){
+        widget.callback();
+       }
+      },
+      onTap: () {
+        if (widget.longPressEnabled) {
+          if ( c.isActive && !c.isUsed){
+          widget.callback();
+          }
+        }
+      },
+      /*
+       decoration: c.isSelected
+            ? new BoxDecoration(
+                color: Colors.black38,
+                border: new Border.all(color: Colors.black))
+            : new BoxDecoration(),
+      */
+      child: Container(
+        width: width / 5,
+        height: height,
+        decoration: !c.isSelected
+            ?new BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          color: Colors.grey,
+        ):new BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          color: Colors.blue,
+        ),
+        //alignment: Alignment.center,
+        child: ListView(
+          children: <Widget>[
+            c.isUsed?Container(child: Center(child: Text('Used',style: TextStyle(color: Colors.red),),),):Container(),
+            !c.isActive?Container(child: Center(child: Text('Not Active',style: TextStyle(color: Colors.red),),),):Container(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    c.title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 15.0,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Image.network(
+                    widget.user.ImagePath + c.image,
+                    width: 35.0,
+                    height: 35.0,
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Text(
+                c.description,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 10.0),
+              ),
+            ),
+            Row(
+              children: <Widget>[
+                Image.asset(
+                  'assets/PlatinumTicket/facebook-icon-01.png',
+                  width: 20.0,
+                  height: 20.0,
+                ),
+                Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    c.faceBookLink,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 9.0,
+                        color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Image.asset(
+                  'assets/PlatinumTicket/whattsapp-icon-01.png',
+                  width: 20.0,
+                  height: 20.0,
+                ),
+                Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    c.whatsNumber,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 9.0,
+                        color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

@@ -25,6 +25,7 @@ class _productPageState extends State<ProductPage> {
     super.initState();
   }
   void getData(){
+    //brands = widget.user.CatList.firstWhere((c)=>c.id==widget.catID).brands;
     brands = widget.user.CatList[widget.catID].brands;
     /* [
     new Brand(brandImage: 'assets/HomePage/Pizza-Hut.png',brandDescription: '25% Refund',brandName: 'Pizza-Hut'),
@@ -55,7 +56,7 @@ class _productPageState extends State<ProductPage> {
         icon: new Image.asset('assets/LoginPage/Big-Logo.png'),
       ),
       title: Text(
-        'Fasion',
+        widget.user.CatList[widget.catID].categoryName,
         style: TextStyle(color: Color(0xFFAD045D)),
       ),
       actions: <Widget>[
@@ -88,7 +89,7 @@ class _productPageState extends State<ProductPage> {
               onPressed: () {},
             ),
             Text(
-              'User Name',
+              widget.user.AuthenticatedUser.userName,
               style: TextStyle(color: Colors.white),
             ),
           ],
@@ -275,16 +276,19 @@ class _productPageState extends State<ProductPage> {
     for (var i = 0; i < brands.length; i++) {
       item = GestureDetector( 
         onTap: (){
-            Navigator.pushNamed(formContext, '/brand/'+i.toString());
+            Navigator.pushNamed(formContext, '/brand/'+brands[i].id.toString());
         },
-        child:Column(
+        child:Container( 
+          width: width/4,
+          height: height/6,
+          child:ListView(
           children: <Widget>[
             
             Image.network(widget.user.ImagePath + brands[i].brandImage),
             Text(brands[i].brandName,style: TextStyle(color: Colors.white),),
             Text(brands[i].brandDescription,style: TextStyle(color: Colors.white),),
           ],
-        ),);
+        ),),);
         items.add(item);
     }
     return items;

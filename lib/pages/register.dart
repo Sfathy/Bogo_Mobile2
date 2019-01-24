@@ -19,7 +19,7 @@ class RegPageState extends State<RegPage> {
   String _password;
   String _mobile;
   String _gender;
-  DateTime _birthdate;
+  String _birthdate;
   String _mac;
   String _location;
   String _address;
@@ -31,7 +31,7 @@ class RegPageState extends State<RegPage> {
       'assets/RegistrationPage/main-img.jpg',
       alignment: Alignment.topCenter,
       fit: BoxFit.fill,
-      height: height / 5,
+      height: height / 8,
       width: width,
     );
   }
@@ -77,7 +77,7 @@ class RegPageState extends State<RegPage> {
         margin: EdgeInsets.all(10.0),
         child: ListView(
           children: <Widget>[
-            _buildSocialIcons(),
+            // _buildSocialIcons(),
             _buildFirstNameText(),
             _buildLastNameText(),
             _buildMobileText(),
@@ -86,8 +86,8 @@ class RegPageState extends State<RegPage> {
             _buildConfirmPasswordText(),
             _buildBirthDateText(),
             _buildAddressText(),
-            _buildCountryText(),
-            _buildCityText(),
+          //  _buildCountryText(),
+          //  _buildCityText(),
           ],
         ),
       ),
@@ -98,15 +98,15 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'First Name',
-        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
       ),
-      style: new TextStyle(color: Colors.white),// height: 0.1, fontSize: 0.1),
+      style: new TextStyle(color: Colors.white), // height: 0.1, fontSize: 0.1),
       onChanged: (String value) {
         setState(() {
-          _password = value;
+          _firstName = value;
         });
       },
     );
@@ -116,13 +116,13 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'Last Name',
-        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
       ),
       //obscureText: true,
-      style: new TextStyle(color: Colors.white),// height: 0.1),
+      style: new TextStyle(color: Colors.white), // height: 0.1),
       onChanged: (String value) {
         setState(() {
           _lastName = value;
@@ -135,13 +135,13 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'Mobile',
-        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
       ),
       //obscureText: true,
-      style: new TextStyle(color: Colors.white),// height: 0.1),
+      style: new TextStyle(color: Colors.white), // height: 0.1),
       onChanged: (String value) {
         setState(() {
           _mobile = value;
@@ -154,14 +154,13 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'Email',
-        
-        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
       ),
       //obscureText: true,
-      style: new TextStyle(color: Colors.white),// height: 0.1),
+      style: new TextStyle(color: Colors.white), // height: 0.1),
       onChanged: (String value) {
         setState(() {
           _emailValue = value;
@@ -174,13 +173,13 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'Password',
-        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
       ),
-      //obscureText: true,
-      style: new TextStyle(color: Colors.white),// height: 0.1),
+      obscureText: true,
+      style: new TextStyle(color: Colors.white), // height: 0.1),
       onChanged: (String value) {
         setState(() {
           _password = value;
@@ -193,14 +192,14 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'Confirm Password',
-        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
       ),
-      
-      //obscureText: true,
-      style: new TextStyle(color: Colors.white),// height: 0.1),
+
+      obscureText: true,
+      style: new TextStyle(color: Colors.white), // height: 0.1),
     );
   }
 
@@ -208,16 +207,16 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'Birth Date',
-        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
       ),
       //obscureText: true,
-      style: new TextStyle(color: Colors.white),// height: 0.1),
+      style: new TextStyle(color: Colors.white), // height: 0.1),
       onChanged: (String value) {
         setState(() {
-          _birthdate = DateTime.tryParse(value);
+          _birthdate = value;
         });
       },
     );
@@ -227,7 +226,7 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'Address',
-        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
@@ -249,13 +248,13 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'Country',
-        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
       ),
       //obscureText: true,
-      style: new TextStyle(color: Colors.white),// height: 0.1),
+      style: new TextStyle(color: Colors.white), // height: 0.1),
       onChanged: (String value) {
         setState(() {
           _country = value;
@@ -268,13 +267,13 @@ class RegPageState extends State<RegPage> {
     return TextField(
       decoration: InputDecoration(
         labelText: 'City',
-        labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+        labelStyle: TextStyle(fontSize: 10.0, color: Colors.white),
         fillColor: Colors.yellowAccent,
         border: new UnderlineInputBorder(
             borderSide: new BorderSide(color: Colors.yellowAccent)),
       ),
-     // obscureText: true,
-      style: new TextStyle(color: Colors.white),// height: 0.1),
+      // obscureText: true,
+      style: new TextStyle(color: Colors.white), // height: 0.1),
       onChanged: (String value) {
         setState(() {
           _city = value;
@@ -293,8 +292,7 @@ class RegPageState extends State<RegPage> {
         textColor: Colors.white,
         child: Text('Sign Up'),
         onPressed: () async {
-          final Map<String, dynamic> successInfo =
-                        await user.signUp(new User(
+          final Map<String, dynamic> successInfo = await user.signUp(new User(
               id: 0,
               userName: _emailValue,
               token: '',
@@ -308,7 +306,25 @@ class RegPageState extends State<RegPage> {
               firstName: _firstName,
               lastName: _lastName,
               gender: 0));
-          Navigator.pushReplacementNamed(context, '/home');
+          if (successInfo['success']) {
+            Navigator.pushReplacementNamed(context, '/home');
+          } else {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                      title: Text('An Error Occurred!'),
+                      content: Text(successInfo['message']),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('Ok'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      ]);
+                });
+          }
         },
       ),
     );
@@ -327,7 +343,7 @@ class RegPageState extends State<RegPage> {
           //Text('data'),
           //  image,
           //  SizedBox(height:  20.0),
-         // box,
+          box,
           signUpButton,
         ],
       ),

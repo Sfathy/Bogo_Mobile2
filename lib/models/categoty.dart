@@ -46,10 +46,16 @@ class Coupon {
   final String descriptionEN;
   final String descriptionAR;
   bool isSelected;
+  final bool isActive;
+  final bool isUsed;
   Coupon({@required this.id,@required this.validTillEN,@required this.validTillAR, 
   @required this.image,@required this.descriptionEN,@required this.descriptionAR,
-  @required this.icon,@required this.isSelected});
-
+  @required this.icon,@required this.isSelected,@required this.isActive,@required this.isUsed});
+  Map<String, dynamic> TojsonData() {
+        var map = new Map<String, dynamic>();
+        map["id"] = id;
+        return map;
+      }
 
 }
 class PredefinedPackage {
@@ -66,10 +72,17 @@ class Platinum {
   final String faceBookLink;
   final String whatsNumber;
   bool isSelected;
+  final bool isActive;
+  final bool isUsed;
   //final String descriptionAR;
   Platinum({@required this.id,@required this.title,@required this.description, 
-  @required this.image,@required this.faceBookLink,@required this.whatsNumber,@required this.isSelected});
-
+  @required this.image,@required this.faceBookLink,@required this.whatsNumber,
+  @required this.isSelected,@required this.isActive,@required this.isUsed});
+  Map<String, dynamic> TojsonData() {
+        var map = new Map<String, dynamic>();
+        map["id"] = id;
+        return map;
+      }
 
 }
 class BrandDetails {

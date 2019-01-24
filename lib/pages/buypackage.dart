@@ -43,9 +43,11 @@ class BuyPackagePageState extends State<BuyPackagePage> {
 
   double _price = 0.0;
   int _selectedPackage = -1;
+  String _type = '';
   void _handlePackageSelect(int value) {
     setState(() {
       _selectedPackage = value;
+      _price=0.0;
       //if (value == 1) {}
     });
   }
@@ -260,13 +262,16 @@ class BuyPackagePageState extends State<BuyPackagePage> {
     switch (_selectedPackage) {
       case 0: //Package-A
         selectedPackageWidget = _buildPackageAWidget();
+        _type = 'a';
         break;
 
       case 1: //Package-B
+        _type = 'b';
         selectedPackageWidget = _buildPackageBWidget();
         break;
 
       case 2: //Package-C
+        _type = 'c';
         selectedPackageWidget = _buildPackageCWidget();
         break;
     }
@@ -313,8 +318,10 @@ class BuyPackagePageState extends State<BuyPackagePage> {
                   textColor: Colors.white,
                   child: Text('Buy'),
                   onPressed: ()  {
-                    print('package ' + _selectedPackage.toString()+' will be buyed');
-                     Navigator.pushReplacementNamed(context, '/test');
+                   // if 
+                    //print('package ' + _selectedPackage.toString()+' will be buyed');
+                    widget.user.buyPackage(_type, offers,_selectPrePackage);
+                     Navigator.pushReplacementNamed(context, '/home');
                   }),
             
           ],

@@ -7,8 +7,8 @@ import '../models/categoty.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UsersModel extends Model {
-  //final String baseURL = 'http://bogocustomer.dragonssolution.com/api/';
-  final String baseURL = 'http://192.168.1.144:52994/api/';
+  final String baseURL = 'http://bogocustomer.dragonssolution.com/api/';
+//   final String baseURL = 'http://192.168.8.102:52994/api/';
   User _authenticatedUser;
   List<Category> _catlist = new List<Category>();
   List<Coupon> _couponList = new List<Coupon>();
@@ -25,7 +25,7 @@ class UsersModel extends Model {
     var data;
     if (response.statusCode == 200) {
       data = json.decode(response.body);
-      print(data);
+     // print(data);
       if (data != null) {
         String c;
         List<String> carts = new List<String>();
@@ -72,7 +72,7 @@ class UsersModel extends Model {
     var data;
     if (response.statusCode == 200) {
       data = json.decode(response.body);
-      print(data);
+     // print(data);
       if (data != null) {
         Platinum c;
         List<Platinum> coupons = new List<Platinum>();
@@ -100,7 +100,7 @@ class UsersModel extends Model {
     var data;
     if (response.statusCode == 200) {
       data = json.decode(response.body);
-      print(data);
+     // print(data);
       if (data != null) {
         Coupon c;
         List<Coupon> coupons = new List<Coupon>();
@@ -136,7 +136,7 @@ class UsersModel extends Model {
     var data;
     if (response.statusCode == 200) {
       data = json.decode(response.body);
-      print(data);
+      //print(data);
       if (data != null) {
         String c;
         List<String> history = new List<String>();
@@ -165,7 +165,7 @@ class UsersModel extends Model {
     var data;
     if (response.statusCode == 200) {
       data = json.decode(response.body);
-      print(data);
+     // print(data);
       if (data != null) {
         PredefinedPackage c;
         List<PredefinedPackage> prePackages = new List<PredefinedPackage>();
@@ -197,7 +197,7 @@ class UsersModel extends Model {
     var data;
     if (response.statusCode == 200) {
       data = json.decode(response.body);
-      print(data);
+      //print(data);
       if (data != null) {
         dynamic c;
         List<Brand> offers = new List<Brand>();
@@ -242,6 +242,45 @@ class UsersModel extends Model {
     return "assets/HomePage/Pizza-Hut.png";
   }
 
+  Future<Map<String, dynamic>> buyPackage(String type,List<Brand> selectOffers,int selPredefined) async{
+   
+     Map<String, dynamic> packageVM = {
+       'PakageId': selPredefined.toString(),
+       'Brands': selectOffers
+    };
+       http.Response response = await http.post(baseURL + 'Packages/buyPackage/' +type+'/'+_authenticatedUser.id.toString() ,
+        headers: {'content-type': 'application/json'},
+        body: json.encode(packageVM));
+        print(response.body);
+    return {'success':true,'message':'congratulation you but a package'};
+  } 
+
+   Future<Map<String, dynamic>> generateCode(List<Coupon> selectedCoupons,List<Platinum>selectedPlatinum) async{
+   List<int> selCoup = [];
+   for (var i = 0; i < selectedCoupons.length; i++) {
+     if(selectedCoupons[i].isSelected) selCoup.add(selectedCoupons[i].id);
+   }  
+   
+
+List<int> selPlat = [];
+   for (var i = 0; i < selectedPlatinum.length; i++) {
+     if(selectedPlatinum[i].isSelected)selPlat.add(selectedPlatinum[i].id);
+   }  
+   
+     Map<String, dynamic> packageVM = {
+       'brands': selCoup,
+       'platinum': selPlat
+    };
+   // Jso
+    //json
+       http.Response response = await http.post(baseURL + 'Packages/generateCode/'+_authenticatedUser.id.toString() ,
+        //Uri.encodeFull(Ur),//(ConfigApi.SAVE),
+        headers: {'content-type': 'application/json'},
+        body: json.encode(packageVM));//json.encode({'param':selectedPlatinum}));
+        print(response.body);
+       // print(response.body);
+    return {'success':true,'message':response.body};
+  } 
   Future<Map<String, dynamic>> signUp(User user) async {
     /*
       {
@@ -288,9 +327,13 @@ class UsersModel extends Model {
     http.Response response = await http.post(baseURL + 'Auth/insertuser',
         headers: {'content-type': 'application/json'},
         body: json.encode(userData));
-    // print('sign up response:' + response.toString());
-
-    return login(user.email, user.password);
+    
+    if (response.statusCode == 200) {
+      return login(user.email, user.password);
+    }else{
+       print('sign up response:' + response.body.toString());
+       return {'success': false, 'message': 'error while register the user'};
+    }
     //_authenticatedUser = User(userName:user.userName,token:'token',id: 0  );
     //notifyListeners();
     //print(_authenticatedUser.userName);
@@ -303,7 +346,7 @@ class UsersModel extends Model {
       "Content-Type": "application/json",
       "Authorization": "bearer " + _authenticatedUser.token
     });
-    print(json.decode(response.body));
+   // print(json.decode(response.body));
   }
 
   //Future<List<Map<String, dynamic>> getCategoryList()async{
@@ -357,7 +400,7 @@ class UsersModel extends Model {
     //Future<Map<String, dynamic>> responseData= {'success': 'false', 'message': 'Error while communicating server'};
     http.Response response =
         await http.get(baseURL + 'Brands/get/' + brandID.toString());
-    print('brand details response: ' + response.body.toString());
+   // print('brand details response: ' + response.body.toString());
     BrandDetails res;
     var data;
     List<Branch> branches;
@@ -421,6 +464,8 @@ class UsersModel extends Model {
               descriptionEN:
                   cs[j]['descriptionEN'] != null ? cs[j]['descriptionEN'] : '',
               isSelected: false,
+              isActive: cs[j]['isActive'] != null ? cs[j]['isActive'].toString().toLowerCase()=='true'?true:false : false,
+              isUsed: cs[j]['used'] != null ? cs[j]['used'].toString().toLowerCase()=='true'?true:false : false,
             );
             coupons.add(c);
           }
@@ -436,6 +481,9 @@ class UsersModel extends Model {
               faceBookLink: ps[j]['faceBookLink'],
               image: ps[j]['image'],
               whatsNumber: ps[j]['whatsNumber'],
+              isSelected: false,
+              isActive: ps[j]['isActive'] != null ? ps[j]['isActive'].toString().toLowerCase()=='true'?true:false : false,
+              isUsed: ps[j]['used'] != null ? ps[j]['used'].toString().toLowerCase()=='true'?true:false : false,
             );
             platinums.add(p);
           }
@@ -455,7 +503,7 @@ class UsersModel extends Model {
             coupons: coupons);
       }
     }
-    print(res);
+    //print(res);
     return res;
   }
 
@@ -466,10 +514,10 @@ class UsersModel extends Model {
     bool hasError = true;
     String message = 'user name not exist or password is not valid';
     //http.Response response = await http.post(baseURL + 'login?username=' + email + '&password=' + password );
-    print(response.statusCode.toString());
+    //print(response.statusCode.toString());
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
-      print(responseData.toString());
+      //print(responseData.toString());
       if (responseData.containsKey('token')) {
         hasError = false;
 
@@ -484,8 +532,9 @@ class UsersModel extends Model {
             lastName: responseData['user']['lastName'],
             gender: responseData['user']['gender'],
             firstName: responseData['user']['firstName'],
-            image: '');
-        print('authonticated user: ' + _authenticatedUser.toString());
+            currentPackage: responseData['currentPackage'],
+            image:  responseData['user']['ProfilePicture']);
+        //print('authonticated user: ' + _authenticatedUser.toString());
         message = 'Authontication succeeded';
         final SharedPreferences preps = await SharedPreferences.getInstance();
         preps.setString('token', responseData['token'].toString());
@@ -505,11 +554,17 @@ class UsersModel extends Model {
         //await initializeCat();
       }
     }
-    print(message);
+    //print(message);
     return {'success': !hasError, 'message': message};
     //return truel
   }
 
+  void logout() async{
+    final SharedPreferences preps = await SharedPreferences.getInstance();
+    _authenticatedUser = null;
+    preps.clear();
+
+  }
   void AutoAuth() async {
     final SharedPreferences preps = await SharedPreferences.getInstance();
     final String token = preps.getString('token');

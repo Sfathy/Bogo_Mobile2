@@ -29,25 +29,37 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        _buildBackGroundImage(),
-        _buildUserImage(),
-        SizedBox(
-          height: height / 50,
-        ),
-        _buildUserCard(),
-        SizedBox(
-          height: height / 50,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            _buildUpadate(),
-            _buildChangePassword(),
-          ],
-        ),
-      ],
+    return Container(
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              colorFilter: ColorFilter.mode(
+                  Colors.black.withOpacity(0.9), BlendMode.dstATop),
+              image: AssetImage('assets/LoginPage/Background.jpg'),
+              fit: BoxFit.fill)),
+      child: Stack(
+        children: <Widget>[
+          ListView(
+            children: <Widget>[
+              _buildBackGroundImage(),
+              //_buildUserImage(),
+              SizedBox(
+                height: height / 50,
+              ),
+              _buildUserCard(),
+              SizedBox( 
+                height: height / 50,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  _buildUpadate(),
+                  _buildChangePassword(),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -91,7 +103,7 @@ class ProfilePage extends StatelessWidget {
 
   Widget _buildUserImage() {
     return Positioned(
-        bottom: 300.0,
+        bottom: 20.0,
         left: 20.0,
         child: IconButton(
             iconSize: 200.0,
@@ -133,10 +145,13 @@ class ProfilePage extends StatelessWidget {
         SizedBox(
           width: width / 50,
         ),
-        (userModel.AuthenticatedUser.mobileNumber==null && userModel.AuthenticatedUser.mobileNumber.isEmpty)?Container(): Text(
-          userModel.AuthenticatedUser.mobileNumber,
-          style: TextStyle(color: Colors.white, fontSize: 20.0),
-        )
+        (userModel.AuthenticatedUser.mobileNumber == null &&
+                userModel.AuthenticatedUser.mobileNumber.isEmpty)
+            ? Container()
+            : Text(
+                userModel.AuthenticatedUser.mobileNumber,
+                style: TextStyle(color: Colors.white, fontSize: 20.0),
+              )
       ],
     );
   }
@@ -176,11 +191,7 @@ class ProfilePage extends StatelessWidget {
           width: width / 50,
         ),
         Text(
-          userModel.AuthenticatedUser.birthDate.day.toString() +
-              '/' +
-              userModel.AuthenticatedUser.birthDate.month.toString() +
-              '/' +
-              userModel.AuthenticatedUser.birthDate.year.toString(),
+          userModel.AuthenticatedUser.birthDate,
           style: TextStyle(color: Colors.white, fontSize: 20.0),
         )
       ],
@@ -266,10 +277,10 @@ class ProfilePage extends StatelessWidget {
           _buildUserName(),
           _buildUserMobile(),
           _buildEmail(),
-          _buildBirthDate(),
+          // _buildBirthDate(),
           _buildAddress(),
-          _buildCountry(),
-          _buildCity(),
+          //_buildCountry(),
+          //_buildCity(),
         ],
       ),
     );
@@ -292,10 +303,8 @@ class ProfilePage extends StatelessWidget {
         builder: (BuildContext context, Widget child, UsersModel model) {
       userModel = model;
       // model.getValues();
-      return Scaffold(
-        appBar: _buildAppBar(),
-        body: _buildBody(context) 
-        /*Stack(
+      return Scaffold(appBar: _buildAppBar(), body: _buildBody(context)
+          /*Stack(
           children: <Widget>[
             Positioned(
               top: 150.0, // (background container size) - (circle height / 2)
@@ -309,7 +318,7 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
             )*/
-           /* Container(
+          /* Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
                     colorFilter: ColorFilter.mode(
@@ -321,9 +330,9 @@ class ProfilePage extends StatelessWidget {
 
               //padding: EdgeInsets.all(10.0),
             ),*/
-         // ],
-      //  ),
-      );
+          // ],
+          //  ),
+          );
     });
   }
 }

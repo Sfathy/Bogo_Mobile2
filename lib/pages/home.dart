@@ -355,16 +355,21 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _buildMoreButton() {
+    print('more button select cat:' + selectedCat.toString());
+    int x = selectedCat;
     return Container(
       alignment: Alignment.bottomRight,
       margin: EdgeInsets.all(5.0),
+
       child: RaisedButton(
         color: Color(0xFFAD045D),
         textColor: Colors.white,
         child: Text('More'),
+        key: ValueKey(selectedCat),
         onPressed: () {
+          print('X:' + x.toString());
           Navigator.pushNamed(
-              formContext, '/product/' + selectedCat.toString());
+              formContext, '/product/' + x.toString());
         },
       ),
     );
@@ -485,7 +490,7 @@ class HomePageState extends State<HomePage> {
       sizeProvider: (index, data) => cardSize,
       separatorProvider: (index, data) => Size(10.0, 10.0),
       builder: (context, index, data) {
-        print(data.center);
+        //print(data.center);
         return data.center + 1 == index
             ? ClipRRect(
                 borderRadius: new BorderRadius.circular(16.0),
@@ -604,45 +609,59 @@ class HomePageState extends State<HomePage> {
     List<Widget> catCards = new List<Widget>();
     for (var i = 0; i < _catlist.length; i++) {
       selectedCat = i;
-      print('_buildCategotyCards No Of Brand:' + _catlist[selectedCat].brands.length.toString());
+    //  print('_buildCategotyCards No Of Brand:' + _catlist[selectedCat].brands.length.toString());
       catCards.add(_buildCategotyCard2());
     }
     return ListView(shrinkWrap: true, children: catCards);
     //return _buildCategotyCard2();
   }
 
-  Widget _buildBrandItem(int index) {
-    selectedCat = 0;
-    print('selectedCat: ' + selectedCat.toString());
-    if (_catlist[selectedCat].brands == null ||_catlist[selectedCat].brands.length==0|| _catlist[selectedCat].brands.length<=index ) {
-     // print('selectedCat: ' + selectedCat.toString()); 
-      return Container();
-    }
-    print('brandName: ' + _catlist[selectedCat].brands[index].brandName); 
-    return Container(
+  List<Widget> _buildBrandItem() {
+    List<Widget> items = new List<Widget>();
+    //selectedCat = 0;
+    Brand b;
+    for (var i = 0; i < _catlist[selectedCat].brands.length; i++) {
+      b = _catlist[selectedCat].brands[i];
+      items.add(Container(
       margin: EdgeInsets.symmetric(horizontal: 2.0),
+      width: width/4,
+      height: height/7,
       child: Column(
+
+        //shrinkWrap: true,
         children: <Widget>[
-          _catlist[selectedCat].brands[index].brandImage == null
+          _catlist[selectedCat].brands[i].brandImage == null
               ? Image.asset(user.DefaultImage,
-                  height: height / 6, width: width / 4.1)
+                  height: height / 10, width: width / 4.1)
               : Image.network(
                   user.ImagePath +
-                      _catlist[selectedCat].brands[index].brandImage,
-                  height: height / 6,
-                  width: width / 4.1),
+                      _catlist[selectedCat].brands[i].brandImage,
+                  height: height / 10,
+                  width: width / 4.1, fit: BoxFit.contain,),
           //height: height / 6, width: width / 4.1),
-          Text(
-            _catlist[selectedCat].brands[index].brandName,
+          Container(
+            height: height/10,
+            child: Text(
+            _catlist[selectedCat].brands[i].brandName,
             style: TextStyle(color: Colors.white),
-          ),
-          Text(
+          ),),
+         /*  Container(
+            height: height/10,
+            child: Text(
             _catlist[selectedCat].brands[index].brandDescription,
-            style: TextStyle(color: Colors.white),
-          ),
+            style: TextStyle(color: Colors.white ),
+          ),),*/
         ],
       ),
-    );
+    ));
+    }
+    /*print('selectedCat: ' + cat.toString());
+    if (_catlist[cat].brands == null ||_catlist[cat].brands.length==0|| _catlist[cat].brands.length<=index ) {
+     // print('selectedCat: ' + selectedCat.toString()); 
+      return Container();
+    }*/
+    //print('brandName: ' + _catlist[selectedCat].brands[index].brandName); 
+    return items;
   }
 
   Widget _buildLeftArrow() {
@@ -662,20 +681,20 @@ class HomePageState extends State<HomePage> {
   }
 
   List<Widget> _buildCatItems() {
+    print('current cat2: ' + selectedCat.toString());
     List<Widget> items = new List<Widget>();
-    print('Category: ' + _catlist[selectedCat].categoryName +'No Of Brand:' + _catlist[selectedCat].brands.length.toString());
+   // print('Category: ' + _catlist[selectedCat].categoryName +'No Of Brand:' + _catlist[selectedCat].brands.length.toString());
     items.add(_buildLeftArrow());
     items.add(Center(
       child: Container(
         width: width / 1.3,
-        child: ListView.builder(
-          itemCount: _catlist[selectedCat].brands.length,
+        child: ListView(
+          //itemCount: _catlist[selectedCat].brands.length,
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
           primary: false,
-          itemBuilder: (BuildContext context, int index) {
-            return _buildBrandItem(index);
-          },
+          children: _buildBrandItem(),
+          
         ),
       ),
     ));
@@ -685,6 +704,7 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _buildCategotyCard2() {
+    print('current cat: ' + selectedCat.toString());
     //print('Category: ' + _catlist[selectedCat].categoryName +' No Of Brand:' + _catlist[selectedCat].brands.length.toString());
     return (_catlist == null || _catlist.length <= 0)
         ? Container()
@@ -720,7 +740,7 @@ class HomePageState extends State<HomePage> {
                     _catlist[selectedCat].brands.length==0? Container(): Container(
                       // width: width/2,
                       child: Expanded(
-                        flex: 1,
+                        //flex: 1,
                         child: Center(
                           child: ListView(
                               scrollDirection: Axis.horizontal,
@@ -1144,6 +1164,8 @@ class HomePageState extends State<HomePage> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 100.0),
             child: Row(
+              //shrinkWrap: true,
+              //scrollDirection: Axis.horizontal,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
@@ -1181,6 +1203,10 @@ class HomePageState extends State<HomePage> {
                   'Logout',
                   style: TextStyle(color: Colors.white),
                 ),
+                onPressed: (){
+                  user.logout();
+                  Navigator.pushNamed(formContext, '/');
+                },
               ),
             ],
           )
