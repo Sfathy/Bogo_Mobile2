@@ -7,7 +7,7 @@ import '../models/categoty.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UsersModel extends Model {
-  final String baseURL = 'http://bogocustomer.dragonssolution.com/api/';
+final String baseURL = 'http://bogocustomer.dragonssolution.com/api/';
 //   final String baseURL = 'http://192.168.8.102:52994/api/';
   User _authenticatedUser;
   List<Category> _catlist = new List<Category>();

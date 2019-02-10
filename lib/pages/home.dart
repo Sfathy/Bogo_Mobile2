@@ -28,7 +28,9 @@ class HomePageState extends State<HomePage> {
 
   List data;
   ScrollController _buttonScrollercnt = new ScrollController();
+  List<ScrollController> _buttonScrollerCats = new List<ScrollController>();
   double _currButtonInd = 0.0;
+  List<double> _currCatind = new List<double>();
   Future<String> getData() async {
     List<Category> _catlst;
     List dt = await widget.user.getCategoryList();
@@ -75,8 +77,6 @@ class HomePageState extends State<HomePage> {
   int selectedCat = 0;
   int _selectedTabIndex = 0;
   bool _enabled = false;
-
-
 
   List<Category> _categotyList = [
     new Category(
@@ -360,7 +360,6 @@ class HomePageState extends State<HomePage> {
     return Container(
       alignment: Alignment.bottomRight,
       margin: EdgeInsets.all(5.0),
-
       child: RaisedButton(
         color: Color(0xFFAD045D),
         textColor: Colors.white,
@@ -368,8 +367,7 @@ class HomePageState extends State<HomePage> {
         key: ValueKey(selectedCat),
         onPressed: () {
           print('X:' + x.toString());
-          Navigator.pushNamed(
-              formContext, '/product/' + x.toString());
+          Navigator.pushNamed(formContext, '/product/' + x.toString());
         },
       ),
     );
@@ -413,7 +411,9 @@ class HomePageState extends State<HomePage> {
 
   Widget _buildCategoryContet() {
     return ListView.builder(
-        itemCount: _categotyList.length,primary: false, itemBuilder: _buildCatItem2);
+        itemCount: _categotyList.length,
+        primary: false,
+        itemBuilder: _buildCatItem2);
 
     /*Container(
       constraints: BoxConstraints(minWidth: width, minHeight: height / 4),
@@ -609,10 +609,12 @@ class HomePageState extends State<HomePage> {
     List<Widget> catCards = new List<Widget>();
     for (var i = 0; i < _catlist.length; i++) {
       selectedCat = i;
-    //  print('_buildCategotyCards No Of Brand:' + _catlist[selectedCat].brands.length.toString());
+      _buttonScrollerCats.add(new ScrollController());
+      _currCatind.add(0.0);
+      //  print('_buildCategotyCards No Of Brand:' + _catlist[selectedCat].brands.length.toString());
       catCards.add(_buildCategotyCard2());
     }
-    return ListView(shrinkWrap: true, children: catCards);
+    return ListView(shrinkWrap: true, primary: false, children: catCards);
     //return _buildCategotyCard2();
   }
 
@@ -622,68 +624,100 @@ class HomePageState extends State<HomePage> {
     Brand b;
     for (var i = 0; i < _catlist[selectedCat].brands.length; i++) {
       b = _catlist[selectedCat].brands[i];
-      items.add(Container(
-      margin: EdgeInsets.symmetric(horizontal: 2.0),
-      width: width/4,
-      height: height/7,
-      child: Column(
-
-        //shrinkWrap: true,
-        children: <Widget>[
-          _catlist[selectedCat].brands[i].brandImage == null
-              ? Image.asset(user.DefaultImage,
-                  height: height / 10, width: width / 4.1)
-              : Image.network(
-                  user.ImagePath +
-                      _catlist[selectedCat].brands[i].brandImage,
-                  height: height / 10,
-                  width: width / 4.1, fit: BoxFit.contain,),
-          //height: height / 6, width: width / 4.1),
-          Container(
-            height: height/10,
-            child: Text(
-            _catlist[selectedCat].brands[i].brandName,
-            style: TextStyle(color: Colors.white),
-          ),),
-         /*  Container(
+      int brandId = _catlist[selectedCat].brands[i].id;
+      items.add(GestureDetector(
+        onTap: (){
+          //Brand f = _catlist[selectedCat].brands[i];
+          /*print('curr brand index:'+i.toString());
+          print('curr cat index:'+selectedCat.toString());
+          print('total length:'+_catlist[selectedCat].brands.length.toString());*/
+          print('BrandID:'+brandId.toString());
+          Navigator.pushNamed(formContext, '/brand/' + brandId.toString());
+        },
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 2.0),
+          width: width / 4,
+          height: height / 7,
+          child: ListView(
+            primary: false,
+            //shrinkWrap: true,
+            children: <Widget>[
+              _catlist[selectedCat].brands[i].brandImage == null
+                  ? Image.asset(user.DefaultImage,
+                      height: height / 10, width: width / 4.1)
+                  : Image.network(
+                      user.ImagePath +
+                          _catlist[selectedCat].brands[i].brandImage,
+                      height: height / 10,
+                      width: width / 4.1,
+                      fit: BoxFit.contain,
+                    ),
+              //height: height / 6, width: width / 4.1),
+              Container(
+                height: height / 10,
+                child: Text(
+                  _catlist[selectedCat].brands[i].brandName,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              /*  Container(
             height: height/10,
             child: Text(
             _catlist[selectedCat].brands[index].brandDescription,
             style: TextStyle(color: Colors.white ),
           ),),*/
-        ],
-      ),
-    ));
+            ],
+          ),
+        ),
+      ));
     }
     /*print('selectedCat: ' + cat.toString());
     if (_catlist[cat].brands == null ||_catlist[cat].brands.length==0|| _catlist[cat].brands.length<=index ) {
      // print('selectedCat: ' + selectedCat.toString()); 
       return Container();
     }*/
-    //print('brandName: ' + _catlist[selectedCat].brands[index].brandName); 
+    //print('brandName: ' + _catlist[selectedCat].brands[index].brandName);
     return items;
   }
 
   Widget _buildLeftArrow() {
-    return Image.asset(
-      'assets/HomePage/previous-icons-inner.png',
-      height: 30.0,
-      width: 30.0,
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _currCatind[selectedCat] -= 100;
+          _buttonScrollerCats[selectedCat].animateTo(_currCatind[selectedCat],
+              duration: new Duration(seconds: 1), curve: Curves.ease);
+        });
+      },
+      child: Image.asset(
+        'assets/HomePage/previous-icons-inner.png',
+        height: 30.0,
+        width: 30.0,
+      ),
     );
   }
 
   Widget _buildRightArrow() {
-    return Image.asset(
-      'assets/HomePage/next-icons-inner.png',
-      height: 30.0,
-      width: 30.0,
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _currCatind[selectedCat] -= 100;
+          _buttonScrollerCats[selectedCat].animateTo(_currCatind[selectedCat],
+              duration: new Duration(seconds: 1), curve: Curves.ease);
+        });
+      },
+      child: Image.asset(
+        'assets/HomePage/next-icons-inner.png',
+        height: 30.0,
+        width: 30.0,
+      ),
     );
   }
 
   List<Widget> _buildCatItems() {
     print('current cat2: ' + selectedCat.toString());
     List<Widget> items = new List<Widget>();
-   // print('Category: ' + _catlist[selectedCat].categoryName +'No Of Brand:' + _catlist[selectedCat].brands.length.toString());
+    // print('Category: ' + _catlist[selectedCat].categoryName +'No Of Brand:' + _catlist[selectedCat].brands.length.toString());
     items.add(_buildLeftArrow());
     items.add(Center(
       child: Container(
@@ -694,7 +728,7 @@ class HomePageState extends State<HomePage> {
           shrinkWrap: true,
           primary: false,
           children: _buildBrandItem(),
-          
+          //children: <Widget>[Container()],
         ),
       ),
     ));
@@ -709,6 +743,7 @@ class HomePageState extends State<HomePage> {
     return (_catlist == null || _catlist.length <= 0)
         ? Container()
         : Column(
+            //primary: false,
             children: <Widget>[
               Container(
                 decoration: BoxDecoration(
@@ -718,6 +753,7 @@ class HomePageState extends State<HomePage> {
                 height: height / 2.7,
                 margin: EdgeInsets.all(10.0),
                 child: Column(
+                  //primary: false,
                   children: <Widget>[
                     Row(
                       children: <Widget>[
@@ -737,18 +773,23 @@ class HomePageState extends State<HomePage> {
                     ),
                     // Row(children: <Widget>[
                     //TextField(),
-                    _catlist[selectedCat].brands.length==0? Container(): Container(
-                      // width: width/2,
-                      child: Expanded(
-                        //flex: 1,
-                        child: Center(
-                          child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              primary: false,
-                              //width: width/1.5,
-                              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: _buildCatItems()
-                              /*<Widget>[
+                    _catlist[selectedCat].brands.length == 0
+                        ? Container()
+                        : Container(
+                            // width: width/2,
+                            child: Expanded(
+                              //flex: 1,
+                              child: Center(
+                                child: ListView(
+                                    scrollDirection: Axis.horizontal,
+                                    primary: false,
+                                    controller:
+                                        _buttonScrollerCats[selectedCat],
+                                    //width: width/1.5,
+                                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: _buildCatItems()
+                                    // children: <Widget>[Container()],
+                                    /*<Widget>[
                         _buildLeftArrow(),
                         Center(
                           child: Container(
@@ -765,10 +806,10 @@ class HomePageState extends State<HomePage> {
                         ),
                         _buildRightArrow(),
                       ],*/
+                                    ),
                               ),
-                        ),
-                      ),
-                    ), //],),
+                            ),
+                          ), //],),
                     _buildMoreButton(),
                   ],
                 ),
@@ -1096,7 +1137,8 @@ class HomePageState extends State<HomePage> {
     }
     return Center(
       heightFactor: width / 5,
-      child: ListView(
+      child: Column(
+        //shrinkWrap: true,
         children: <Widget>[
           Container(
             child: userImag,
@@ -1125,30 +1167,38 @@ class HomePageState extends State<HomePage> {
               },
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              FlatButton(
-                child: Text(
-                  'My Package: ' + user.AuthenticatedUser.currentPackage,
-                  style: TextStyle(color: Colors.white),
+          //Expanded(
+            //flex: 1,
+            Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              //scrollDirection: Axis.horizontal, 
+              //shrinkWrap: true,
+              children: <Widget>[
+                FlatButton(
+                  child: Text(
+                    'My Package: ' + user.AuthenticatedUser.currentPackage,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(formContext, '/package');
+                  },
                 ),
-                onPressed: () {
-                  Navigator.pushNamed(formContext, '/package');
-                },
-              ),
-              user.AuthenticatedUser.currentPackage == null ||
-                      user.AuthenticatedUser.currentPackage == ''
-                  ? RaisedButton(child: Text('Buy Package'), onPressed: () {
-                    Navigator.pushNamed(formContext, '/buyPackage');
-                  })
-                  : RaisedButton(
-                      child: Text('Renew'),
-                      onPressed: () {
-                        Navigator.pushNamed(formContext, '/renewPackage');
-                      },
-                    )
-            ],
+                user.AuthenticatedUser.currentPackage == null ||
+                        user.AuthenticatedUser.currentPackage == ''
+                    ? RaisedButton(
+                        child: Text('Buy Package'),
+                        onPressed: () {
+                          Navigator.pushNamed(formContext, '/buyPackage');
+                        })
+                    : RaisedButton(
+                        child: Text('Renew'),
+                        onPressed: () {
+                          Navigator.pushNamed(formContext, '/renewPackage');
+                        },
+                      )
+              ],
+            ),
           ),
           Center(
             child: FlatButton(
@@ -1162,11 +1212,11 @@ class HomePageState extends State<HomePage> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 100.0),
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
             child: Row(
               //shrinkWrap: true,
               //scrollDirection: Axis.horizontal,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
                   'Language',
@@ -1203,7 +1253,7 @@ class HomePageState extends State<HomePage> {
                   'Logout',
                   style: TextStyle(color: Colors.white),
                 ),
-                onPressed: (){
+                onPressed: () {
                   user.logout();
                   Navigator.pushNamed(formContext, '/');
                 },

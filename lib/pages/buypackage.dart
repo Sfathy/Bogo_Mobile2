@@ -47,7 +47,7 @@ class BuyPackagePageState extends State<BuyPackagePage> {
   void _handlePackageSelect(int value) {
     setState(() {
       _selectedPackage = value;
-      _price=0.0;
+      _price = 0.0;
       //if (value == 1) {}
     });
   }
@@ -122,16 +122,15 @@ class BuyPackagePageState extends State<BuyPackagePage> {
         ),
       );
     }
-    double itemWidth = width/4;
-    double itemHeight = height/10;
+    double itemWidth = width / 4;
+    double itemHeight = height / 10;
     //display the offers in list view
     return Column(
       children: <Widget>[
         GridView.count(
           crossAxisCount: 3,
           mainAxisSpacing: 3.0,
-          
-           shrinkWrap: true,
+          shrinkWrap: true,
           childAspectRatio: (itemWidth / itemHeight),
           children: items,
         ),
@@ -145,7 +144,8 @@ class BuyPackagePageState extends State<BuyPackagePage> {
     if (prePack == null) {
       prePack = new List<PredefinedPackage>();
 
-      prePack.add(new PredefinedPackage(id:-1,name:'no predefined package',price: 0.0));
+      prePack.add(
+          new PredefinedPackage(id: -1, name: 'no predefined', price: 0.0));
     }
     //prePack.add({'key': -2, 'value': ' '});
     //print('list:' + prePack.toString());
@@ -156,7 +156,6 @@ class BuyPackagePageState extends State<BuyPackagePage> {
           prePack[i].name,
         ),
         value: prePack[i].id,
-        
       ));
     }
     return Container(
@@ -175,7 +174,8 @@ class BuyPackagePageState extends State<BuyPackagePage> {
                 onChanged: (int v) {
                   setState(() {
                     _selectPrePackage = v;
-                    PredefinedPackage d =(widget.user.PrePackages.singleWhere( (c) => c.id == v));
+                    PredefinedPackage d =
+                        (widget.user.PrePackages.singleWhere((c) => c.id == v));
                     _price = d.price;
                     widget.user
                         .getPackageOffers(_selectPrePackage)
@@ -204,52 +204,61 @@ class BuyPackagePageState extends State<BuyPackagePage> {
     List<Widget> items = new List<Widget>();
     //_selectedOffers = new List<bool>();
     List<Brand> offer = widget.user.Offers;
-    if (offer == null ) {
-     offer = new List<Brand>();
+    if (offer == null) {
+      offer = new List<Brand>();
     }
     for (var i = 0; i < offer.length; i++) {
       if (_selectedOffers.length <= i) {
         _selectedOffers.add(false);
       }
       // print('offer-' + i.toString() + ' ' + offers[i].descriptionEN);
-      items.add(Column(
-        //primary: false,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Checkbox(
-            value: _selectedOffers[i],
-            onChanged: (chk) {
-              setState(() {
-                _selectedOffers[i] = chk;
-                chk ? _price += offer[i].price : _price -= offer[i].price;
-              });
-            },
-          ),
-        
-            Text(
+      items.add(Container(
+        //decoration: new BoxDecoration(border: new Border.all(color: Colors.grey)),
+        child: ListView(
+          primary: false,
+          shrinkWrap: true,
+
+          //mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Checkbox(
+              value: _selectedOffers[i],
+              onChanged: (chk) {
+                setState(() {
+                  _selectedOffers[i] = chk;
+                  chk ? _price += offer[i].price : _price -= offer[i].price;
+                });
+              },
+            ),
+            Center(
+                child: Text(
               offer[i].brandName,
               style: TextStyle(color: Colors.white, fontSize: 10.0),
-            ),
+            )),
             Image.network(
               widget.user.ImagePath + offer[i].brandImage,
               width: 50.0,
               height: 50.0,
             ),
-            Text(
+            Center(
+                child: Text(
               offer[i].price.toString() + ' L.E.',
               style: TextStyle(color: Colors.white, fontSize: 10.0),
-            ),
-          
-        ],
+            )),
+          ],
+        ),
       ));
     }
     //display the offers in list view
-    return 
-        GridView.count(
-          crossAxisCount: 3,
-          shrinkWrap: true,
-          children: items,
-        
+    return GridView.count(
+      crossAxisCount: 3,
+      //physics: ScrollPhysics(),
+      primary: true,
+      childAspectRatio: (width / 3) / (height / 4),
+      padding: EdgeInsets.all(5.0),
+
+      physics: ClampingScrollPhysics(),
+      //shrinkWrap: true,
+      children: items,
     );
   }
 
@@ -277,7 +286,7 @@ class BuyPackagePageState extends State<BuyPackagePage> {
     }
     return Container(
       width: width,
-      height: height/2,
+      height: height / 2,
       child: selectedPackageWidget,
     );
   }
@@ -294,7 +303,7 @@ class BuyPackagePageState extends State<BuyPackagePage> {
     return items;
   }
 
-  Widget _buildBody(BuildContext context) { 
+  Widget _buildBody(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 10.0),
       child: Theme(
@@ -310,20 +319,22 @@ class BuyPackagePageState extends State<BuyPackagePage> {
               children: _buildPackages(),
             ),
             _buildSelectedPackage(),
-             Text('Total Price: ' + _price.toString(),style: TextStyle(color: Colors.white,fontSize: 20.0),),
+            Text(
+              'Total Price: ' + _price.toString(),
+              style: TextStyle(color: Colors.white, fontSize: 20.0),
+            ),
             RaisedButton(
-                  color: Color(0xFFAD045D),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(75.0)),
-                  textColor: Colors.white,
-                  child: Text('Buy'),
-                  onPressed: ()  {
-                   // if 
-                    //print('package ' + _selectedPackage.toString()+' will be buyed');
-                    widget.user.buyPackage(_type, offers,_selectPrePackage);
-                     Navigator.pushReplacementNamed(context, '/home');
-                  }),
-            
+                color: Color(0xFFAD045D),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(75.0)),
+                textColor: Colors.white,
+                child: Text('Buy'),
+                onPressed: () {
+                  // if
+                  //print('package ' + _selectedPackage.toString()+' will be buyed');
+                  widget.user.buyPackage(_type, offers, _selectPrePackage);
+                  Navigator.pushReplacementNamed(context, '/home');
+                }),
           ],
         ),
       ),

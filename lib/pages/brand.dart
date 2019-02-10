@@ -33,15 +33,15 @@ class _CustomWidgetState extends State<CustomWidget> {
     Coupon c = widget.brand.coupons[widget.index];
     return new GestureDetector(
       onLongPress: () {
-         if ( !c.isActive && !c.isUsed){
-        widget.callback();
-         }
+        if (!c.isActive && !c.isUsed) {
+          widget.callback();
+        }
       },
       onTap: () {
         if (widget.longPressEnabled) {
-           if ( !c.isActive && !c.isUsed){
-          widget.callback();
-           }
+          if (!c.isActive && !c.isUsed) {
+            widget.callback();
+          }
         }
       },
       child: new Container(
@@ -97,8 +97,7 @@ class _CustomWidgetState extends State<CustomWidget> {
         ),
         decoration: c.isSelected
             ? new BoxDecoration(
-                color: Colors.blue,
-                border: new Border.all(color: Colors.black))
+                color: Colors.blue, border: new Border.all(color: Colors.black))
             : new BoxDecoration(),
       ),
     );
@@ -151,7 +150,7 @@ class BrandPageState extends State<BrandPage> {
     });
   }
 
-   void longPressPlat() {
+  void longPressPlat() {
     setState(() {
       if (brand.platinums.isEmpty) {
         longPressFlag = false;
@@ -160,8 +159,6 @@ class BrandPageState extends State<BrandPage> {
       }
     });
   }
-
-
 
   void initState() {
     initData();
@@ -249,7 +246,7 @@ class BrandPageState extends State<BrandPage> {
   TabController _controller;
   Widget _buildBody(BuildContext context) {
     if (brand == null) {
-      print('brand ID ' + widget.brandID.toString() + '= null');
+      //print('brand ID ' + widget.brandID.toString() + '= null');
     }
     return Stack(
       children: <Widget>[
@@ -385,17 +382,22 @@ class BrandPageState extends State<BrandPage> {
       ),
       width: width,
       height: height / 7,
-      margin: EdgeInsets.symmetric(vertical: 5.0),
-      padding: EdgeInsets.all(10.0),
-      child: Row(
+      margin: EdgeInsets.symmetric(vertical: 2.0),
+      padding: EdgeInsets.all(2.0),
+      child: ListView(
+
+        //primary: false,
         //mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        //crossAxisAlignment: CrossAxisAlignment.start,
+        scrollDirection: Axis.horizontal,
+        primary: false,
         children: <Widget>[
           Container(
-            width: width / 2,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            width: width / 1.4,
+            child: ListView(
+              //Expanded(child: ListView(
+              // mainAxisAlignment: MainAxisAlignment.start,
+              // crossAxisAlignment: CrossAxisAlignment.start,
 
               //shrinkWrap: true,
               children: <Widget>[
@@ -405,18 +407,23 @@ class BrandPageState extends State<BrandPage> {
                 ),
                 Text(
                   brand.branches[index].branchAddress,
-                  style: TextStyle(color: Color(0xFFAD045D), fontSize: 15.0),
+                  style: TextStyle(color: Color(0xFFAD045D), fontSize: 10.0),
                 ),
+                //Expanded(
+                //child:
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  
+                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //scrollDirection: Axis.horizontal,
+                  //shrinkWrap: true,
                   children: _buildFeatureImages(index),
-                )
+                ), //)
               ],
-            ),
+            ), //),
           ),
-          SizedBox(
+         /* SizedBox(
             width: width / 5,
-          ),
+          ),*/
           Container(
             width: width / 4,
             height: height / 7,
@@ -454,14 +461,26 @@ class BrandPageState extends State<BrandPage> {
       features.add(Container());
       return features;
     }
+     print('BrandID:' + brand.id.toString()); 
+     print('featur:' + brand.branches[branchIndex].availableFeatures.length.toString());
     for (var i = 0;
         i < brand.branches[branchIndex].availableFeatures.length;
         i++) {
-      features.add(Image.asset(
-        'assets/Branches/' + brand.branches[branchIndex].availableFeatures[i],
-        width: 35.0,
-        height: 35.0,
-      ));
+         
+      features.add(brand.branches[branchIndex].availableFeatures[i] != null &&
+              brand.branches[branchIndex].availableFeatures[i] != '' &&
+              brand.branches[branchIndex].availableFeatures[i] != 'null' 
+          ? Image.asset(
+              'assets/Branches/' +
+                  brand.branches[branchIndex].availableFeatures[i],
+              width: 35.0,
+              height: 35.0,
+            )
+          : Image.asset(
+              'assets/Branches/erea.png' ,
+              width: 35.0,
+              height: 35.0,
+            ));
     }
     return features;
   }
@@ -548,14 +567,14 @@ class BrandPageState extends State<BrandPage> {
     }
     Platinum c = brand.platinums[index];
     return Container(
-      width: width / 5,
-      height: height,
-      decoration: new BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-        color: Colors.grey,
-      ),
-      //alignment: Alignment.center,
-      child: CustomPlatWidget(
+        width: width / 5,
+        height: height,
+        decoration: new BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          color: Colors.grey,
+        ),
+        //alignment: Alignment.center,
+        child: CustomPlatWidget(
           index: index,
           isselected: brand.platinums[index].isSelected,
           brand: brand,
@@ -572,9 +591,8 @@ class BrandPageState extends State<BrandPage> {
             longPressPlat();
           },
         ));
-      
   }
-      
+
   List<Widget> _buildPlatinumItems() {
     List<Widget> platinums = new List<Widget>();
 
@@ -650,6 +668,7 @@ class BrandPageState extends State<BrandPage> {
                   //image: AssetImage('assetName'),
                   color: Color.fromARGB(150, 0, 0, 0)),
               child: TabBarView(
+
                 children: [
                   _buildBraches(),
                   _buildCoupons(),
@@ -782,14 +801,14 @@ class _CustomPlatWidgetState extends State<CustomPlatWidget> {
     double height = MediaQuery.of(context).size.height;
     return new GestureDetector(
       onLongPress: () {
-       if ( c.isActive && !c.isUsed){
-        widget.callback();
-       }
+        if (c.isActive && !c.isUsed) {
+          widget.callback();
+        }
       },
       onTap: () {
         if (widget.longPressEnabled) {
-          if ( c.isActive && !c.isUsed){
-          widget.callback();
+          if (c.isActive && !c.isUsed) {
+            widget.callback();
           }
         }
       },
@@ -804,18 +823,37 @@ class _CustomPlatWidgetState extends State<CustomPlatWidget> {
         width: width / 5,
         height: height,
         decoration: !c.isSelected
-            ?new BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          color: Colors.grey,
-        ):new BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          color: Colors.blue,
-        ),
+            ? new BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                color: Colors.grey,
+              )
+            : new BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                color: Colors.blue,
+              ),
         //alignment: Alignment.center,
         child: ListView(
           children: <Widget>[
-            c.isUsed?Container(child: Center(child: Text('Used',style: TextStyle(color: Colors.red),),),):Container(),
-            !c.isActive?Container(child: Center(child: Text('Not Active',style: TextStyle(color: Colors.red),),),):Container(),
+            c.isUsed
+                ? Container(
+                    child: Center(
+                      child: Text(
+                        'Used',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  )
+                : Container(),
+            !c.isActive
+                ? Container(
+                    child: Center(
+                      child: Text(
+                        'Not Active',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  )
+                : Container(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
