@@ -33,13 +33,13 @@ class _CustomWidgetState extends State<CustomWidget> {
     Coupon c = widget.brand.coupons[widget.index];
     return new GestureDetector(
       onLongPress: () {
-        if (!c.isActive && !c.isUsed) {
+        if (c.isActive && !c.isUsed) {
           widget.callback();
         }
       },
       onTap: () {
         if (widget.longPressEnabled) {
-          if (!c.isActive && !c.isUsed) {
+          if (c.isActive && !c.isUsed) {
             widget.callback();
           }
         }

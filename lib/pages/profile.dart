@@ -41,7 +41,7 @@ class ProfilePage extends StatelessWidget {
           ListView(
             children: <Widget>[
               _buildBackGroundImage(),
-              //_buildUserImage(),
+              
               SizedBox(
                 height: height / 50,
               ),
@@ -58,6 +58,7 @@ class ProfilePage extends StatelessWidget {
               ),
             ],
           ),
+          _buildUserImage(),
         ],
       ),
     );
@@ -103,11 +104,14 @@ class ProfilePage extends StatelessWidget {
 
   Widget _buildUserImage() {
     return Positioned(
-        bottom: 20.0,
+        top: 60.0,
         left: 20.0,
-        child: IconButton(
-            iconSize: 200.0,
-            icon: Image.asset('assets/ProfilePage/Profile-img.png')));
+        child:
+        // Container(),
+        IconButton(
+            iconSize: 130.0,
+            icon: Image.asset('assets/ProfilePage/Profile-img.png'))
+            );
   }
 
   Widget _buildUserName() {
